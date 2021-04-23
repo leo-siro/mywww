@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="help.css">
+    <title>VSCodeでのGitによるソース管理</title>
+</head>
+<style>
+    h3 > label:hover {
+        cursor: pointer;
+        color: #07f;
+    }
+    input[type="checkbox"] {
+        display: none;
+    }
+    .closedoc {
+        display: none;
+    }
+    input[type="checkbox"]:checked ~ .closedoc {
+        display: block;
+    }
+    footer {
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
+        font-size: 0.8em;
+    }
+</style>
+<body>
+    <h1>VSCodeでのGitによるソース管理</h1>
+    <p>VSCodeでソース管理を行う為の手順書となります。<br>
+    各タイトルをクリックすることで、手順書が表示されます。行う作業により必要な作業だけ行って下さい<br>
+    ローカルはVSCodeとGir for Windowsで管理を行い、リモート（サーバー）側はgitbucketを利用します。<br>
+    <div>
+        <h3><label for="git">１．Gitのインストール</label></h3>
+        <input type="checkbox" id="git">
+        <div class="closedoc idt1">
+            <p class="small">※gitのインストールは<a href="https://www.curict.com/item/60/60bfe0e.html" target="_blank">このサイト</a>を参照しています。インストールオプションの意味を解説していますので参考にして下さい</p>
+            <p>下記サイトよりGitをダウンロードします。</p>
+            <a href="https://gitforwindows.org/" target="_blank"><img src="images/git_download00.png" width="400"></a>
+            <p>1.ダウンロードしたファイルを実行し、NEXTで次へ進めます</p>
+            <img src="images/git_install00.png" width="400">
+            <p>2.インストール先の選択、特に変更がなければ次へ</p>
+            <img src="images/git_install01.png" width="400">
+            <p class="small">※既にフォルダが存在する場合は上書き確認画面が表示されます</p>
+            <img src="images/git_install02.png" width="400">
+            <p>3.オプション選択、特に変更がなければ次へ</p>
+            <img src="images/git_install03.png" width="400">
+            <p>4.スタートメニュー追加、不要な場合は「Don't create a StartMenu folder」にチェックを入れ次へ</p>
+            <img src="images/git_install04.png" width="400">
+            <p>5.エディタの設定、特に変更がなければ次へ</p>
+            <img src="images/git_install05.png" width="400">
+            <p>6.リポジトリ作成時のブランチ名、特に変更がなければ次へ</p>
+            <img src="images/git_install06.png" width="400">
+            <p>7.パスの設定、特に変更がなければ次へ</p>
+            <img src="images/git_install07.png" width="400">
+            <p>8.HTTPSの設定、特に変更がなければ次へ</p>
+            <img src="images/git_install08.png" width="400">
+            <p>9.改行コードの設定、『Checkout as-is, commit as-is』を選択し次へ</p>
+            <img src="images/git_install09.png" width="400">
+            <p>10.ターミナルの設定、特に変更がなければ次へ</p>
+            <img src="images/git_install10.png" width="400">
+            <p>11.git pullの設定、特に変更がなければ次へ</p>
+            <img src="images/git_install11.png" width="400">
+            <p>12.資格情報マネージャーの選択、特に変更がなければ次へ</p>
+            <img src="images/git_install12.png" width="400">
+            <p>13.オプションの設定、特に変更がなければ次へ</p>
+            <img src="images/git_install13.png" width="400">
+            <p>14.試験運用オプション、チェックせずに次へ</p>
+            <img src="images/git_install14.png" width="400">
+            <p>15.インストール完了</p>
+            <img src="images/git_install15.png" width="400">
+        </div>
+    </div>
+    <div>
+        <h3><label for="gitset">２．Gitの設定</label></h3>
+        <input type="checkbox" id="gitset">
+        <div class="closedoc idt1">
+            <p>スタートメニューからGit Bashを起動する。</p>
+            <img src="images/git_setting00.png" height="500">
+            <p>下記５項目を設定する。</p>
+            <div class="idt2">
+                <pre>
+$ git config --global user.name 'username'
+$ git config --global user.email 'username@example.com'
+$ git config --global core.editor 'code --wait'
+$ git config --global merge.tool 'code --wait "$MERGED"'
+$ git config --global push.default simple                
+                </pre>
+            </div>
+            <img src="images/git_setting01.png">
+        </div>
+    </div>
+    <div>
+        <h3><label for="vscode">３．VSCodeのインストール</label></h3>
+        <input type="checkbox" id="vscode">
+        <div class="closedoc idt1">
+            <p>下記サイトよりVSCodeをダウンロードします。</p>
+            <a href="https://code.visualstudio.com/" target="_blank"><img src="images/vs_download00.png" width="800"></a>
+            <p>1.ダウンロードしたファイルを実行し、警告メッセージが表示されたOKをクリックします</p>
+            <img src="images/vs_install00.png" width="400">
+            <p>2.同意するにチェックをし次へ</p>
+            <img src="images/vs_install01.png" width="400">
+            <p>3.インストール先の指定、特に変更がなければ次へ</p>
+            <img src="images/vs_install02.png" width="400">
+            <p>4.スタートメニューの指定、特に変更がなければ次へ</p>
+            <img src="images/vs_install03.png" width="400">
+            <p>5.追加タスクの選択、特に変更がなければ次へ</p>
+            <img src="images/vs_install04.png" width="400">
+            <p>6.インストールボタンをクリック</p>
+            <img src="images/vs_install05.png" width="400">
+            <p>7.インストール完了</p>
+            <img src="images/vs_install06.png" width="400">
+        </div>
+    </div>
+    <div>
+        <h3><label for="vsset">４．VSCodeの設定</label></h3>
+        <input type="checkbox" id="vsset">
+        <div class="closedoc idt1">
+            <p>VSCodeを起動します。</p>
+            <img src="images/vs_setting00.png" width="800">
+            <p>1.Proxyを設定する。</p>
+            <p class="idt2">①.メニューから、File => Preferences => Setting をクリックする</p>
+            <img src="images/vs_setting01.png" width="800">
+            <p class="idt2">②.検索枠に『proxy』を入力する。<br>③.http proxy欄に『http://172.18.133.209:8080』を入力する。<br>④.設定画面を閉じる</p>
+            <img src="images/vs_setting02.png" width="800">
+            <p>2.表示言語を日本語にする。</p>
+            <p class="idt2">①.拡張機能をクリック<br>②.検索枠に『japa』を入力<br>③.Japanese Language Pack...を選択する<br>④.Installをクリックしインストール完了<br>⑤.VS Codeを再起動する</p>
+            <img src="images/vs_setting03.png" width="800">
+            <p>3.Git Historyを同じようにインストールする。</p>
+            <img src="images/vs_setting04.png" width="800">
+        </div>
+    </div>
+    <div>
+        <h3><label for="gitinit">５．リポジトリの新規作成</label></h3>
+        <input type="checkbox" id="gitinit">
+        <div class="closedoc idt1">
+            <p>1.適当な場所にソースを管理するフォルダを作成します</p>
+            <img src="images/git_new00.png" width="800">
+            <p>2.作成したフォルダをVS Codeで開きます</p>
+            <img src="images/git_new01.png" width="800">
+            <p>3.リポジトリを作成（初期化）します</p>
+            <img src="images/git_new02.png" width="800">
+            <p>4.ソースを作成（配置）します</p>
+            <img src="images/git_new03.png" width="800">
+            <p>5.Git Bucketにローカルリポジトリを作成する</p>
+            <p class="idt2 small">※ローカルリポジトリが既にある場合は『6.リモートリポジトリの構成を追加する』へ</p>
+            <p class="idt2"><a href="http://mywww.leopalace21.com:8080/" target="_blank">http://mywww.leopalace21.com:8080/</a>を開き、『Sign in』からユーザー・パスワードとも『root』でログインします</p>
+            <img class="idt2" src="images/git_new04.png" width="800">
+            <p class="idt2">ログイン完了後、追加ボタンより『New Repository』をクリックします</p>
+            <img class="idt2" src="images/git_new05.png" width="800">
+            <p class="idt2">『Repository name』にリポジトリ名を入れ『Create repository』をクリックします</p>
+            <img class="idt2" src="images/git_new06.png" width="800">
+            <p class="idt2">リモートリポジトリが作成されました。</p>
+            <img class="idt2" src="images/git_new07.png" width="800">
+            <p>6.リモートリポジトリの構成を追加する</p>
+            <p class="idt2">VS Codeでメニューから『ターミナル => 新しいターミナル』又はCtrl+@で起動します</p>
+            <img class="idt2" src="images/git_new08.png" width="800">
+            <p class="idt2">ターミナルの選択から『New Git Bash』を選択します</p>
+            <img class="idt2" src="images/git_new09.png" width="800">
+            <p class="idt2">コマンドにて『git remote add origin （5で作成した接続用アドレス）』を実行します</p>
+            <img class="idt2" src="images/git_new10.png" width="800">
+            <p>7.ローカル内容をリモートリポジトリに反映させます（push）</p>
+            <p class="idt2">先ほど配置したファイルをコミットしローカルリポジトリに反映させます<br>①gitを選択　②メッセージを入力し　③コミットをクリックします</p>
+            <img class="idt2" src="images/git_new11.png" width="800">
+            <p class="idt2">直接配置で変更していないので警告メッセージが表示されますが、そのまま『はい』をクリック</p>
+            <img class="idt2" class="idt2" src="images/git_new12.png">
+            <p class="idt2">gitの拡張メニューから『push』を選択します</p>
+            <img class="idt2" src="images/git_new13.png" width="800">
+            <p class="idt2">Git Bucketの『Files』をクリックでリモートリポジトリに反映されたことが確認できます</p>
+            <img class="idt2" src="images/git_new14.png" width="800">
+        </div>
+    </div>
+    <div>
+        <h3><label for="gitclone">６．リモートリポジトリからのクローン</label></h3>
+        <input type="checkbox" id="gitclone">
+        <div class="closedoc idt1">
+            <p>1.リモートリポジトリのアドレスを確認します</p>
+            <p class="idt2">gitbucketサイトを開き、対象のリポジトリを選択します</p>
+            <img class="idt2" src="images/git_clone00.png" width="800">
+            <p class="idt2">リポジトリのアドレスをクリップボードにコピーします</p>
+            <img class="idt2" src="images/git_clone01.png" width="800">
+            <p>2.VSCodeのメニューから『 ファイル => 新しいウインドウ 』を選択します</p>
+            <img src="images/git_clone02.png">
+            <p>3.ソース管理をクリックし、リポジトリからのクローンをクリック</p>
+            <img src="images/git_clone03.png" width="800">
+            <p>4.リポジトリのurl欄に１でコピーしたアドレスを貼り付け、エンターキーを押下します</p>
+            <img src="images/git_clone04.png" width="800">
+            <p>5.保存する場所を選択して『リポジトリの場所を選択』をクリック</p>
+            <img src="images/git_clone05.png">
+            <p>6.開くをクリックで、クローン（取込み）完了です</p>
+            <img src="images/git_clone06.png"><br>
+            <img src="images/git_clone07.png">
+        </div>
+    </div>
+    <footer>
+        このドキュメントは2021.4.1に作成しました。
+    </footer>
+</body>
+</html>

@@ -1,0 +1,583 @@
+body {
+    margin: 0px;
+    font-family: "メイリオ",Meiryo;
+    min-width: 1280px;
+}
+p {
+    margin: 0px;
+}
+input {
+    font-family: "メイリオ",Meiryo;
+}
+input::placeholder {
+    color: #e3eaf0;
+}
+.flex {
+    display: flex;
+}
+/* ヘッダー */
+header {
+    display: flex;
+    height: 36px;
+    width: calc(100% - 10px);
+    padding: 3px 5px 2px 5px;
+    background-color: #f4f4f4;
+    align-items: center;
+}
+header p, footer p {
+    color: #232323;
+}
+#findfilter {
+    width: 200px;
+    height: 22px;
+    padding: 1px 2px;
+    margin-left: 10px;
+    border: 1px solid #888888;
+    border-radius: 3px;
+}
+#findclear {
+    padding: 2px 0px 0px 0px;
+    width: 20px;
+}
+#doc {
+    margin-left: 20px;
+    font-size: 16px;
+    color: navy;
+    text-decoration: none;
+}
+#doc:hover {
+    color: mediumturquoise;
+    text-decoration: underline;
+}
+#prev_ym {
+    margin-left: auto;
+    margin-right: 0px;
+    padding: 1px 10px 0px 10px;
+}
+#next_ym {
+    padding: 1px 10px 0px 10px;
+}
+#shift_ym {
+    background-color: #696c80;
+    color: #ffffff;
+    width: 100px;
+}
+#reload {
+    padding: 2px;
+}
+#reload img {
+    width: 20px;
+    height: 20px;
+}
+#excel {
+    padding: 2px 10px 0px 10px;
+    margin-left: 20px;
+}
+#data_mode {
+    margin-left: 20px;
+}
+#data_mode label {
+    padding-top: 3px;
+    padding-bottom: 2px;
+}
+label[for=kokyu_cnt] {
+    margin-left: 20px;
+}
+#kokyu_cnt {
+    width: 40px;
+    margin-left: 5px;
+}
+#user_name {
+    margin-left: 20px;
+    padding: 3px 3px 0px 4px;
+    border: 3px double #83c3e7;
+    background-color: #54586e;
+    color: #ffffff;
+}
+.pwaku {
+    font-size: 16px;
+    padding-top: 1px;
+    height: 23px;
+    text-align: center;
+    border: 1px solid #babbf0;
+    background-color: #f3f3f3;
+}
+header button {
+    height: 26px;
+}
+/* フッター */
+footer {
+    display: flex;
+    position: fixed;
+    bottom: 0px;
+    height: 20px;
+    width: calc(100% - 10px);
+    padding: 0px 5px;
+    background-color: #d3d3d3;
+    align-items: center;
+    font-size: 10px;
+}
+.msg_bar {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #d3d3d3;
+}
+.msg {
+    margin-left: 5px;
+    font-size: 12px;
+}
+/* メイン */
+#contents {
+    display: flex;
+    height: calc(100vh - 61px);
+    width: 100%;
+    /* background-color: lightslategray; */
+}
+nav {
+    width: 50px;
+    height: calc(100% - 2px);
+    background-color: #d3d3d3;
+    margin: 1px;
+}
+main {
+    flex: 1;
+    /* background-color: lightyellow; */
+    width: 100%;
+    min-width: 1180px;
+    overflow: hidden;
+    padding: 1px;
+}
+#main_head {
+	display: flex;
+    height: 40px;
+    background-color: #54586e;
+    color: #ffffff;
+}
+#main_head_ctrl {
+	width: 245px;
+	height: 40px;
+	border: 1px solid #babbf0;
+	border-radius: 3px;
+}
+#main_head_item {
+	flex-grow: 1;
+	height: 40px;
+	border: 1px solid #babbf0;
+    border-radius: 3px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;    
+}
+#main_head_memo {
+	width: 150px;
+	height: 40px;
+	border: 1px solid #babbf0;
+	border-radius: 3px;
+}
+#main_head_item > div:first-child {
+    border-bottom: 1px solid #babbf0;
+}
+#main_body {
+    margin-bottom: 5px;
+    height: calc(100% - 40px);
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+#main_body::-webkit-scrollbar {  /* Chrome, Safari 対応 */
+    display:none;
+}
+#main_body_ctrl {
+    display: none;
+    width: 245px;
+	border: 1px solid #babbf0;
+    border-radius: 3px;
+}
+#main_body_item {
+    display: none;
+    flex-grow: 1;
+	border: 1px solid #babbf0;
+    border-radius: 3px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+#main_body_memo {
+    display: none;
+    width: 150px;
+	border: 1px solid #babbf0;
+	border-radius: 3px;
+}
+.row {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #bbbbbb;
+}
+#main_head .row {
+    height: 40px;
+}
+#main_body .row {
+    height: 25px;
+}
+.row > div {
+    position: relative;
+    padding-top: 3px;
+}
+.memo {
+    position: absolute;
+    top: -5px;
+    right:0px;
+    color: #5555ff;
+    font-size: 8px;
+}
+.cells {
+    text-align: center;
+    width: 100%;
+}
+#main_head_item .cells {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+}
+#main_body_item .cells {
+    height: 22px;
+    line-height: 21px;
+    cursor: default;
+}
+.syaincd {
+    font-size: 12px;
+    white-space: nowrap;
+    margin-left: 2px;
+    width: 44px;
+}
+.syainnm {
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-right: 2px;
+}
+.itemnm {
+    font-size: 14px;
+    white-space: nowrap;
+    text-align: right;
+    margin-right: 2px;
+}
+#main_head_item .cells:not(:last-child),#main_body_item .cells:not(:last-child)  {
+    border-right: 1px solid #babbf0;
+}
+.memo_cell {
+    width: 50px;
+    height: 100%;
+    border-right: 1px solid #babbf0;
+    text-align: center;
+}
+#main_head_memo .memo_cell {
+    font-size: 13px;
+}
+#main_body_memo .memo_cell {
+    align-items: center;
+}
+.groupline {
+    height: 20px;
+    font-size: 14px;
+    padding-left: 2px;
+    background-color: #babec4;
+}
+.saturday {
+    color: #55eeff;
+}
+.holiday {
+    color: #ff5555;
+}
+.kokyu {
+    /* background-color: #ffeaea; */
+    background-image: linear-gradient(-45deg, transparent 48%, #888 4%, transparent 52%);
+    background-size: 13px 13px;
+}
+.bg0 {
+    background-color: rgb(255, 255, 255);
+}
+.bg1 {
+    background-color: rgb(223, 223, 255);
+}
+.bg2 {
+    background-color: rgb(223, 239, 255);
+}
+.bg3 {
+    background-color: rgb(223, 255, 255);
+}
+.bg4 {
+    background-color: rgb(223, 255, 239);
+}
+.bg5 {
+    background-color: rgb(223, 255, 223);
+}
+.bg6 {
+    background-color: rgb(239, 255, 223);
+}
+.bg7 {
+    background-color: rgb(255, 255, 223);
+}
+.bg8 {
+    background-color: rgb(255, 239, 223);
+}
+.bg9 {
+    background-color: rgb(255, 223, 223);
+}
+.bg10 {
+    background-color: rgb(255, 223, 239);
+}
+.bg11 {
+    background-color: rgb(255, 223, 255);
+}
+.bg12 {
+    background-color: rgb(239, 223, 255);
+}
+.boldred {
+    color: rgb(255, 64, 64);
+    font-weight: bold;
+}
+@media screen and (max-width: 1550px) {/* 1550px以上*/
+    .cells {
+        font-size: 14px;
+    }
+}
+@media screen and (max-width: 1405px) {/* 1405px以上*/
+    .cells {
+        font-size: 13px;
+    }
+}
+@media screen and (max-width: 1345px) {/* 1345px以下*/
+    .cells {
+        font-size: 12px;
+    }
+}
+/* ツールパネル */
+.buttons {
+    font-size: 14px;
+    width: 40px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+button.buttons {
+    width: 50px;
+}
+.small {
+    font-size: 12px;
+}
+.ui-checkboxradio-icon {
+    display: none;
+}
+nav p {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 20px;
+}
+#stamp_group label {
+    padding-top: 3px ;
+    padding-bottom: 3px ;
+    height: 18px;
+    font-size: 14px;
+}
+#stamp_add {
+    border: 1px solid #000;
+}
+/* 社員・派遣社員・（新・中途）社員設定フォーム */
+#syain_table tbody,#haken_table tbody {
+    min-height: 200px;
+    height: calc(100vh - 250px);
+}
+.sf_syaincd, #new_syaincd, #new_syaincd2, .kf_syaincd, #new_syaincd3, .tf_syaincd {
+    width: 60px;
+    text-align: center;
+}
+.sf_syainnm, .kf_usernm, .tf_name, .tf_kana {
+    width: 200px;
+}
+.kf_corpnm, .kf_syozoku, .tf_syozoku {
+    width: 150px;
+}
+.sf_itemnm, .tf_itemnm, .tf_status {
+    width: 60px;
+    text-align: center;
+    font-size: 14px;
+}
+.sf_toban,.sf_edit {
+    width: 90px;
+    height: 20px;
+}
+.sf_del, .kf_del, .tf_del {
+    width: 34px;
+    text-align: center;
+}
+.sf_del button, .kf_del button, .tf_del button {
+    padding: 1px 4px;
+    font-size: 12px;
+    border: 1px solid #888888;
+}
+/* 祝日設定フォーム */
+#holiday_table {
+    margin-top: 10px;
+}
+#holiday_table tbody {
+    height: 370px;
+}
+.hf_date {
+    width: 110px;
+    text-align: center;
+}
+.hf_biko {
+    width: 200px;
+}
+th.hf_toban, td.hf_toban {
+    width: 56px;
+}
+td.hf_toban {
+    text-align: center;
+}
+.hf_del {
+    width: 34px;
+    text-align: center;
+}
+.hf_del button {
+    padding: 1px 4px;
+    font-size: 12px;
+    border: 1px solid #888888;
+}
+/* ボタン設定 */
+#stamp_table tbody {
+    min-height: 200px;
+    height: calc(100vh - 350px);
+}
+.sp_id {
+    width: 30px;
+    text-align: center;
+}
+.sp_type {
+    width: 90px;
+}
+.sp_btn, .sp_tx, .sp_color {
+    width: 60px;
+}
+.sp_title {
+    width: 100px;
+}
+.sp_del {
+    width: 34px;
+    text-align: center;
+}
+.sp_del button {
+    padding: 1px 4px;
+    font-size: 12px;
+    border: 1px solid #888888;
+}
+/* 管理者フォーム */
+#ad_syain {
+    margin: 0px 5px 10px 5px;
+    width: 200px;
+}
+#ad_toban, #ad_toban_x, #ad_yobi, #ad_deptcd {
+    margin: 0px 0px 10px 5px;
+    width: 20px;
+}
+#ad_tobansuu {
+    margin: 0px 28px 10px 5px;
+    width: 20px;
+    text-align: right;
+}
+/* スケジュール入力フォーム */
+#schdule_input_form {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100%;
+}
+#schdule_waku {
+    position: relative;
+    height: 50px;
+    width: 80px;
+}
+#schdule_waku input {
+    background-color: #e5e8fd;
+    border: 1px solid #888888;
+}
+#sc_moji {
+    display: none;
+    width: 40px;
+}
+#sc_title {
+    width: 86px;
+}
+/* 当日枠 */
+#today_frame {
+    display: none;
+    position: absolute;
+    z-index: 1;
+    top: 10px;
+    left: 500px;
+    width: 30px;
+    height: 300px;
+    border: 2px solid #38ff38;
+    box-shadow: 0px 0px 5px rgba(0,0,0,0.6);
+    pointer-events: none;
+}
+/* ヘッダ固定テーブル */
+.headerlock {
+    border-collapse: collapse;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+.headerlock thead {
+	float: left;
+	height: 25px;
+}
+.headerlock tbody {
+    overflow-x: hidden;
+    overflow-y: auto;
+	float: left;
+}
+.headerlock th {
+	height: 20px;
+	padding: 2px 4px;
+	background-color: #54586e;
+	border: 1px solid #1b2169;
+    font-weight: normal;
+    font-size: 14px;
+	color: #ffffff;
+}
+.headerlock td {
+	margin-top: 5px;
+	padding: 2px 4px;
+	border: 1px solid #1b2169;
+}
+.headerlock td p {
+	white-space: nowrap;
+	overflow: hidden;
+	margin: 0px;
+}
+.headerlock input,.headerlock select {
+    border: none;
+    padding: 0px;
+}
+.ui-selecting {
+    background-color: rgb(199, 253, 222);
+}
+.ui-selected {
+    background-color: rgb(124, 158, 139);
+    color: #fff;
+    cursor: pointer;
+}
+.context-menu-list {
+    min-width: 120px;
+    max-width: 200px;
+    padding: 4px 0;
+    margin: 5px;
+    font-size: 14px;
+  }

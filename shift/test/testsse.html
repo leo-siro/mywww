@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+    document.addEventListener('DOMContentLoaded', e => {
+        const es = new EventSource('http://myw' + 'wwdev.leopalace21.com/shift/test/push.php', {
+            withCredentials: true
+        });
+        es.addEventListener('message', e => {
+            const { time, word } = JSON.parse(e.data);
+            sample.appendChild(document.createElement('li')).textContent  = `${time} ${word}`;
+        });
+        es.onmessage = function(event) {
+            console.log("New message", event.data);
+            // 上のデータストリームでは、3回ログが出力されます
+        };
+    });
+    </script>
+</head>
+<body>
+    <ul id="sample"></ul>
+</body>
+</html>

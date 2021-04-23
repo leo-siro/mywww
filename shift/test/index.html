@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="eventsource.js"></script>
+    <script>
+    window.addEventListener('load', function() {
+        const es = new EventSource('https://leoportal.leopalace21.com/leo-mywwwdev/shift/test/events.php');
+        es.addEventListener('message', function(e) {
+            const data = JSON.parse(e.data);
+            // console.log(e.data);
+            sample.appendChild(document.createElement('li')).textContent  = data.time + data.word;
+        });
+        es.addEventListener('error', function(e) {
+            console.log('error');
+            es.close(); // エラーが起きても再接続する必要がない場合はclose()を実行する
+        });
+    });
+    </script>
+</head>
+<body>
+    <ul id="sample"></ul>
+</body>
+</html>

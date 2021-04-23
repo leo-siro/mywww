@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公休予定表　利用方法</title>
+</head>
+<style>
+    body {
+        margin: 10px;
+        font-family: "メイリオ",Meiryo;
+        background-color: #333344;
+        color: #eee;
+    }
+    h1,h2,h3 {
+        font-weight: normal;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+    h2, h3 {
+        padding-left: 20px;
+    }
+    p {
+        padding-left: 40px;
+        margin: 5px;
+    }
+    a {
+        color: #7ff;
+    }
+    a:hover {
+        color: #07f;
+    }
+    img {
+        padding-left: 40px;
+    }
+    .alert {
+        color: #f77;
+    }
+</style>
+
+<body>
+    <h1>■ 公休予定表　利用方法</h1>
+    <p>情報システム部公休予定表は下記アドレスより開いて下さい。<br>
+        <a href="https://leoportal.leopalace21.com/leo-mywww/shift/" target="_new">https://leoportal.leopalace21.com/leo-mywww/shift/</a><br>
+        公休予定表を開くと社員一覧が表示され、右上  に利用者の氏名が表示されます。<br>
+        <span class="alert">※氏名が表示されていない場合は利用対象外となりますので登録が必要な場合は管理者までご連絡下さい</span>
+    </p>
+    <h2>１．編集方法</h2>
+    <h3>・編集モード</h3>
+    <p>公休予定表の編集を行うにはまず月選択（"＜”、”＞”）で編集する月を選択し右上にある編集Modeボタンをクリックします。<br>
+    ※月選択では翌月までしか選択できません、翌々月の編集は不可となります。</p>
+    <img src="images/editmodebtn.png">
+    <p>編集モードでは利用者が所属している部署でフィルターがかかり編集Modeボタンの下にあるボタン群が利用可能になります。<br>
+    利用者は本人のみ編集が可能となります。所属長等は所属している部署が編集可能になります。</p>
+    <img src="images/editmode.png">
+    <h3>・予定入力</h3>
+    <p>右側のボタン群より入力したい項目を選択し日付枠をクリックすると入力されます。ドラッグすることでも入力可能です。<br>
+    ※出勤（出）とテレワーク（テ）はマウス移動中文字が表示されますが、入力時は文字は表示されません<br>　出勤は背景を白色としテレワークは別背景色で区別されます。</p>
+    <img src="images/editinput.png">
+    <p>一部入力項目は自動で結合されます。例えば"鍵"を持っていき、次に"当"を持っていくと上書きされず鍵当になります。</p>
+    <img src="images/editetc.png">
+    <h3>・制限事項（社員のみ）</h3>
+    <p>翌月の予定編集時に当月20日迄は当番×のみが入力可能、21日以降はすべて入力可能となります。<br>
+    また、当番や予備は各担当者で削除することはできません、変更希望時は上長又は管理者へ依頼して下さい</p>
+    <h3>・消去</h3>
+    <p>消去したい場合は右クリックで消去できます。</p>
+    <h3>・コメント入力</h3>
+    <p>各日付枠をダブルクリックするとコメント入力枠が表示されますので、入力後にエンターキーを押下するか枠外をクリックすると入力されます。<br>
+    コメントを入力した枠の右上には★印が付きマウスオーバーにより見ることが可能となります。</p>
+    <img src="images/editmemo.png">
+    <h3>・データ保存</h3>
+    <p>編集内容を保存するには編集Modeボタンをクリックすることで保存されます。</p>
+    <h3>・編集破棄</h3>
+    <p>保存せずに破棄したい場合は編集破棄ボタンをクリックして下さい。編集モードが終了し再読込されます。</p>
+    <img src="images/edithaki.png">
+    <h2>２．検索方法</h2>
+    <h3>・所属検索</h3>
+    <p>検索枠をクリックすると所属一覧が表示されますので、選択することで対象部署が抽出されます。<br>
+    所属する協力会社も抽出されます。</p>
+    <img src="images/findsyozoku.png">
+    <h3>・直接検索</h3>
+    <p>検索枠に社員番号や社員名を入力しTabキー押下か検索枠以外をクリックすることで検索可能です。</p>
+    <h3>・検索クリア</h3>
+    <p>検索枠横の”Ｃ”をクリックすると検索枠をクリアしフィルターも解除されます。</p>
+    <h2>３．その他機能</h2>
+    <h3>・確定版参照</h3>
+    <p>確定版データが存在する場合は確定版ボタンが押下可能になります。確定版データの編集は不可となります。</p>
+    <img src="images/kakutei.png">
+    <h3>・Excel</h3>
+    <p>Excelボタンを押下するとExcel版公休予定表をダウンロードします。<br>任意の場所に保存し開く際にはコンテンツの有効化を行って下さい</p>
+    <img src="images/excelenable.png">
+    <p>一度ダウンロードしたExcelファイルは翌月以降もそのまま利用できます。<br>シート左上の日付や所属など選択することで公休予定表を再読込します。</p>
+    <img src="images/excelfind.png">
+</body>
+</html>
