@@ -260,14 +260,14 @@ class MyClass {
         } else {
             $data["title"] = array("","","","","","");
         }
-        if ($_POST["syaincd"] !== "0" && $oldkeynum === 0) {
-            // 初期値が個人になっているのでデータが無い場合、課題一覧が見えなくなるのを防ぐ
-            $_POST["syaincd"] = "0";
-            $this->loadBoard();
-        } else {
+        // if ($_POST["syaincd"] !== "0" && $oldkeynum === 0) {
+        //     // 初期値が個人になっているのでデータが無い場合、課題一覧が見えなくなるのを防ぐ
+        //     $_POST["syaincd"] = "0";
+        //     $this->loadBoard();
+        // } else {
             $data["code"] = "OK";
             echo json_encode($data);
-        }
+        // }
     }
     function loadKadaiInfo() {
         require_once "../common/pdo_connect.php";

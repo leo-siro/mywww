@@ -784,6 +784,7 @@ $(function() {
         };
         BlockScreen('読込中 ...');
         Ajax('taskman.php?func=loadBoard',para).done(function(ret) {
+            clearMessage();
             if (ret.code === 'OK') {
                 for (let i=0; i<6; i++) {
                     $('#board_main .board_header > div').eq(i).text(ret.title[i]);
@@ -800,6 +801,7 @@ $(function() {
                     $('#board_main_body').databindex(ret.data_main);
                 } else {
                     $('#board_main_body').html('<div class="column"></div>');
+                    showMessage('対象データ無し','#0000ff');
                 }
                 if (ret.data_right) {
                     $('#board_right_body').databindex(ret.data_right);
