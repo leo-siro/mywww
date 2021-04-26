@@ -1276,7 +1276,7 @@ $(function() {
                                     if ($('#hide_comp').prop('checked')) {
                                         let cnt = 0;
                                         srec.schdule_task.forEach(function(trec) {
-                                            if (trec.task_disp === 'sc_disp') {
+                                            if (trec.task_disp !== 'sc_hide') {
                                                 cnt++;
                                             }
                                         });
