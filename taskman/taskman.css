@@ -110,6 +110,9 @@ footer p {
 #schdule_csv {
     margin-left: 20px;
 }
+label[for="hide_comp"] {
+    margin-left: 20px;
+}
 #reload {
     margin-left: 20px;
     padding: 2px;
@@ -769,8 +772,8 @@ label[for="dl_task_ration"] {
     background-color: rgba(0, 0, 255, 0.1);
     border: 1px solid #0000ff;
 }
-.schdule_story:not(:last-of-type) {
-    border-bottom: 1px solid #babbf0;
+.sc_hide {
+    display: none;
 }
 .schdule_task_waku {
     width: calc(100% / 7 * 4);
@@ -787,8 +790,11 @@ label[for="dl_task_ration"] {
     background-color: #fefefe;
     background-color: var(--bgc-kadaim);
 }
-.schdule_task:not(:last-of-type) {
+.sc_disp {
     border-bottom: 1px solid #babbf0;
+}
+.sc_disp:last-of-type {
+    border-bottom: none;
 }
 .task_hover {
     background-color: #007fff !important;

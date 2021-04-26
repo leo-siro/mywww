@@ -1028,6 +1028,7 @@ class MyClass {
                     "kadai_kei" => 0,
                     "sinseino" => $row["sinseino"] === null ? "" : "［".$row["sinseino"]."］",
                     "kadai_comp" => ($row["kadai_progress"] === "100" ? "comp2":""),
+                    "kadai_disp" => ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
                     // "important" => $row["important"],
                     // "important_css" => $row["important_css"]
                 );
@@ -1057,7 +1058,12 @@ class MyClass {
                     "kyuka" => $yotei,
                     "user_name" => "［".$row["user_name"]."］",
                     "story_comp" => ($row["story_progress"] === "100" ? "comp2":""),
+                    "story_disp" => ($row["story_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp")
                 );
+                if ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" && $scnt > 0
+                && $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_disp"] === "sc_disp") {
+                    $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_disp"] = "";
+                }
                 $scnt++;
                 $oldstoryno = $row["storyno"];
                 $oldtaskno = 0;
@@ -1068,8 +1074,13 @@ class MyClass {
                     "taskno" => $row["taskno"],
                     "task_title" => $row["task_title"],
                     "task_comp" => ($row["task_progress"] === "100" ? "comp2":""),
+                    "task_disp" => ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
                     "task_kei" => 0
                 );
+                if ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" && $tcnt > 0
+                && $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_disp"] === "sc_disp") {
+                    $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_disp"] = "";
+                }
                 $oldtaskno = $row["taskno"];
                 $tcnt++;
             }

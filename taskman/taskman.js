@@ -65,11 +65,13 @@ $(function() {
     $('#disp_left').prop('checked',((localStorage.getItem('taskman_disp_left') || '1') === '1'));
     $('#board_right').toggle((localStorage.getItem('taskman_disp_right') === '1'));
     $('#disp_right').prop('checked',(localStorage.getItem('taskman_disp_right') === '1'));
+    $('#hide_comp').prop('checked',(localStorage.getItem('taskman_schdule_hidecomp') === '1'));
     // ボタン装飾
     $('#disp_mode').buttonset();
     $('#disp_data').buttonset();
     $('header button').button();
     $('#kadai_sel').buttonset();
+    $('#hide_comp').button();
     // ウインドウ枠変更時
     $(window).resize(function() {
         if ($('#board').is(':visible')) {
@@ -1224,6 +1226,10 @@ $(function() {
         }
         dataLoadSchdule();
     });
+    $('#hide_comp').change(function() {
+        dataLoadSchdule();
+        localStorage.setItem('taskman_schdule_hidecomp',($('#hide_comp').prop('checked') ? '1' : '0'));
+    });
     // 日報データ読込
     const cellwidth = 33;
     function dataLoadSchdule() {
@@ -1232,7 +1238,8 @@ $(function() {
             syori_ym: syori_ym.formatDate('YYYY/MM/01'),
             dept_cd: $('#schdule_syozoku').val(),
             syaincd: $('#schdule_syain').val(),
-            syainnm: $('#schdule_syain option:selected').text()
+            syainnm: $('#schdule_syain option:selected').text(),
+            hidecomp: $('#hide_comp').prop('checked') ? 1 : 0
         } 
         kyuka = ['',' kyuka'];
         sv_monthkei = 0;
@@ -1265,13 +1272,26 @@ $(function() {
                                     }　else {
                                         b_width = b_width - b_left - 2;
                                     }
-                                    let border_height = 23 * srec.schdule_task.length + (srec.schdule_task.length - 1);
-                                    story_bordar = '<div class="schdule_story_border bg'+srec.color+'" '+
-                                                    'style="z-index:3;top:-1px;height:'+border_height+'px;'+
-                                                    'left:'+b_left+'px;width:'+b_width+'px"></div>'
+                                    let border_height;
+                                    if ($('#hide_comp').prop('checked')) {
+                                        let cnt = 0;
+                                        srec.schdule_task.forEach(function(trec) {
+                                            if (trec.task_disp === 'sc_disp') {
+                                                cnt++;
+                                            }
+                                        });
+                                        border_height = 23 * cnt + (cnt - 1);
+                                    } else {
+                                        border_height = 23 * srec.schdule_task.length + (srec.schdule_task.length - 1);
+                                    }
+                                    if (border_height > 0) {
+                                        story_bordar = '<div class="schdule_story_border bg'+srec.color+'" '+
+                                                        'style="z-index:3;top:-1px;height:'+border_height+'px;'+
+                                                        'left:'+b_left+'px;width:'+b_width+'px"></div>';
+                                    }
                                 }
                                 srec.schdule_task.forEach(function(trec) {
-                                    w_item += '<div class="row" style="width:'+width+'px">'+story_bordar;
+                                    w_item += '<div class="row" style="width:'+width+'px'+(trec.task_disp === 'sc_hide' ? ';display:none':'')+'">'+story_bordar;
                                     story_bordar = '';
                                     let w_syori = new Date(str_syori);
                                     let i = 0;

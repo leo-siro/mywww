@@ -87,6 +87,7 @@
             <button id="next_ym">＞</button>
             <p id="monthkei" class="pwaku">月合計 0 h</p>
             <button id="schdule_csv">CSV</button>
+            <input type="checkbox" id="hide_comp"><label for="hide_comp">完了を非表示</label>
         </div>
         <div id="kadai_option" class="groupline">
             <select id="kadai_syozoku">
@@ -204,21 +205,21 @@
             <div id="schdule_body">
                 <div class="flex">
                     <div id="schdule_body_ctrl">
-                        <div class="schdule_kadai" data-keynum="!{keynum}" data-kei="!{kadai_kei}">
+                        <div class="schdule_kadai !{kadai_disp}" data-keynum="!{keynum}" data-kei="!{kadai_kei}">
                             <div class="schdule_waku !{kadai_comp}">
                                 <div class="schdule_title_waku !{kadai_comp}"><div class="schdule_title" data-title="!{kadai_title}">!{kadai_title}</div></div>
                                 <div class="schdule_exwaku">!{sinseino}</div>
                                 <div class="worktime">!{kadai_kei}h</div>
                             </div>
                             <div class="schdule_story_waku">
-                                <div class="@{schdule_story}" data-storyno="!{storyno}" data-kei="!{story_kei}">
+                                <div class="@{schdule_story} !{story_disp}" data-storyno="!{storyno}" data-kei="!{story_kei}">
                                     <div class="schdule_waku !{story_comp}">
                                         <div class="schdule_title_waku !{story_comp}"><div class="schdule_title" data-title="!{story_title}">!{story_title}</div></div>
                                         <div class="schdule_exwaku">!{user_name}</div>
                                         <div class="worktime">!{story_kei}h</div>
                                     </div>
                                     <div class="schdule_task_waku">
-                                        <div class="@{schdule_task}" data-taskno="!{taskno}" data-kei="!{task_kei}">
+                                        <div class="@{schdule_task} !{task_disp}" data-taskno="!{taskno}" data-kei="!{task_kei}">
                                             <div class="schdule_waku">
                                                 <div class="schdule_title_waku !{task_comp}"><div class="schdule_title" data-title="!{task_title}">!{task_title}</div></div>
                                                 <div class="worktime">!{task_kei}h</div>
