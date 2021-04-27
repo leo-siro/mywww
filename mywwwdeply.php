@@ -18,5 +18,5 @@ $host = 'localhost';
 $user = 'webadmin';
 $pass = 'leo';
 $rdir = '/srv/www/htdocs_mywwwdev/test';
-`lftp -u $user,$pass -e "mirror -Rv -X .git/ $nb/ $rdir; bye" $host 2>&1`;
+`lftp -u $user,$pass -e "mirror -Rev -X .git/ $nb/ $rdir; bye" $host 2>&1`;
 ?>
