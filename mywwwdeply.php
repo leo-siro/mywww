@@ -11,7 +11,7 @@ $nb = preg_replace('/\.git$/', '', $nb);
 if (!file_exists($nb)) {
   `git clone $b $nb 2>&1`;
 } else {
-  `cd $nb && git pull`;
+  `cd $nb && git pull 2>&1`;
 //   `git pull > ./tmp/test.txt 2>&1`;
 }
 // lftpで送信（FTPで配置する場合）
