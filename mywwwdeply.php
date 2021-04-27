@@ -13,7 +13,6 @@ if (!file_exists($nb)) {
   `cd $nb && git pull > "./tmp/test.txt" 2>&1`;
 }
 // file_put_contents("./tmp/test.txt",$b." @@ ".$nb." @@ ".$bare_path );
-
 // lftpで送信（FTPで配置する場合）
 $host = 'localhost';
 $user = 'webadmin';
