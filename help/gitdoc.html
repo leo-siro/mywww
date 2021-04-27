@@ -27,6 +27,16 @@
         right: 0px;
         font-size: 0.8em;
     }
+    .arrow_d {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 30px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 5px solid;
+        border-color:  transparent transparent #94afeb #94afeb;
+        transform: rotate(-45deg);
+    }    
 </style>
 <body>
     <h1>VSCodeでのGitによるソース管理</h1>
@@ -145,8 +155,8 @@ $ git config --global push.default simple
             <img src="images/git_new02.png" width="800">
             <p>4.ソースを作成（配置）します</p>
             <img src="images/git_new03.png" width="800">
-            <p>5.Git Bucketにローカルリポジトリを作成する</p>
-            <p class="idt2 small">※ローカルリポジトリが既にある場合は『6.リモートリポジトリの構成を追加する』へ</p>
+            <p>5.Git Bucketにリモートリポジトリを作成する</p>
+            <p class="idt2 small">※リモートリポジトリが既にある場合は『6.リモートリポジトリの構成を追加する』へ</p>
             <p class="idt2"><a href="http://mywww.leopalace21.com:8080/" target="_blank">http://mywww.leopalace21.com:8080/</a>を開き、『Sign in』からユーザー・パスワードとも『root』でログインします</p>
             <img class="idt2" src="images/git_new04.png" width="800">
             <p class="idt2">ログイン完了後、追加ボタンより『New Repository』をクリックします</p>
@@ -162,15 +172,19 @@ $ git config --global push.default simple
             <img class="idt2" src="images/git_new09.png" width="800">
             <p class="idt2">コマンドにて『git remote add origin （5で作成した接続用アドレス）』を実行します</p>
             <img class="idt2" src="images/git_new10.png" width="800">
-            <p>7.ローカル内容をリモートリポジトリに反映させます（push）</p>
-            <p class="idt2">先ほど配置したファイルをコミットしローカルリポジトリに反映させます<br>①gitを選択　②メッセージを入力し　③コミットをクリックします</p>
+            <p>7.ローカルの内容をリモートリポジトリに反映させます（push）</p>
+            <p class="idt2">先ほど配置したファイルを『＋』ボタンで変更ステージにします</p>
             <img class="idt2" src="images/git_new11.png" width="800">
-            <p class="idt2">直接配置で変更していないので警告メッセージが表示されますが、そのまま『はい』をクリック</p>
-            <img class="idt2" class="idt2" src="images/git_new12.png">
-            <p class="idt2">gitの拡張メニューから『push』を選択します</p>
+            <p class="idt2">ステージしたファイルをコミットしローカルリポジトリに反映させます<br>①gitを選択　②メッセージを入力し　③コミットをクリックします</p>
+            <img class="idt2" src="images/git_new12.png" width="800">
+            <p class="idt2">リモートへ反映させる為に、gitの拡張メニューから『push』を選択します</p>
             <img class="idt2" src="images/git_new13.png" width="800">
-            <p class="idt2">Git Bucketの『Files』をクリックでリモートリポジトリに反映されたことが確認できます</p>
-            <img class="idt2" src="images/git_new14.png" width="800">
+            <p class="idt2">Git Bucketにて作成したリポジトリをクリックすることで反映されたことが確認できます</p>
+            <div style="width: 800px">
+                <img class="idt2" src="images/git_new14.png" width="800">
+                <div class="arrow_d"></div>
+                <img class="idt2" src="images/git_new15.png" width="800">
+            </div>
         </div>
     </div>
     <div>
