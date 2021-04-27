@@ -1069,6 +1069,7 @@ class MyClass {
                 $oldtaskno = 0;
                 $tcnt = 0;
             }
+            
             if ($row["taskno"] !== null && $oldtaskno !== $row["taskno"]) {
                 $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt] = array(
                     "taskno" => $row["taskno"],

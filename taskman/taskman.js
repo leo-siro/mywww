@@ -1290,6 +1290,7 @@ $(function() {
                                                         'left:'+b_left+'px;width:'+b_width+'px"></div>';
                                     }
                                 }
+                                
                                 srec.schdule_task.forEach(function(trec) {
                                     w_item += '<div class="row" style="width:'+width+'px'+(trec.task_disp === 'sc_hide' ? ';display:none':'')+'">'+story_bordar;
                                     story_bordar = '';
