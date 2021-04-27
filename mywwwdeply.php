@@ -12,11 +12,11 @@ if (!file_exists($nb)) {
 } else {
   `cd $nb && git pull > "./tmp/test.txt" 2>&1`;
 }
-// file_put_contents("./tmp/test.txt",$b." @@ ".$nb." @@ ".$bare_path );
 // lftpで送信（FTPで配置する場合）
 $host = 'localhost';
 $user = 'webadmin';
 $pass = 'leo';
 $rdir = '/srv/www/htdocs_mywwwdev/test';
-`lftp -u $user,$pass -e "mirror -Rev -X .git/ $nb/ $rdir; bye" $host 2>&1`;
+`lftp -u $user,$pass -e "mirror -Rn -X .git/ $nb/ $rdir; bye" $host 2>&1`;
+// file_put_contents("./tmp/test.txt","lftp -u {$user},{$pass} -e \"mirror -Rev -X .git/ {$nb}/ {$rdir}; bye\" {$host} 2>&1" );
 ?>
