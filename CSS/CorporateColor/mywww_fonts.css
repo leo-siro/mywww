@@ -1,0 +1,158 @@
+/* 通常フォント強調・極小 */
+.f_nf_bold_xxsml {
+	font-size: xx-small;
+	font-weight: bold;
+}
+/* 通常フォント強調・更小 */
+.f_nf_bold_xsml {
+	font-size: x-small;
+	font-weight: bold;
+}
+/* 通常フォント強調・小 ※必須 */
+.f_nf_bold_mns {
+	font-size: smaller;
+	font-weight: bold;
+}
+/* 通常フォント強調・並 ※注意書き */
+.f_f_nf_bold_nml {
+	font-weight: bold;
+}
+/* 通常フォント強調・大  */
+.f_nf_bold_pls {
+	font-size: larger;
+	font-weight: bold;
+}
+/* 通常フォント強調・大  */
+.f_nf_bold_pls2 {
+	font-size: x-large;
+	font-weight: bold;
+}
+
+/* 赤強調・小 ※必須 */
+.f_redbold_mns {
+	color: #dd0000;
+	font-size: smaller;
+	font-weight: bold;
+}
+/* 赤強調・並 ※注意書き */
+.f_f_redbold_nml {
+	color: #dd0000;
+	font-weight: bold;
+}
+/* 赤強調・大  */
+.f_redbold_pls {
+	color: #dd0000;
+	font-size: larger;
+	font-weight: bold;
+}
+
+/* 青強調・小  */
+.f_bluebold_mns {
+	color: blue;
+	font-size: smaller;
+	font-weight: bold;
+}
+/* 青強調・並 */
+.f_bluebold_nml {
+	color: blue;
+	font-weight: bold;
+}
+/* 青強調・大  */
+.f_bluebold_pls {
+	color: blue;
+	font-size: larger;
+	font-weight: bold;
+}
+/* 青強調・大2 ※パスコード */
+.f_bluebold_pls2 {
+	color: blue;
+	font-size: x-large;
+	font-weight: bold;
+}
+
+/* 灰強調・小  */
+.f_graybold_mns {
+	color: #555555;
+	font-size: smaller;
+	font-weight: 200;
+}
+/* 灰強調・並 */
+.f_graybold_nml {
+	color: #555555;
+	font-weight: 200;
+}
+/* 灰強調・大  */
+.f_graybold_pls {
+	color: #555555;
+	font-size: larger;
+	font-weight: 200;
+}
+
+/* 黒強調・小  */
+.f_blackbold_mns {
+	color: #000000;
+	font-size: smaller;
+	font-weight: 200;
+}
+/* 黒強調・並 */
+.f_blackbold_nml {
+	color: #000000;
+	font-weight: 200;
+}
+/* 黒強調・大  */
+.f_blackbold_pls {
+	color: #000000;
+	font-size: larger;
+	font-weight: 200;
+}
+
+/* ステータス白抜シリーズ ※掲示板・ポスト系*/
+/* 一時保存 */
+.f_status0 {
+	font-weight: bold;
+	color: white;
+	background-color:blue;
+}
+/* 申請中 */
+.f_status1 {
+	font-weight: bold;
+	color: white;
+	background-color:fuchsia;
+}
+/* 取下げ */
+.f_status4 {
+	font-weight: bold;
+	color: white;
+	background-color:purple;
+}
+/* 期限切れ */
+.f_status5 {
+	font-weight: bold;
+	color: white;
+	background-color:gray;
+}
+/* 受付け */
+.f_status6 {
+	font-weight: bold;
+	color: black;
+	background-color:yellow;
+}
+/* 受付け・回答中 */
+.f_status7 {
+	font-weight: bold;
+	color: white;
+	background-color:green;
+}
+/* 報告済・対応済み */
+.f_status8 {
+	font-weight: bold;
+	color: blue;
+	background-color:lime;
+}
+/* 非公開・回答済み */
+.f_status9 {
+	font-weight: bold;
+	color: white;
+	background-color:black;
+}
+

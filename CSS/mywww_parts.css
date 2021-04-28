@@ -1,0 +1,189 @@
+.title_top {
+	font: 20px Arial,Helvetica,Geneva,Swiss,SunSans-Regular;
+	font-weight: 700;
+	color: #ffffff;
+}
+.bottom_credit {
+	font: 12px Arial,Helvetica,Geneva,Swiss,SunSans-Regular;
+}
+.title_segment {
+	font-size: 14px;
+	font-weight: 700;
+	color: #254494;
+}
+a.title_segment {
+	font-size: 14px;
+	font-weight: 700;
+}
+a.title_segment:link {	color: #254494	}
+a.title_segment:visited {	color: #254494	}
+a.title_segment:hover {	color: #ffffff;	background-color: #ee3344;	}
+a.title_segment:active {	color: #ffff00;	position:relative;top:2px;left:2px;}
+.tokubetsu_segment {
+	font-size: 14px;
+	font-weight: 800;
+	color: #ffffff;
+}
+.keiji_small {
+	font-size: 11px;
+	font-weight: 500;
+}
+.keiji_fuho_new {
+	font-size: 11px;
+	font-weight: 500;
+	background-image : url(/Images/table_back_fuho_h02.gif);
+}
+.keiji_middle {
+	font-size: 14px;
+}
+/* 通常背景色－[青]＆共通部品 */
+.t_bg_base {
+	background-color: #0000cc;
+}
+.t_bg_base_gray {
+	background-color: #cccccc;
+}
+.t_bg_head_gray {
+	height : 30px;
+	text-align : center;
+	background-image : url(/Images/table_back_gray_h30.gif);
+}
+.t_bg_left_gray {
+	background-image : url(/Images/table_back_gray_h02.gif);
+}
+.t_bg_base_l_gray {
+	background-color: #eeeeee;
+}
+.t_bg_head {
+	height : 30px;
+	margin : auto;
+	background-image : url(/Images/table_back_blue_h30.gif);
+}
+.t_bg_title {
+	text-align : left;
+	background : #ffffff;
+}
+/*	青－ＣＳＳ	*/
+.t_bg_base_blue {
+	background : #0000cc;
+}
+.t_bg_head_blue {
+	height : 30px;
+	text-align : center;
+	background-image : url(/Images/table_back_blue_h30.gif);
+}
+.t_bg_left_blue {
+	background-image : url(/Images/table_back_blue_h02.gif);
+}
+.t_bg_bottom_blue {
+	text-align : right;
+	background : #aaaaff;
+}
+/*	緑－ＣＳＳ	*/
+.t_bg_base_green {
+	background : #009999;
+}
+.t_bg_head_green {
+	height : 30px;
+	text-align : center;
+	background-image : url(/Images/table_back_green_h30.gif);
+}
+.t_bg_left_green {
+	background-image : url(/Images/table_back_green_h02.gif);
+}
+.t_bg_bottom_green {
+	text-align : right;
+	background : #a7e0c2;
+}
+/*	赤－ＣＳＳ	*/
+.t_bg_base_red {
+	background : #aa6666;
+}
+.t_bg_head_red {
+	height : 30px;
+	text-align : center;
+	background-image : url(/Images/table_back_red_h30.gif);
+}
+.t_bg_left_red {
+	background-image : url(/Images/table_back_red_h02.gif);
+}
+.t_bg_bottom_red {
+	text-align : right;
+	background : #ffaaaa;
+}
+/*	黄－ＣＳＳ	*/
+.t_bg_base_yellow {
+	background : #fff315;
+}
+.t_bg_head_yellow {
+	height : 30px;
+	text-align : center;
+	background-image : url(/Images/table_back_yellow_h30.gif);
+}
+.t_bg_left_yellow {
+	background-image : url(/Images/table_back_yellow_h02.gif);
+}
+.t_bg_bottom_yellow {
+	text-align : right;
+	background : #fffba7;
+}
+/*	群青－ＣＳＳ	*/
+.t_bg_base_ultramarine {
+	background : #004098;
+}
+.t_bg_head_ultramarine {
+	height : 30px;
+	text-align : center;
+	background-image : url(/Images/table_back_ultramarine_h30.gif);
+}
+.t_bg_left_ultramarine {
+	background-image : url(/Images/table_back_ultramarine_h02.gif);
+}
+.t_bg_bottom_ultramarine {
+	text-align : right;
+	background : #bbbbee;
+}
+/*	ここまで	*/
+.t_sokuho_bottom_blue {
+	text-align : center;
+	background : #ddddee;
+}
+.sokuho_middle {
+/*	font-size: 12px;	*/
+	font-size: 9px;
+	font-weight: 500;
+	background-color: #444466;
+	color: #ffffff;
+}
+.t_left_menu {
+	background-color: #0000cc;
+	padding-top: 4;
+	padding-bottom: 4;
+}
+.t_right_body {
+	background-color: #ddddff; text-align: left;
+	padding-top: 4;
+	padding-bottom: 4;
+}
+.comment_dotted{
+	width: 620;
+	text-align : left;
+	background-color: #ffffff;
+	margin:	0px 0px 0px 0px;
+	border-left: #0000cc 1px dotted;
+	border-right: #0000cc 1px dotted;
+	border-top: #0000cc 1px	dotted;
+	border-bottom: #0000cc 1px	dotted;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+.b_button {
+	font-size: 15;
+	float: none;
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 2;
+	padding-bottom: 2;
+}

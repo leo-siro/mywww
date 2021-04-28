@@ -1,0 +1,226 @@
+/*
+############################################################
+　責任者管理でＣＳＶ出力を表示する際に使う。
+############################################################
+*/
+/* ########## table ########## */
+/* 灰色のｔｂｌ */
+.tbl_gray {
+	background-color: #cccccc;
+	border: 1;
+	border-spacing: 3;
+	padding: 2;
+}
+/* オレンジのｔｂｌ */
+.tbl_orange {
+	background-color: #ffcc00;
+	border: 0;
+	border-spacing: 3;
+	padding: 2;
+}
+/* ########## td ########## */
+/* 灰色のＴＤ */
+.td_gray {
+	background-color: #eeeeee;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* ダークグレイのＴＤ */
+.td_darkgray {
+	background-color: #dddddd;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 深青のＴＤ */
+.td_deepblue {
+	background-color: #000011;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 薄碧のＴＤ */
+.td_blue {
+	background-color: #ccccff;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 桃色のＴＤ */
+.td_pink {
+	background-color: #e8d0ff;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 緑色のＴＤ */
+.td_green {
+	background-color: #dfffdf;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 深緑のＴＤ */
+.td_darkgreen {
+	background-color: #bceebc;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 白のＴＤ */
+.td_white {
+	background-color: #ffffff;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 未精算のＴＤ */
+.td_miseisan {
+	background-color: #eeddff;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 赤色のＴＤ */
+.td_red {
+	background-color: #ee5555;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* イチゴミルクのＴＤ */
+.td_ichigomilk {
+	background-color: #ffdddd;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 紫色のＴＤ */
+.td_purple {
+	background-color: #8000ff;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 黄色のＴＤ */
+.td_yellow {
+	background-color: #ffff80;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 象牙色のＴＤ */
+.td_ivory {
+	background-color: #ffffee;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+/* 開業させるＴＤ */
+.td_brkwrd {
+	/*word-break: break-all;*/ 
+	overflow-wrap: break-word;
+}
+/* ########## font ########## */
+/* 緑のタイトル */
+.title_green {
+	font-size: 18;
+	font-weight: 700;
+	color: #006633;
+}
+/* 白のタイトル */
+.title_white {
+	font-size: 18;
+	font-weight: 700;
+	color: #ffffff;
+}
+/* 太字のタイトル */
+.title_middle {
+	font-size: 16;
+	font-weight: 700;
+	color: #333399;
+}
+
+/*
+############################################################
+　イントラ系の掲示板タイトルを表示する際に使うパーツ。
+############################################################
+　掲示板フラッシュ用の中間色系がメイン。（青緑赤黄はmywww_parts.cssに含まれる。）
+*/
+/*	ベージュ－ＣＳＳ	*/
+.t_bg_base_beige {
+	background : #a67c52;
+}
+.t_bg_head_beige {
+	height : 30px;
+	margin : auto;
+	background-image : url(/Images/table_back_beige_h30.gif);
+}
+.t_bg_left_beige {
+	background-image : url(/Images/table_back_beige_h02.gif);
+}
+.t_bg_bottom_beige {
+	text-align : right;
+	background : #dac9b8;
+}
+/*	シアン－ＣＳＳ	*/
+.t_bg_base_cyan {
+	background : #16b5f1;
+}
+.t_bg_head_cyan {
+	height : 30px;
+	margin : auto;
+	background-image : url(/Images/table_back_cyan_h30.gif);
+}
+.t_bg_left_cyan {
+	background-image : url(/Images/table_back_cyan_h02.gif);
+}
+.t_bg_bottom_cyan {
+	text-align : right;
+	background : #a7e3fa;
+}
+/*	グレイ－ＣＳＳ	*/
+.t_bg_base_gray {
+	background : #8e8e8e;
+}
+.t_bg_head_gray {
+	height : 30px;
+	margin : auto;
+	background-image : url(/Images/table_back_gray_h30.gif);
+}
+.t_bg_left_gray {
+	background-image : url(/Images/table_back_gray_h02.gif);
+}
+.t_bg_bottom_gray {
+	text-align : right;
+	background : #d0d1d0;
+}
+/*	オレンジ－ＣＳＳ	*/
+.t_bg_base_orange {
+	background : #f37235;
+}
+.t_bg_head_orange {
+	height : 30px;
+	margin : auto;
+	background-image : url(/Images/table_back_orange_h30.gif);
+}
+.t_bg_left_orange {
+	background-image : url(/Images/table_back_orange_h02.gif);
+}
+.t_bg_bottom_orange {
+	text-align : right;
+	background : #facab3;
+}
+.t_right_body_orange {
+	background-color: #ffeedd; text-align: left;
+	padding-top: 4;
+	padding-bottom: 4;
+}
+
+/*	ピンク－ＣＳＳ	*/
+.t_bg_base_pink {
+	background : #ee1696;
+}
+.t_bg_head_pink {
+	height : 30px;
+	margin : auto;
+	background-image : url(/Images/table_back_pink_h30.gif);
+}
+.t_bg_left_pink {
+	background-image : url(/Images/table_back_pink_h02.gif);
+}
+.t_bg_bottom_pink {
+	text-align : right;
+	background : #f8a6d7;
+}
+/* 掲示板投稿で使うパーツ */
+.t_bg_kojin_check {
+	background : #ffffaa;
+}

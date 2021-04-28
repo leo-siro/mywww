@@ -1,0 +1,59 @@
+body {
+	margin: 0;
+	color: #ffffff;
+	background: #ffffff;
+	background-image: url(http://mywww.leopalace21.com/php/common/Images/wave_back.gif);
+}
+table {
+	font-size: 14px;
+}
+
+.wave_tbl {
+	width: 150px; padding-right: 0px; padding-left: 0px; border-left-width: 0px; border-bottom-width: 0px; padding-bottom: 0px; margin: 0px; width: 100%; padding-top: 0px; border-right-width: 0px
+}
+.wave_td1 {
+	width: 9px;
+}
+.wave_td2 {
+	width: 140px;
+}
+
+a {text-decoration: none;}
+a:link {color:#ffffff;}
+a:visited {color:#ffffff;}
+a:hover {color:#dd0000; text-decoration:underline;}
+a:active {color:#dddd00;}
+
+.title_top {
+	font: 20px Arial,Helvetica,Geneva,Swiss,SunSans-Regular;
+	font-weight: 700;
+	color: #ffffff;
+}
+.title_segment {
+	font-size: 16px;
+	font-weight: 700;
+}
+a.title_segment {
+	font-size: 16px;
+	font-weight: 700;
+	color: #ffffff;
+	text-decoration: none;
+}
+a.title_segment:link {color:#ffffff;}
+a.title_segment:visited {color:#ffffff;}
+a.title_segment:hover {color:#dd0000; text-decoration:underline;}
+a.title_segment:active {color:#dddd00;}
+
+.title_middle {
+	font-size: 14px;
+}
+.title_small {
+	font-size: 11px;
+	font-weight: 500;
+}
+.title_top {
+	font-size: 11px;
+	font-style: italic;
+	font-weight: 700;
+	color: #ffffff;
+}

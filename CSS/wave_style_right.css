@@ -1,0 +1,84 @@
+/* 右側用 */
+body {
+	margin-top: 10px;
+	margin-bottom: 0px;
+	margin-left 0px;
+	margin-right: 0px;
+	background: #ffffff;
+}
+/* 通常背景色－[灰青] */
+.t_bg_base {
+	background-color: #345D98;
+}
+/* サインボード用 */
+.t_bg_base_sb {
+	background:	#345D98;
+	border: medium none rgb(192,192,192);
+}
+.comment_tbl {
+	padding: 4px; 
+	margin: 4px; 
+	width: 95%; 
+	background-color: #345D98;
+}
+.comment_td {
+	background-color: #ddddee;
+}
+.title_td {
+	background-color: #345D98;
+	text-align: center;
+}
+.title_td_sub {
+	background-color: #345D98;
+}
+.title_list_O {
+	background-color: #ffffff;
+}
+.title_list_C {
+	background-color: #dddddd;
+}
+.title_list_D {
+	background-color: #666666;
+}
+.t_bg_file {
+	background-color: #ffffdd;
+}
+a {text-decoration: none;}
+a:link {color:#0000dd;}
+a:visited {color:#0000dd;}
+a:hover {color:#dd0000; text-decoration:underline;}
+a:active {color:#dddd00;}
+.title_top {
+	font-size: 20px;
+	font-weight: 700;
+}
+.title_segment_white {
+	font-size: 18px;
+	font-weight: 700;
+	color: #ffffff;
+}
+.title_segment {
+	font-size: 18px;
+	font-weight: 700;
+}
+a.title_segment {
+	font-size: 16px;
+	font-weight: 700;
+	text-decoration: none;
+}
+a.title_segment:link {color:#ffffff;}
+a.title_segment:visited {color:#ffffff;}
+a.title_segment:hover {color:#dd0000; text-decoration:underline;}
+a.title_segment:active {color:#dddd00;}
+.title_middle {
+	font-size: 15px;
+	color: #333366;
+}
+.b_button {
+	font-size: 15;
+	float: none;
+	padding-left: 15;
+	padding-right: 15;
+	padding-top: 2;
+	padding-bottom: 2;
+}

@@ -1,0 +1,55 @@
+.td_menu_head {
+	padding-left:	10px;
+	padding-top:	10px;
+	padding-right:	10px;
+	padding-bottom:	10px;
+	vertical-align:	top;
+}
+.td_menuA {
+	width:	128;
+	padding-left:	10px;
+	padding-top:	10px;
+	vertical-align:	top;
+	background-color:	eeeeff;
+}
+.td_menuB {
+	width:	256;
+	height:	30;
+	vertical-align:	middle;
+	text-align:	center;
+	background-color:	ffffee;
+}
+.td_menuC {
+	width:	256;
+	padding-left:	10px;
+	padding-top:	5px;
+	vertical-align:	top;
+}
+.td_menuOK {
+	width:	256;
+	height:	30;
+	vertical-align:	middle;
+	text-align:	center;
+	background-color:	eeffee;
+}
+.td_menuER {
+	width:	256;
+	height:	30;
+	vertical-align:	middle;
+	text-align:	center;
+	background-color:	ffeeee;
+}
+.td_menu_red {
+	text-align:	center;
+	padding:	10px;
+	background-color:	ffeeee;
+}
+.font_red{
+	font-weight: 800;
+	color: #dd0000;
+}
+.font_red_big{
+	font-size: 18px;
+	font-weight: 800;
+	color: #dd0000;
+}

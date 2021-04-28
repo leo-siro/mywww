@@ -1,0 +1,29 @@
+a.calendar {
+	font-size: 11px;
+}
+a.calendar:hover {	color: #ffffff;	background-color: #ffffff;	}
+
+.today {
+	background-color: #ffffcc;
+}
+.sun {
+	background-color: #ffdddd;
+}
+.sat {
+	background-color: #ddddff;
+}
+.weekday {
+	background-color: #ffffff;
+}
+.rh_title {
+	background-color: #dddddd;
+}
+.scheduler {
+	font-size: 14px;
+}
+.t_bg_left_nml {
+	background-image : url(/Images/table_back_blue_h02.gif);
+}
+.t_bg_left_tdy {
+	background-image : url(/Images/table_back_blue_h02.gif);
+}
