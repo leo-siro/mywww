@@ -17,5 +17,5 @@
     $user = 'webadmin';
     $pass = 'leo';
     $rdir = '/srv/www/htdocs_mywwwdev/test';
-    exec("lftp -u {$user},{$pass} -e \"mirror -Rv -X .git/ {$nb}/ {$rdir}; bye\" {$host}");
+    exec("lftp -u {$user},{$pass} -e \"mirror -R -X .git/ {$nb}/ {$rdir}; bye\" {$host}");
 ?>
