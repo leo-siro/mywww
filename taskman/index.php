@@ -87,7 +87,6 @@
             <button id="next_ym">＞</button>
             <p id="monthkei" class="pwaku">月合計 0 h</p>
             <button id="schdule_csv">CSV</button>
-            <input type="checkbox" id="hide_comp"><label for="hide_comp">完了を非表示</label>
         </div>
         <div id="kadai_option" class="groupline">
             <select id="kadai_syozoku">
@@ -190,8 +189,12 @@
             <div id="schdule_head">
                 <div id="schdule_head_ctrl">
                     <div class="schdule_head_title">課題</div>
-                    <div class="schdule_head_title">ストーリー</div>
-                    <div class="schdule_head_title">タスク</div>
+                    <div class="schdule_head_title">ストーリー
+                    </div>
+                    <div class="schdule_head_title">
+                        <span>タスク</span>
+                        <input type="checkbox" id="hide_comp"><label for="hide_comp">完了非表示</label>
+                    </div>
                 </div>
                 <div id="schdule_head_item">
                     <div id="days" class="flex">

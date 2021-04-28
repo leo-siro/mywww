@@ -65,7 +65,7 @@ $(function() {
     $('#disp_left').prop('checked',((localStorage.getItem('taskman_disp_left') || '1') === '1'));
     $('#board_right').toggle((localStorage.getItem('taskman_disp_right') === '1'));
     $('#disp_right').prop('checked',(localStorage.getItem('taskman_disp_right') === '1'));
-    $('#hide_comp').prop('checked',(localStorage.getItem('taskman_schdule_hidecomp') === '1'));
+    $('#hide_comp').prop('checked',(localStorage.getItem('taskman_schdule_hidecomp') !== '0'));
     // ボタン装飾
     $('#disp_mode').buttonset();
     $('#disp_data').buttonset();
@@ -121,11 +121,11 @@ $(function() {
         if (today_str !== new Date().formatDate('YYYY/MM/DD')) {
             // 処理日が変わっている場合、再読込を行う
             if ($('#board').is(':visible')) {
-                location.href = location.origin+'/taskman/';
+                location.href = location.origin+'/leo-mywww/taskman/';
             } else if ($('#schdule').is(':visible')) {
-                location.href = location.origin+'/taskman/?disp=disp_schdule';
+                location.href = location.origin+'/leo-mywww/taskman/?disp=disp_schdule';
             } else {
-                location.href = location.origin+'/taskman/?disp=disp_kadai';
+                location.href = location.origin+'/leo-mywww/taskman/?disp=disp_kadai';
             }
         }    
     });
