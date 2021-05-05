@@ -251,7 +251,7 @@ $ git config --global push.default simple
             <p>gitbucketのwebhook機能を利用しPHPで作成したプログラムで本番環境へソースを配置します<br>
                 設定が完了するとVS Codeでpushを行うと同時に本番環境へ反映されます
             </p>
-            <p>1) PHPで配置するプログラムを作成します<br><span class="small idt2">※下記例は管理イントラへの配置例です。</span></p>
+            <p>1) mywwwにPHPで配置するプログラムを作成します<br><span class="small idt2">※下記例は管理イントラへの配置例です。</span></p>
             <pre>
     $payload = json_decode($_REQUEST['payload']);
     $url = $payload->repository->clone_url;
@@ -283,7 +283,7 @@ $ git config --global push.default simple
         </div>
     </div>
     <footer>
-        このドキュメントは2021.4.1に作成しました。
+        このドキュメントは2021.5に作成しました。
     </footer>
 </body>
 </html>

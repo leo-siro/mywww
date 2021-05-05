@@ -57,6 +57,7 @@
         height: 30px;
         border: 5px solid;
         border-color: #94afeb #94afeb transparent transparent;
+        -ms-transform: rotate(45deg);
         transform: rotate(45deg);
     }
     .arrow_d {
@@ -67,13 +68,15 @@
         margin-right: auto;
         border: 5px solid;
         border-color:  transparent transparent #94afeb #94afeb;
+        -ms-transform: rotate(-45deg);
         transform: rotate(-45deg);
     }
 </style>
 
 <body>
     <h1>■ タスク管理　利用方法</h1>
-    <p>タスク管理システムは課題管理システムで登録した課題の中にストーリーを作成し更にその中にタスクを作成し作業の進捗状況を管理します。</p>
+    <p>タスク管理システムは課題管理システムで登録した課題の中にストーリーとその中にタスクを作成し課題の進捗状況を管理し<br>
+        各タスクに日報入力をすることで、課題やその月の作業時間を管理することができます。</p>
     <img src="images/task00.png">
     <p>タスク管理システムは下記アドレスより開いて下さい。<br>
         <a href="https://leoportal.leopalace21.com/leo-mywww/taskman/" target="_new">https://leoportal.leopalace21.com/leo-mywww/taskman/</a><br>
@@ -81,26 +84,26 @@
         <span class="info">※IEは非推奨となります、利用するにはChromeやEdgeを利用して下さい</span>
     </p>
     <h2>１．作業進捗</h2>
-    <p>作業進捗は課題のタスクを細分化し各タスクの進捗を更新することで、課題の進捗を管理します。<br>
-        タスク管理を開くと画面左側に課題一覧が表示され、所属部署が選択された状態になります。<br>
-        課題一覧に課題が存在しない場合は<a href="https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do" target="_blank">課題管理システム</a>を確認して下さい<br>
-        <span class="info">※担当者選択枠の初期値は自担当分ですが、未登録時は全てが選択された状態になります。</span>
+    <p>作業進捗では課題の中に複数のストーリーを作成でき、さらにストーリーの中に複数のタスクを作成でき<br>
+        各タスクの進捗を更新することで課題全体の進捗を管理することができます。<br><br>
+        タスク管理を開くと所属部署と担当者が選択された状態になります。担当者欄を『全て』にすると未振分課題一覧が表示されます。<br>
+        ※課題一覧に課題が存在しない場合は<a href="https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do" target="_blank">課題管理システム</a>を確認して下さい
     </p>
     <img src="images/sinchoku00.png" width="60%">
-    <p class="info">※各作業進捗枠のヘッダーをクリックすることでタイトルを変更することができます。</p>
+    <p class="alert">※作業進捗枠は複数列あり各列の内容等は各課で設定して下さい。各作業進捗枠のヘッダーをクリックすることでタイトルを変更することができます。</p>
     <img src="images/sinchoku02.png">
     <h3>１）課題の登録</h3>
-    <p>未振分枠にある課題をドラッグで作業進捗枠へ移動します。作業進捗枠は複数列あり各列の内容等は各課で設定して下さい。</p>
+    <p>未振分枠にある課題をドラッグで作業進捗枠へ移動します。</p>
     <img src="images/sinchoku01.png">
     <h3>２）ストーリーの登録</h3>
     <p>ストーリーは課題タイトル右端にある『＋』ボタン又は課題タイトルを右クリックし『ストーリーの追加』をクリックします。</p>
     <img src="images/sinchoku03.png">
     <p>ストーリー名称・予定期間（期間は課題の予定期間内で入力可能）を入力し登録ボタンをクリックします。<br>
-        ストーリーの中には必ずタスクが1つは必要な仕様の為、自動でタスク(NONAME)が作成されます。<br>
+        ストーリーには必ずタスクが1つは必要な仕様の為、自動でタスク(NONAME)が作成されます。<br>
     <span class="small1">任意で背景色・進捗割合・担当者・詳細内容を設定できます。【進捗割合】に関しては<a href="#ration">進捗割合について</a>を参照して下さい</span></p>
     <div class="groupline">        
         <img src="images/sinchoku04.png" width="400px">
-        <div class="arrow_r"></div>
+        <img src="images/arrow_r.png">
         <img src="images/sinchoku05.png">
     </div>
     <h3>３）タスクの登録</h3>
@@ -110,7 +113,7 @@
     <span class="small1">任意で<a href="#ration">進捗割合</a>・進捗・詳細内容を設定できます。登録と同時に日報入力を行いたい場合は、日報入力欄を入力して下さい</span></p>
     <img src="images/sinchoku07.png" width="400px">
     <h3>４）進捗の変更</h3>
-    <p>タスク枠の進捗は１０％単位で変更可能です。プログレスバーをドラッグするか、直接プログレスバーをクリックしても変更が可能です。<br>
+    <p>タスク枠の進捗は１０％単位で変更可能です。プログレスバーをドラッグするか、直接プログレスバーをクリックしても変更して下さい。<br>
     タスクの進捗を変更することで、ストーリーと課題の進捗も自動で変更され、課題管理システムの進捗も自動で更新されます。<br>
     <span class="info">※課題の進捗は５％単位で変更されます。また他担当者のプログレスバーは誤操作防止の為変更不可です。</span></p>
     <img src="images/sinchoku08.png">
@@ -139,7 +142,7 @@
     </p>
     <div class="groupline">
         <img src="images/sinchoku11.png">   
-        <div class="arrow_r"></div>
+        <img src="images/arrow_r.png">
         <img src="images/sinchoku12.png">
     </div>
     <p>終了したタスクが表示され、プログレスバーを表示したい時は同じようにタスクのタイトルをダブルクリックするか<br>
@@ -147,7 +150,7 @@
     </p>
     <div class="groupline">
         <img src="images/sinchoku13.png">
-        <div class="arrow_r"></div>
+        <img src="images/arrow_r.png">
         <img src="images/sinchoku14.png">
     </div>
     <h3>※ 他担当者のストーリーについて</h3>
@@ -157,7 +160,7 @@
     </p>
     <div class="groupline">
         <img src="images/sinchoku15.png">
-        <div class="arrow_r"></div>
+        <img src="images/arrow_r.png">
         <img src="images/sinchoku16.png">
     </div>
     <h2>２．日報入力</h2>
@@ -168,9 +171,9 @@
         登録すると、当日・当月・タスク・ストーリー・課題の作業時間に加算されます。<br>
         <span class="small1">※公休予定表で設定した休日と翌日以降は入力できません</span>
     </p>
-    <div style="width: 900px">
+    <div style="width: 900px; text-align: center;">
         <img src="images/nippo01.png">
-        <div class="arrow_d"></div>
+        <img src="images/arrow_d.png">
         <img src="images/nippo02.png">
     </div>
     <h3>２）コメントの入力</h3>
@@ -180,14 +183,17 @@
     </p>
     <div class="groupline">
         <img src="images/nippo03.png">
-        <div class="arrow_r"></div>
+        <img src="images/arrow_r.png">
         <img src="images/nippo04.png">
     </div>
-    <h3>３）ＣＳＶ出力</h3>
-    <p>ＣＳＶボタンで課題毎や日毎のCSVをダウンロードできます。</p>
+    <h3>３）完了タスクの非表示</h3>
+    <p>完了非表示ボタンをクリックすることで完了したタスクを非表示にできます</p>
     <img src="images/nippo05.png">
+    <h3>４）ＣＳＶ出力</h3>
+    <p>ＣＳＶボタンで課題毎や日毎のCSVをダウンロードできます。</p>
+    <img src="images/nippo06.png">
     <h2>３．課題一覧</h2>
-    <p>課題一覧では課題の進捗状況を視覚で確認します。当日が赤の縦線で表示され現在の進捗が予定より進んでいるか遅れているか確認を行います。<br>
+    <p>課題一覧では課題の進捗状況を確認します。当日が赤の縦線で表示され現在の進捗が予定より進んでいるか遅れているか確認を行います。<br>
         また課題の予定期間の終了が迫っている場合は青色で表示し、超過している場合は赤色で表示されます。</p>
     <img src="images/kadai00.png" width="60%">
 </body>
