@@ -134,12 +134,13 @@ function loadData() {
                 }
             }
         }
+        $row["itemnm"] = str_replace(array("社員","グループマネージャー"),array("","ＧＭ"),$row["itemnm"]);
         $data["head"][] = array(
             "syaincd" => $row["syaincd"],
             "syainnm" => $row["user_name"],
             "syozokucd" => $row["syozokucd"],
             "syozokunm" => getSyozokunm($row["syozokunm"]),
-            "itemnm" => $row["itemnm"] === "社員" ? "" : $row["itemnm"],
+            "itemnm" => $row["itemnm"],
             "user_flg" => $row["msort"],
             "prev_kokyu_cnt" => $kokyu_cnt
         );
@@ -270,7 +271,7 @@ function setItem($data,$i,$day,$memo,$kakutei,&$kei) {
             if ($_SESSION["shift"]["stamps"][$id2]["tx"] === "予") {
                 $kei["kei".$kakutei][1][$j]++;
             }
-            if ($data["head"][$i]["itemnm"] === "次長" || $data["head"][$i]["itemnm"] === "課長" || $data["head"][$i]["itemnm"] === "課長代理") {
+            if ($data["head"][$i]["itemnm"] === "ＧＭ" || $data["head"][$i]["itemnm"] === "マネージャー") {
                 if ($id < 100) {
                     $kei["kei".$kakutei][2][$j]++;
                 }
