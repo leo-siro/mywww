@@ -70,7 +70,7 @@ $(function() {
     $('#disp_mode').buttonset();
     $('#disp_data').buttonset();
     $('header button').button();
-    $('#kadai_sel').buttonset();
+    // $('#kadai_sel').buttonset();
     $('#hide_comp').button();
     // ウインドウ枠変更時
     $(window).resize(function() {
@@ -133,7 +133,7 @@ $(function() {
     $('#reload').click(function(e) {
         super_reload = e.ctrlKey;
         if ($('#board').is(':visible')) {
-            dataLoadBoard();
+            dataLoadBoard('');
         } else if ($('#schdule').is(':visible')) {
             dataLoadSchdule();
         } else {
@@ -151,8 +151,13 @@ $(function() {
     $('#board_syozoku,#board_syain').change(function() {
         if ($(this)[0].id === 'board_syozoku') {
             $('#board_syain').val('0');
+            $('#schdule_syain').val('0');
+            $('#schdule_syozoku').val($(this).val());
+            $('#kadai_syozoku').val($(this).val());
+        } else {
+            $('#schdule_syain').val($(this).val());
         }
-        dataLoadBoard();
+        dataLoadBoard('');
     });
     // sortableのみで枠越えのドラッグ＆ドロップが可能
     function sortable() {
@@ -180,7 +185,7 @@ $(function() {
                 columnno = 0;
             },
             receive: function(e, ui) {
-                ui.item.find('.board_story').hide();
+                ui.item.find('.board_story:not(.story_hide)').hide();
             }
         });
         $('#board_main_body .column').sortable({
@@ -210,7 +215,7 @@ $(function() {
             },
             receive: function(e, ui) {
                 if (ui.sender.parent().is('#board_main_body') === false) {
-                    ui.item.find('.board_story').show();
+                    ui.item.find('.board_story:not(.story_hide)').show();
                 }
             }
         });
@@ -234,7 +239,7 @@ $(function() {
                 columnno = 0;
             },
             receive: function(e, ui) {
-                ui.item.find('.board_story').hide();
+                ui.item.find('.board_story:not(.story_hide)').hide();
             }
         });
     }
@@ -307,7 +312,7 @@ $(function() {
         $('#schdule,#schdule_option').hide();
         $('#kadai,#kadai_option').hide();
         $('#board,#board_option').show();
-        dataLoadBoard();
+        dataLoadBoard('');
     });
     // 作業前の表示ON OFF
     $('#disp_left').change(function() {
@@ -775,13 +780,21 @@ $(function() {
             resizeSub();
         }
     }
+    // 検索クリック
+    $('#board_find').click(function() {
+        if ($('#board_find_words').val() !== '') {
+            $('#board_syain').val('0');
+        }
+        dataLoadBoard($('#board_find_words').val());
+    });
     // 作業進捗データ読込
-    function dataLoadBoard() {
+    function dataLoadBoard(find_words) {
         column_cnt = 0;
         let para = {
             dept_cd: $('#board_syozoku').val(),
             syaincd: $('#board_syain').val(),
             syainnm: $('#board_syain option:selected').text(),
+            find_words: find_words,
             super_reload: super_reload ? 1 : 0
         };
         BlockScreen('読込中 ...');
@@ -793,9 +806,11 @@ $(function() {
                 }
                 if (ret.syain_list) {
                     $('#board_syain').databind(ret.syain_list);
+                    $('#schdule_syain').databind(ret.syain_list);
                 }
                 if (ret.data_left) {
                     $('#board_left_body').databindex(ret.data_left);
+                    $('#board_left_body').find('.board_story:not(.story_hide)').hide();
                 } else {
                     $('#board_left_body').html('<div class="column"></div>');
                 }
@@ -807,8 +822,19 @@ $(function() {
                 }
                 if (ret.data_right) {
                     $('#board_right_body').databindex(ret.data_right);
+                    $('#board_right_body').find('.board_story:not(.story_hide)').hide();
                 } else {
                     $('#board_right_body').html('<div class="column"></div>');
+                }
+                if (find_words !== '') {
+                    if (ret.data_left === undefined && ret.data_main === undefined && ret.data_right == undefined) {
+                        showMessage('該当データ無し','#ff0000');
+                    } else {
+                        showMessage('未振分:'+$('#board_left_body .board_kadai').length+'件　進行中:'+$('#board_main_body .board_kadai').length+'件　完了:'+$('#board_right_body .board_kadai').length+' 件ヒットしました。','#0000ff');
+                        if (ret.data_right && $('#disp_right').prop('checked') === false) {
+                            $('#disp_right').prop('checked',true).change();
+                        }
+                    }
                 }
                 storySortable($('.board_kadai'));
                 taskSortable($('.board_story'));
@@ -1223,6 +1249,11 @@ $(function() {
     $('#schdule_syozoku,#schdule_syain').change(function() {
         if ($(this)[0].id === 'schdule_syozoku') {
             $('#schdule_syain').val('0');
+            $('#board_syain').val('0');
+            $('#board_syozoku').val($(this).val());
+            $('#kadai_syozoku').val($(this).val());
+        } else {
+            $('#board_syain').val($(this).val());
         }
         dataLoadSchdule();
     });
@@ -1247,6 +1278,7 @@ $(function() {
             if (ret.code === 'OK') {
                 if (ret.syain_list) {
                     $('#schdule_syain').databind(ret.syain_list);
+                    $('#board_syain').databind(ret.syain_list);
                 }
                 $('#schdule_body_ctrl').databindex(ret.data.kadai);
                 $('#schdule_body_ctrl').prepend('<div id="schdule_ctrl_sum"></div>');
@@ -1760,20 +1792,29 @@ $(function() {
         }
         dataLoadKadai();
     });
-    $('input[name="kadai_sel"]').change(function() {
-        if ($('#kadai_sel_month').prop('checked')) {
+    // $('input[name="kadai_sel"]').change(function() {
+    //     if ($('#kadai_sel_month').prop('checked')) {
+    //         str_kadai = new Date(today.formatDate('YYYY/MM/01'));
+    //         end_kadai = new Date(str_kadai).addMonth(1).addDay(-1);    
+    //     } else if ($('#kadai_sel_month4').prop('checked')) {
+    //         str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
+    //         end_kadai = new Date(str_kadai).addMonth(4).addDay(-1);    
+    //     } else if ($('#kadai_sel_month6').prop('checked')) {
+    //         str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
+    //         end_kadai = new Date(str_kadai).addMonth(6).addDay(-1);    
+    //     } else if ($('#kadai_sel_month12').prop('checked')) {
+    //         str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
+    //         end_kadai = new Date(str_kadai).addMonth(12).addDay(-1);    
+    //     }
+    //     dataLoadKadai();
+    // });
+    $('#kadai_sel').change(function() {
+        if ($(this).val() === '1') {
             str_kadai = new Date(today.formatDate('YYYY/MM/01'));
-            end_kadai = new Date(str_kadai).addMonth(1).addDay(-1);    
-        } else if ($('#kadai_sel_month4').prop('checked')) {
+        } else {
             str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
-            end_kadai = new Date(str_kadai).addMonth(4).addDay(-1);    
-        } else if ($('#kadai_sel_month6').prop('checked')) {
-            str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
-            end_kadai = new Date(str_kadai).addMonth(6).addDay(-1);    
-        } else if ($('#kadai_sel_month12').prop('checked')) {
-            str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
-            end_kadai = new Date(str_kadai).addMonth(12).addDay(-1);    
         }
+        end_kadai = new Date(str_kadai).addMonth($(this).val()).addDay(-1);
         dataLoadKadai();
     });
     function dataLoadKadai() {
@@ -1781,7 +1822,8 @@ $(function() {
         let title_html = '';
         let body_html = '';
         let width;
-        if ($('#kadai_sel_month').prop('checked')) {
+        // if ($('#kadai_sel_month').prop('checked')) {
+        if ($('#kadai_sel').val() === '1') {
             $('#kadai_ym').text(str_kadai.formatDate('YYYY年MM月'));
             let cnt = end_kadai.getDate();
             width = 100 / cnt;
@@ -1814,7 +1856,8 @@ $(function() {
             syainnm: $('#kadai_syain option:selected').text(),
             str_day: str_kadai.formatDate('YYYY/MM/DD'),
             end_day: end_kadai.formatDate('YYYY/MM/DD'),
-            sel_month: $('input[name="kadai_sel"]:checked').val(),
+            // sel_month: $('input[name="kadai_sel"]:checked').val(),
+            sel_month: $('#kadai_sel').val(),
             width: width
         }
         Ajax('taskman.php?func=loadKadai',para).done(function(ret) {

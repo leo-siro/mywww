@@ -108,6 +108,11 @@ class MyClass {
         if (isset($_SESSION["taskman"]["syainkbn"]) && $_SESSION["taskman"]["syainkbn"] === '0') {
             $syain_where .= " AND k.personaluse IS NULL";
         }
+        if ($_POST["find_words"] !== "") {
+            $syain_where .= " AND (k.task1 LIKE '%{$_POST["find_words"]}%' OR k.task1 LIKE '%{$_POST["find_words"]}%' OR k.sinseino LIKE '%{$_POST["find_words"]}%' OR s.title LIKE '%{$_POST["find_words"]}%')";
+        } else {
+            $syain_where .= " AND (k.end_jisseki > DATE_SUB( CURDATE(),INTERVAL 4 WEEK ) OR k.end_jisseki IS NULL)";
+        }
         $sql = "SELECT 
                     k.keynum,
                     k.task1,
@@ -146,7 +151,6 @@ class MyClass {
                     {$syozoku_join}         
                 WHERE k.jyotai < 8
                 {$syain_where}
-                AND (k.end_jisseki > DATE_SUB( CURDATE(),INTERVAL 4 WEEK ) OR k.end_jisseki IS NULL)
                 ORDER BY {$sort}k.important DESC,k.keynum, k.jyotai, IF(s.progress=100,1,0), s.sortno, s.storyno, IF(t.progress=100,1,0), t.sortno, t.taskno";
 
         $oldkeynum = 0;
@@ -1029,6 +1033,7 @@ class MyClass {
                     "sinseino" => $row["sinseino"] === null ? "" : "［".$row["sinseino"]."］",
                     "kadai_comp" => ($row["kadai_progress"] === "100" ? "comp2":""),
                     "kadai_disp" => ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
+                    "kadai_progress" => $row["kadai_progress"]
                     // "important" => $row["important"],
                     // "important_css" => $row["important_css"]
                 );
@@ -1058,7 +1063,8 @@ class MyClass {
                     "kyuka" => $yotei,
                     "user_name" => "［".$row["user_name"]."］",
                     "story_comp" => ($row["story_progress"] === "100" ? "comp2":""),
-                    "story_disp" => ($row["story_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp")
+                    "story_disp" => ($row["story_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
+                    "story_progress" => $row["story_progress"]
                 );
                 if ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" && $scnt > 0
                 && $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_disp"] === "sc_disp") {
@@ -1076,7 +1082,8 @@ class MyClass {
                     "task_title" => $row["task_title"],
                     "task_comp" => ($row["task_progress"] === "100" ? "comp2":""),
                     "task_disp" => ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
-                    "task_kei" => 0
+                    "task_kei" => 0,
+                    "task_progress" => $row["task_progress"]
                 );
                 if ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" && $tcnt > 0
                 && $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_disp"] === "sc_disp") {

@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=9">
+    <link rel="stylesheet" href="taskman.css?v=11">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=9"></script>
+    <script src="taskman.js?v=11"></script>
 </head>
 <body>
     <header>
@@ -75,6 +75,8 @@
                 <!-- <input type="checkbox" id="disp_main" name="disp_data" checked><label for="disp_main">作業中</label> -->
                 <input type="checkbox" id="disp_right" name="disp_data"><label for="disp_right">&nbsp;完&nbsp;了&nbsp;</label>
             </div>
+            <input type="search" id="board_find_words" maxlength="30">
+            <button id="board_find">検索</button>
         </div>
         <div id="schdule_option" class="groupline">
             <select id="schdule_syozoku">
@@ -97,12 +99,18 @@
             <button id="prev_ym2">＜</button>
             <p id="kadai_ym" class="pwaku"></p>
             <button id="next_ym2">＞</button>
-            <div id="kadai_sel">
+            <!-- <div id="kadai_sel">
                 <input type="radio" id="kadai_sel_month" name="kadai_sel" value="1"><label for="kadai_sel_month">月</label>
                 <input type="radio" id="kadai_sel_month4" name="kadai_sel" checked value="2"><label for="kadai_sel_month4">４ヶ月</label>
                 <input type="radio" id="kadai_sel_month6" name="kadai_sel" value="3"><label for="kadai_sel_month6">半年</label>
                 <input type="radio" id="kadai_sel_month12" name="kadai_sel" value="4"><label for="kadai_sel_month12">年</label>
-            </div>
+            </div> -->
+            <select id="kadai_sel">
+                <option value="1">１ヶ月</option>
+                <option value="4" selected>４ヶ月</option>
+                <option value="6">半年</option>
+                <option value="12">１年</option>
+            </select>
         </div>
         <div id="header_right">
             <input type="checkbox" id="dark_mode">
@@ -122,7 +130,7 @@
                         <div class="board_title_waku"><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
                         <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
                         <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
-                        <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}" style="display:none">
+                        <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
                             <div class="board_title_waku"><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
                             <div class="board_memo"><div class="memo_progress">!{story_progress}%</div><div class="memo_kikan">!{story_kikan}</div><div class="memo_syutantou">!{tantou}</div></div>
                             <div class="@{board_task}" data-taskno=!{taskno} data-ration="!{task_ration}" data-ration_auto="!{task_ration_auto}" data-bikou="!{task_bikou}">
@@ -171,7 +179,7 @@
                         <div class="board_title_waku"><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
                         <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
                         <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
-                        <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}" style="display:none">
+                        <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
                             <div class="board_title_waku"><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
                             <div class="board_memo"><div class="memo_progress">!{story_progress}%</div><div class="memo_kikan">!{story_kikan}</div><div class="memo_syutantou">!{tantou}</div></div>
                             <div class="@{board_task}" data-taskno=!{taskno} data-ration="!{task_ration}" data-ration_auto="!{task_ration_auto}" data-bikou="!{task_bikou}">
@@ -212,20 +220,20 @@
                             <div class="schdule_waku !{kadai_comp}">
                                 <div class="schdule_title_waku !{kadai_comp}"><div class="schdule_title" data-title="!{kadai_title}">!{kadai_title}</div></div>
                                 <div class="schdule_exwaku">!{sinseino}</div>
-                                <div class="worktime">!{kadai_kei}h</div>
+                                <div class="worktime"><div class="worktime_progress">!{kadai_progress}%</div><div class="worktime_time">!{kadai_kei}h</div></div>
                             </div>
                             <div class="schdule_story_waku">
                                 <div class="@{schdule_story} !{story_disp}" data-storyno="!{storyno}" data-kei="!{story_kei}">
                                     <div class="schdule_waku !{story_comp}">
                                         <div class="schdule_title_waku !{story_comp}"><div class="schdule_title" data-title="!{story_title}">!{story_title}</div></div>
                                         <div class="schdule_exwaku">!{user_name}</div>
-                                        <div class="worktime">!{story_kei}h</div>
+                                        <div class="worktime"><div class="worktime_progress">!{story_progress}%</div><div class="worktime_time">!{story_kei}h</div></div>
                                     </div>
                                     <div class="schdule_task_waku">
                                         <div class="@{schdule_task} !{task_disp}" data-taskno="!{taskno}" data-kei="!{task_kei}">
                                             <div class="schdule_waku">
                                                 <div class="schdule_title_waku !{task_comp}"><div class="schdule_title" data-title="!{task_title}">!{task_title}</div></div>
-                                                <div class="worktime">!{task_kei}h</div>
+                                                <div class="worktime"><div class="worktime_progress">!{task_progress}%</div><div class="worktime_time">!{task_kei}h</div></div>
                                             </div>
                                         </div>
                                     </div>
