@@ -1510,11 +1510,11 @@ $(function() {
             if (para.work_time !== sv_obj.text()) {
                 let wtime = parseFloat(para.work_time === '' ? 0 : para.work_time) - parseFloat(sv_obj.text() === '' ? 0 : sv_obj.text());
                 task.data('kei',task.data('kei')+wtime);
-                task.children('.schdule_waku').children('.worktime').text(task.data('kei')+'h');
+                task.children('.schdule_waku').children('.worktime').children('.worktime_time').text(task.data('kei')+'h');
                 story.data('kei',story.data('kei')+wtime);
-                story.children('.schdule_waku').children('.worktime').text(story.data('kei')+'h');
+                story.children('.schdule_waku').children('.worktime').children('.worktime_time').text(story.data('kei')+'h');
                 kadai.data('kei',kadai.data('kei')+wtime);
-                kadai.children('.schdule_waku').children('.worktime').text(kadai.data('kei')+'h');
+                kadai.children('.schdule_waku').children('.worktime').children('.worktime_time').text(kadai.data('kei')+'h');
                 sv_obj.text(para.work_time);
                 if (sv_syori.formatDate('YYYYMM') === syori_ym.formatDate('YYYYMM')) {
                     sv_monthkei += wtime;
