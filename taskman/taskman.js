@@ -612,14 +612,14 @@ $(function() {
                         showMessage2($('#dl_task_ration'),'進捗割合を'+(100-ration_sum)+'以下で入力して下さい','#ff0000');
                         return;    
                     }
-                    if ($('#dl_task_nippodate').isDate() === false) {
-                        showMessage2($('#dl_task_nippodate'),'日報入力日を正しく入力して下さい','#ff0000');
-                        return;    
-                    }
-                    if ($('#dl_task_nippodate').val() > today_str) {
-                        showMessage2($('#dl_task_nippodate'),'日報入力日に未来の日付は指定できません','#ff0000');
-                        return;    
-                    }
+                }
+                if ($('#dl_task_nippodate').val().isDate() === false) {
+                    showMessage2($('#dl_task_nippodate'),'日報入力日を正しく入力して下さい','#ff0000');
+                    return;    
+                }
+                if ($('#dl_task_nippodate').val() > today_str) {
+                    showMessage2($('#dl_task_nippodate'),'日報入力日に未来の日付は指定できません','#ff0000');
+                    return;    
                 }
                 var para = {
                     keynum: sv_parent.parent().data('keynum'),
@@ -1903,7 +1903,11 @@ $(function() {
     }
     $(document).on('click','.kadai_title_waku',function() {
         window.open('https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do?i=I07002_KADAI_DTL.do&p='+$(this).data('keynum'));
-    })
+    });
+    // セッション切れ防止
+    setInterval(function() {
+        Ajax('taskman.php?func=sessioncheck');
+    }, 1200000);
 });
 var msgid = '#msg';
 var msghd;

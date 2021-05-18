@@ -1396,5 +1396,9 @@ class MyClass {
         $data["code"] = "OK";
         echo json_encode($data);
     }
+    // セッション切れ防止
+    function sessioncheck() {
+        echo array("code"=>"OK");
+    }
 }
 ?>
