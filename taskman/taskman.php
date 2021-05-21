@@ -1015,9 +1015,7 @@ class MyClass {
                         ) AS y ON y.syaincd = s.syaincd
                     {$syozoku_join}         
                 WHERE k.jyotai IN (1,2)
-                AND k.end_yotei > '{$str_day}' 
-                -- AND k.start_yotei < '{$end_day}'
-                -- AND s.end_yotei > '{$str_day}' 
+                AND s.end_yotei > '{$str_day}' 
                 AND s.start_yotei < '{$end_day}'
                 {$syain_where}
                 ORDER BY k.important DESC,IF(k.progress=100,1,0), k.keynum, IF(s.progress=100,1,0), s.sortno, s.storyno, IF(t.progress=100,1,0), t.sortno, t.taskno";
