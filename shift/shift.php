@@ -653,12 +653,13 @@ function loadSyain($call = false) {
             ORDER BY l.sortno";
     $ds = $con->pdo->query($sql) or die($sql);
     while ($row = $ds->fetch()) {
+        $row["itemnm"] = str_replace(array("社員","グループマネージャー","マネージャー"),array("","ＧＭ","Ｍ"),$row["itemnm"]);
         $data["data"][] = array(
             "syaincd" => $row["syaincd"],
             "syainnm" => $row["name"],
             "syozokucd" => $row["syozokucd"],
             "syozokunm" => getSyozokunm($row["DEPT_NAME"]),
-            "itemnm" => $row["itemnm"] === "社員" ? "" : $row["itemnm"],
+            "itemnm" => $row["itemnm"],
             "toban_flg" => $row["toban_flg"],
             "edit_flg" => $row["edit_flg"]
         );
