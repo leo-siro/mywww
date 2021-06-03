@@ -119,7 +119,7 @@ footer p {
 #schdule_csv {
     margin-left: 20px;
 }
-label[for="hide_comp"] {
+label[for="hide_comp"],label[for="disp1"] {
     height: 23px;
     line-height: 23px;
     padding: 1px 7px 0px 7px;

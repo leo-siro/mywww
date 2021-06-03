@@ -1015,8 +1015,9 @@ class MyClass {
                         ) AS y ON y.syaincd = s.syaincd
                     {$syozoku_join}         
                 WHERE k.jyotai IN (1,2)
-                AND s.end_yotei > '{$str_day}' 
-                AND s.start_yotei < '{$end_day}'
+                AND k.keynum IN (SELECT DISTINCT keynum FROM stories WHERE end_yotei > '{$str_day}' AND start_yotei < '{$end_day}'
+                                 UNION
+                                 SELECT DISTINCT keynum FROM nippo WHERE work_syori BETWEEN '{$str_day}' AND '{$end_day}')
                 {$syain_where}
                 ORDER BY k.important DESC,IF(k.progress=100,1,0), k.keynum, IF(s.progress=100,1,0), s.sortno, s.storyno, IF(t.progress=100,1,0), t.sortno, t.taskno";
         $data["sql"] = $sql;
@@ -1032,7 +1033,10 @@ class MyClass {
                     "kadai_kei" => 0,
                     "sinseino" => $row["sinseino"] === null ? "" : "［".$row["sinseino"]."］",
                     "kadai_comp" => ($row["kadai_progress"] === "100" ? "comp2":""),
-                    "kadai_disp" => ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
+                    "kadai_disp" => (($row["task_progress"] === "100" && $_POST["hidecomp"] === "1")
+                                    || ($_POST["disp1"] === "1")
+                                        ? "sc_hide"
+                                        : "sc_disp"),
                     "kadai_progress" => $row["kadai_progress"]
                     // "important" => $row["important"],
                     // "important_css" => $row["important_css"]
@@ -1063,7 +1067,10 @@ class MyClass {
                     "kyuka" => $yotei,
                     "user_name" => "［".$row["user_name"]."］",
                     "story_comp" => ($row["story_progress"] === "100" ? "comp2":""),
-                    "story_disp" => ($row["story_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
+                    "story_disp" => (($row["story_progress"] === "100" && $_POST["hidecomp"] === "1")
+                                    || ($_POST["disp1"] === "1")
+                                        ? "sc_hide"
+                                        : "sc_disp"),
                     "story_progress" => $row["story_progress"]
                 );
                 if ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" && $scnt > 0
@@ -1081,7 +1088,10 @@ class MyClass {
                     "taskno" => $row["taskno"],
                     "task_title" => $row["task_title"],
                     "task_comp" => ($row["task_progress"] === "100" ? "comp2":""),
-                    "task_disp" => ($row["task_progress"] === "100" && $_POST["hidecomp"] === "1" ? "sc_hide":"sc_disp"),
+                    "task_disp" => (($row["task_progress"] === "100" && $_POST["hidecomp"] === "1")
+                                    || ($_POST["disp1"] === "1")
+                                        ? "sc_hide"
+                                        : "sc_disp"),
                     "task_kei" => 0,
                     "task_progress" => $row["task_progress"]
                 );
@@ -1096,6 +1106,11 @@ class MyClass {
                 if ($str_day <= $row["work_syori"] && $end_day >= $row["work_syori"]) {
                     $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["nippo"][$row["work_syori"]] = $row["work_time"] === "0.0" ? "" : $row["work_time"];
                     $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["memo"][$row["work_syori"]] = $row["memo"];
+                    if ($_POST["disp1"] === "1" && date("Y/m/d",strtotime("-10 Day")) <= $row["work_syori"]) {
+                        $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_disp"] = "sc_disp";
+                        $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_disp"] = "sc_disp";
+                        $data["data"]["kadai"][$kcnt-1]["kadai_disp"] = "sc_disp";
+                    }
                 }
                 // 当月の工数合計
                 if (substr($row["work_syori"],0,7) === substr($_POST["syori_ym"],0,7)) {
@@ -1110,6 +1125,24 @@ class MyClass {
                 $data["data"]["kadai"][$kcnt-1]["kadai_kei"] += $row["work_time"];
                 $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_kei"] += $row["work_time"];
                 $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_kei"] += $row["work_time"];
+            }
+        }
+        if ($_POST["disp1"] === "1") {
+            // 期間入力表示の時に、下線がでないよう調整
+            for ($kcnt = 0; $kcnt < count($data["data"]["kadai"]); $kcnt++) {
+                $flg = 0;
+                for ($scnt = count($data["data"]["kadai"][$kcnt]["schdule_story"])-1; $scnt >= 0; $scnt--) {
+                    for ($tcnt = count($data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["schdule_task"])-1; $tcnt >= 0; $tcnt--) {
+                        if ($data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["schdule_task"][$tcnt]["task_disp"] === "sc_disp") {
+                            $data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["schdule_task"][$tcnt]["task_disp"] = "";
+                            break;
+                        }
+                    }    
+                    if ($data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["story_disp"] === "sc_disp" && $flg === 0) {
+                        $data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["story_disp"] = "";
+                        $flg = 1;
+                    }
+                }
             }
         }
         $data["code"] = "OK";
@@ -1248,8 +1281,8 @@ class MyClass {
                     $sel .= ",";
                     $title .= ",";
                 }
-                $sel .= "IFNULL(SUM(IF(k.system_no = '{$row["system_no"]}',n.work_time,0)),0)";
-                $title .= $row["system_no"];
+                $sel .= "IFNULL(SUM(IF(k.system_no = '{$row["system_no"]}',n.work_time,0)),0),GROUP_CONCAT(IF(k.system_no = '{$row["system_no"]}',n.memo,''))";
+                $title .= $row["system_no"].",";
             }
             if ($title === "") {
                 echo json_encode(array("cnt"=>0));
@@ -1276,6 +1309,11 @@ class MyClass {
                         ";
                 $ds = $con->pdo->query($sql) or die($sql);
                 if ($row = $ds->fetch(PDO::FETCH_NUM)) {
+                    $i = 2;
+                    while (count($row) > $i) {
+                        $row[$i] = trim($row[$i],",");
+                        $i += 2;
+                    }
                     mb_convert_variables("SJIS-win","UTF-8",$row);
                     fputcsv($tmp_file,$row);
                 }

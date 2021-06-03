@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=12">
+    <link rel="stylesheet" href="taskman.css?v=13">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=12"></script>
+    <script src="taskman.js?v=13"></script>
 </head>
 <body>
     <header>
@@ -202,6 +202,7 @@
                     <div class="schdule_head_title">
                         <span>タスク</span>
                         <input type="checkbox" id="hide_comp"><label for="hide_comp">完了非表示</label>
+                        <input type="checkbox" id="disp1"><label for="disp1" title="過去10日間に日報入力有のデータのみ表示">入力有</label>
                     </div>
                 </div>
                 <div id="schdule_head_item">
@@ -503,7 +504,7 @@
         </div>
         <div class="groupline">
             <label>出力タイプ</label>
-            <input type="radio" name="dl_csv_type" id="dl_csv_type1" value="1" checked><label for="dl_csv_type1">課題毎</label>
+            <input type="radio" name="dl_csv_type" id="dl_csv_type1" value="1" checked><label for="dl_csv_type1">プロジェクト報告用</label>
             <input type="radio" name="dl_csv_type" id="dl_csv_type2" value="2"><label for="dl_csv_type2">日毎</label>
         </div>
         <div class="msg_bar">

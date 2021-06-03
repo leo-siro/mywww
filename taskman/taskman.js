@@ -66,12 +66,14 @@ $(function() {
     $('#board_right').toggle((localStorage.getItem('taskman_disp_right') === '1'));
     $('#disp_right').prop('checked',(localStorage.getItem('taskman_disp_right') === '1'));
     $('#hide_comp').prop('checked',(localStorage.getItem('taskman_schdule_hidecomp') !== '0'));
+    $('#disp1').prop('checked',(localStorage.getItem('taskman_schdule_disp1') === '1'));
     // ボタン装飾
     $('#disp_mode').buttonset();
     $('#disp_data').buttonset();
     $('header button').button();
     // $('#kadai_sel').buttonset();
     $('#hide_comp').button();
+    $('#disp1').button();
     // ウインドウ枠変更時
     $(window).resize(function() {
         if ($('#board').is(':visible')) {
@@ -1257,9 +1259,15 @@ $(function() {
         }
         dataLoadSchdule();
     });
-    $('#hide_comp').change(function() {
+    $('#hide_comp,#disp1').change(function() {
+        if ($(this)[0].id === 'hide_comp' && $('#hide_comp').prop('checked')) {
+            $('#disp1').prop('checked',false).button();
+        } else if ($('#hide_comp').prop('checked')) {
+            $('#hide_comp').prop('checked',false).button();
+        }
         dataLoadSchdule();
         localStorage.setItem('taskman_schdule_hidecomp',($('#hide_comp').prop('checked') ? '1' : '0'));
+        localStorage.setItem('taskman_schdule_disp1',($('#disp1').prop('checked') ? '1' : '0'));
     });
     // 日報データ読込
     const cellwidth = 33;
@@ -1270,7 +1278,8 @@ $(function() {
             dept_cd: $('#schdule_syozoku').val(),
             syaincd: $('#schdule_syain').val(),
             syainnm: $('#schdule_syain option:selected').text(),
-            hidecomp: $('#hide_comp').prop('checked') ? 1 : 0
+            hidecomp: $('#hide_comp').prop('checked') ? 1 : 0,
+            disp1: $('#disp1').prop('checked') ? 1 : 0
         } 
         kyuka = ['',' kyuka'];
         sv_monthkei = 0;
@@ -1305,7 +1314,7 @@ $(function() {
                                         b_width = b_width - b_left - 2;
                                     }
                                     let border_height;
-                                    if ($('#hide_comp').prop('checked')) {
+                                    if ($('#hide_comp').prop('checked') || $('#disp1').prop('checked')) {
                                         let cnt = 0;
                                         srec.schdule_task.forEach(function(trec) {
                                             if (trec.task_disp !== 'sc_hide') {
@@ -1324,8 +1333,11 @@ $(function() {
                                 }
                                 
                                 srec.schdule_task.forEach(function(trec) {
-                                    w_item += '<div class="row" style="width:'+width+'px'+(trec.task_disp === 'sc_hide' ? ';display:none':'')+'">'+story_bordar;
-                                    story_bordar = '';
+                                    w_item += '<div class="row" style="width:'+width+'px'+(trec.task_disp === 'sc_hide' ? ';display:none':'')+'">';
+                                    if (trec.task_disp !== 'sc_hide') {
+                                        w_item += story_bordar;
+                                        story_bordar = '';
+                                    }
                                     let w_syori = new Date(str_syori);
                                     let i = 0;
                                     let memo;
