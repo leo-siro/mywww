@@ -1740,8 +1740,12 @@ $(function() {
             show: function(opt) {
                 sv_obj = $(this);
                 if (checkCell() === false) {
-                    return;
+                    return false;
                 }
+                if (sv_syori > today) {
+                    showMessage('入力不可です。','#0000ff');
+                    return false;
+                }                
                 $(document).tooltip('disable');
                 let disflg = (sv_obj.text() === '' && sv_obj.data('memo') === '');
                 opt.commands.copy.disabled = disflg;
