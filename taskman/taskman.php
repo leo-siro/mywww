@@ -1127,7 +1127,7 @@ class MyClass {
                 $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_kei"] += $row["work_time"];
             }
         }
-        if ($_POST["disp1"] === "1") {
+        if ($_POST["disp1"] === "1" && isset($data["data"]["kadai"])) {
             // 期間入力表示の時に、下線がでないよう調整
             for ($kcnt = 0; $kcnt < count($data["data"]["kadai"]); $kcnt++) {
                 $flg = 0;
