@@ -576,11 +576,11 @@ $(function() {
                 if (today.getDate() <= 20 // && $this.hasClass('kokyu')
                 && today.formatDate('YYYYMM') < syori_ym.formatDate('YYYYMM') 
                 && syaincd < '95000') {
-                    // 当番ｘしか入力できない
-                    if (s_id !== toban_x) {
+                    // 当番ｘと問のみ入力可能
+                    if (s_id !== toban_x && s_id !== toi_cd) {
                         // 1月10日までは編集可能にする：2020/12/02
                         if (syori_ym.getMonth() > 0 || $this.parent().children('.cells').index($this) > 9) {
-                            showMessage('２０日迄は”当ｘ”のみ入力可能です','#ff3333');
+                            showMessage('２０日迄は”当ｘ”と”問”のみ入力可能です','#ff3333');
                             return;    
                         }
                     }
@@ -1674,6 +1674,7 @@ $(function() {
                 $('#ad_toban_x').val(ret.toban_x);
                 $('#ad_tobansuu').val(ret.toban_suu);
                 $('#ad_yobi').val(ret.yobi_cd);
+                $('#ad_toi').val(ret.toi_cd);
                 dfd.resolve(ret);
             } else {
                 showMessage('データ読込に失敗しました。','#ff0000');
@@ -1727,7 +1728,8 @@ $(function() {
                     toban_cd: $('#ad_toban').val(),
                     toban_x: $('#ad_toban_x').val(),
                     toban_suu: $('#ad_tobansuu').val(),
-                    yobi_cd: $('#ad_yobi').val()
+                    yobi_cd: $('#ad_yobi').val(),
+                    toi_cd: $('#ad_toi').val()
                 };
                 BlockScreen('読込中 ...');
                 Ajax('shift.php?func=regAdmin',para).done(function(ret) {

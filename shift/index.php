@@ -10,13 +10,14 @@
                                         ? $_GET["syaincd"] 
                                         : "99999");
         $con = new pdoConnect("schedule");
-        $sql = "SELECT admin_user,toban_cd,toban_x,yobi_cd FROM setting";
+        $sql = "SELECT admin_user,toban_cd,toban_x,yobi_cd,toi_cd FROM setting";
         $ds = $con->pdo->query($sql);
         $row = $ds->fetch();
         $_SESSION["shift"]["admin"] = (strpos($row["admin_user"],$_SESSION["shift"]["user"]) > -1 ? true : false);
         $_SESSION["shift"]["toban_cd"] = $row["toban_cd"];
         $_SESSION["shift"]["toban_x"] = $row["toban_x"];
         $_SESSION["shift"]["yobi_cd"] = $row["yobi_cd"];
+        $_SESSION["shift"]["toi_cd"] = $row["toi_cd"];
         $_SESSION["shift"]["stamp_s"] = array();
         $sql = "SELECT id,type,tx,btn,title,color FROM stamps ORDER BY sortno";
         $ds = $con->pdo->query($sql);
@@ -52,7 +53,7 @@
     <title>公休予定表</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="/CSS/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="shift.css?v=1">
+    <link rel="stylesheet" href="shift.css?v=2">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -69,10 +70,11 @@
         const toban_cd = <?php echo "'".$_SESSION["shift"]["toban_cd"]."'"; ?>;
         const toban_x = <?php echo "'".$_SESSION["shift"]["toban_x"]."'"; ?>;
         const yobi_cd = <?php echo "'".$_SESSION["shift"]["yobi_cd"]."'"; ?>;
+        const toi_cd = <?php echo "'".$_SESSION["shift"]["toi_cd"]."'"; ?>;
         var stamps = <?php echo json_encode($_SESSION["shift"]["stamps"]);?>;
         var six = <?php echo json_encode($_SESSION["shift"]["stamp_s"]);?>;
     </script>
-    <script src="shift.js?v=1"></script>
+    <script src="shift.js?v=2"></script>
 </head>
 <body>
     <header>
@@ -462,7 +464,10 @@
             <label>当番CD</label><input type="text" id="ad_toban" maxlength="2">
             <label>当番×CD</label><input type="text" id="ad_toban_x" maxlength="2">
             <label>予備CD</label><input type="text" id="ad_yobi" maxlength="2">
+            <label>問CD</label><input type="text" id="ad_toi" maxlength="2">
             <label>当番数</label><input type="text" id="ad_tobansuu" maxlength="1">
+        </div>
+        <div>
             <label>情シストップCD</label><input type="text" id="ad_deptcd" maxlength="2">
         </div>
         <div class="msg_bar">

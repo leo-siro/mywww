@@ -185,7 +185,7 @@ function loadData() {
         );
     }
     // 当番の合計枠を作成
-    for ($i=$cnt; $i<($cnt+3); $i++) {
+    for ($i=$cnt; $i<($cnt+2); $i++) {
         $data["head"][$i] = array();
         $data["item"][$i] = array();
         $data["item_k"][$i] = array();
@@ -196,17 +196,18 @@ function loadData() {
         if ($data["head"][$i]["user_flg"] === "0") {
             break;
         }
-        $data["head"][$i+3] = $data["head"][$i];
-        $data["item"][$i+3] = $data["item"][$i];
-        $data["item_k"][$i+3] = $data["item_k"][$i];
-        $data["memo"][$i+3] = $data["memo"][$i];
-        $data["memo_k"][$i+3] = $data["memo_k"][$i];
+        $data["head"][$i+2] = $data["head"][$i];
+        $data["item"][$i+2] = $data["item"][$i];
+        $data["item_k"][$i+2] = $data["item_k"][$i];
+        $data["memo"][$i+2] = $data["memo"][$i];
+        $data["memo_k"][$i+2] = $data["memo_k"][$i];
     }
     $cnt = $i+1;
-    for ($i=$cnt; $i<($cnt+3); $i++) {
+    for ($i=$cnt; $i<($cnt+2); $i++) {
         $data["head"][$i] = array(
             "syaincd" => "",
-            "syainnm" => ($i===$cnt ? "当番　合計" : ($i===($cnt+1) ? "予備　合計" : "管理職合計")),
+            // "syainnm" => ($i===$cnt ? "当番　合計" : ($i===($cnt+1) ? "予備　合計" : "管理職合計")),
+            "syainnm" => ($i===$cnt ? "当番　合計" : "管理職合計"),
             "syozokucd" => "",
             "syozokunm" => "",
             "itemnm" => "",
@@ -215,13 +216,18 @@ function loadData() {
         );    
         for ($j=0; $j<$days; $j++) {
             $data["item"][$i]["id{$j}"] = "";
+            // $data["item"][$i]["add{$j}"] = ($i === $cnt && $kokyu[$j] === "1" && $kei["kei"][$i-$cnt][$j] < $toban_suu
+            //                                     ? "boldred"
+            //                                     : ($i === ($cnt + 1) && $kokyu[$j] === "0" && $kei["kei"][$i-$cnt][$j] < 1 
+            //                                         ? "boldred"
+            //                                         : ($i === ($cnt + 2) && $kokyu[$j] !== "2" && $kei["kei"][$i-$cnt][$j] === 0
+            //                                             ? "boldred"
+            //                                             : "" )));
             $data["item"][$i]["add{$j}"] = ($i === $cnt && $kokyu[$j] === "1" && $kei["kei"][$i-$cnt][$j] < $toban_suu
                                                 ? "boldred"
-                                                : ($i === ($cnt + 1) && $kokyu[$j] === "0" && $kei["kei"][$i-$cnt][$j] < 1 
+                                                : ($i === ($cnt + 1) && $kokyu[$j] !== "2" && $kei["kei"][$i-$cnt][$j] === 0
                                                     ? "boldred"
-                                                    : ($i === ($cnt + 2) && $kokyu[$j] !== "2" && $kei["kei"][$i-$cnt][$j] === 0
-                                                        ? "boldred"
-                                                        : "" )));
+                                                    : "" ));
             $data["item"][$i]["day{$j}"] = $kei["kei"][$i-$cnt][$j];
             $data["item"][$i]["memo{$j}"] = "";
             $data["item_k"][$i]["id{$j}"] = "";
@@ -268,12 +274,13 @@ function setItem($data,$i,$day,$memo,$kakutei,&$kei) {
             if ($_SESSION["shift"]["stamps"][$id2]["tx"] === "当") {
                 $kei["kei".$kakutei][0][$j]++;
             }
-            if ($_SESSION["shift"]["stamps"][$id2]["tx"] === "予") {
-                $kei["kei".$kakutei][1][$j]++;
-            }
+            // if ($_SESSION["shift"]["stamps"][$id2]["tx"] === "予") {
+            //     $kei["kei".$kakutei][1][$j]++;
+            // }
             if ($data["head"][$i]["itemnm"] === "ＧＭ" || $data["head"][$i]["itemnm"] === "マネージャー") {
                 if ($id < 100) {
-                    $kei["kei".$kakutei][2][$j]++;
+                    // $kei["kei".$kakutei][2][$j]++;
+                    $kei["kei".$kakutei][1][$j]++;
                 }
             }
         } else {
@@ -536,32 +543,32 @@ function toban() {
             }
         }
         // 予備作成
-        foreach ($weekday as $key => $val) {
-            if ($val > 0) {
-                continue;
-            }
-            $flg = 1;
-            $okflg = false;
-            while ($okflg === false && $flg < 3) {
-                $taisho = array();
-                foreach ($w as $wkey => $wval) {
-                    if (isset($w[$wkey]["flg"]) === false) {
-                        $w[$wkey]["flg"] = 0;
-                    }
-                    if ($w[$wkey]["flg"] < $flg && ($wval["var"][$key] === "" || (int)$wval["var"][$key] < $hantei)) {
-                        $taisho[] = $wkey;
-                    }
-                }
-                if (count($taisho) === 0) {
-                    $flg++;
-                } else {
-                    $i = rand(0,count($taisho)-1);
-                    $w[$taisho[$i]]["var"][$key] = ($w[$taisho[$i]]["var"][$key] === "" ? $yobi_cd : substr($yobi_cd,0,1).$w[$taisho[$i]]["var"][$key]);
-                    $w[$taisho[$i]]["flg"]++;
-                    $okflg = true;
-                }
-            }
-        }
+        // foreach ($weekday as $key => $val) {
+        //     if ($val > 0) {
+        //         continue;
+        //     }
+        //     $flg = 1;
+        //     $okflg = false;
+        //     while ($okflg === false && $flg < 3) {
+        //         $taisho = array();
+        //         foreach ($w as $wkey => $wval) {
+        //             if (isset($w[$wkey]["flg"]) === false) {
+        //                 $w[$wkey]["flg"] = 0;
+        //             }
+        //             if ($w[$wkey]["flg"] < $flg && ($wval["var"][$key] === "" || (int)$wval["var"][$key] < $hantei)) {
+        //                 $taisho[] = $wkey;
+        //             }
+        //         }
+        //         if (count($taisho) === 0) {
+        //             $flg++;
+        //         } else {
+        //             $i = rand(0,count($taisho)-1);
+        //             $w[$taisho[$i]]["var"][$key] = ($w[$taisho[$i]]["var"][$key] === "" ? $yobi_cd : substr($yobi_cd,0,1).$w[$taisho[$i]]["var"][$key]);
+        //             $w[$taisho[$i]]["flg"]++;
+        //             $okflg = true;
+        //         }
+        //     }
+        // }
         // データ書き込み
         foreach ($w as $wkey => $wval) {
             $sql = "UPDATE schedule SET yotei_var = '".implode(",",$wval["var"])."'
@@ -1315,7 +1322,7 @@ function loadAdmin() {
     require_once "pdo_connect.php";
     $con = new pdoConnect("schedule");
     $data = array();
-    $sql = "SELECT s.dept_cd,k.DEPT_NAME,s.admin_user,s.toban_cd,s.toban_x,s.yobi_cd,s.toban_suu
+    $sql = "SELECT s.dept_cd,k.DEPT_NAME,s.admin_user,s.toban_cd,s.toban_x,s.yobi_cd,s.toi_cd,s.toban_suu
             FROM setting AS s
             LEFT JOIN common.idinfo_soshiki AS k ON k.DEPT_CD = s.dept_cd
             WHERE id = 1";
@@ -1330,6 +1337,7 @@ function loadAdmin() {
             "toban_cd" => $row["toban_cd"],
             "toban_x" => $row["toban_x"],
             "yobi_cd" => $row["yobi_cd"],
+            "toi_cd" => $row["toi_cd"],
             "toban_suu" => $row["toban_suu"]
         );
     }
@@ -1347,6 +1355,7 @@ function regAdmin() {
                 toban_cd = '{$_POST["toban_cd"]}',
                 toban_x = '{$_POST["toban_x"]}',
                 yobi_cd = '{$_POST["yobi_cd"]}',
+                toi_cd = '{$_POST["toi_cd"]}',
                 toban_suu = {$_POST["toban_suu"]}
              WHERE id = 1";
         if ($con->pdo->exec($sql) === false) {
