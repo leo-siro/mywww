@@ -467,7 +467,7 @@ _:-ms-lang(x)::-ms-backdrop, #board_main_body {
 .comp {
     text-decoration: line-through;
 }
-.story_hide {
+.story_hide, .task_hide {
     display: none;
 }
 .board_comp {

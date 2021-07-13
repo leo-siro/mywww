@@ -155,7 +155,7 @@ class MyClass {
 
         $oldkeynum = 0;
         $cnt = array("left0"=> 0,"main0"=>0,"main1"=>0,"main2"=>0,"main3"=>0,"main4"=>0,"main5"=>0,"right0"=>0);
-        $data["sql"] = $sql;
+        // $data["sql"] = $sql;
         $ds = $con->pdo->query($sql);
         while ($row = $ds->fetch(PDO::FETCH_ASSOC)) {
             if ($oldkeynum !== $row["keynum"]) {
@@ -221,7 +221,9 @@ class MyClass {
                     "story_bikou" => $row["story_bikou"],
                     "tantou" => $row["user_name"],
                     "color" => $row["color"],
-                    "syain" => $row["syaincd"]
+                    "syain" => $row["syaincd"],
+                    "board_comp_show2" => "",
+                    "board_comp_cnt2" => 0
                 );
                 if ($data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_comp_show"] === "" && $row["story_progress"] === "100") {
                     $data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_comp_show"] = "board_comp_show";
@@ -235,6 +237,7 @@ class MyClass {
             if ($row["taskno"] !== null) {
                 $data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_story"][$scnt-1]["board_task"][$tcnt] = array(
                     "taskno" => $row["taskno"],
+                    "task_hide" => $row["task_progress"] === "100" ? "task_hide" : "",
                     "task_comp" => ($row["task_progress"] === "100" ? "comp":""),
                     "task_title" => $row["task_title"],
                     "task_progress" => $row["task_progress"],
@@ -242,6 +245,10 @@ class MyClass {
                     "task_ration_auto" => $row["task_ration_auto"],
                     "task_bikou" => $row["task_bikou"]
                 );
+                if ($data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_story"][$scnt-1]["board_comp_show2"] === "" && $row["task_progress"] === "100") {
+                    $data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_story"][$scnt-1]["board_comp_show2"] = "board_comp_show";
+                }
+                $data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_story"][$scnt-1]["board_comp_cnt2"] += ($row["task_progress"] === "100" ? 1 : 0);
                 // $kadai_progress += $row["task_progress"] * ($row["task_ration"] / 100) * ($row["story_ration"] / 100);
                 // $story_progress += $row["task_progress"] * ($row["task_ration"] / 100);
                 // $data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["kadai_progress"] = floor($kadai_progress+0.01)."%";
@@ -1020,7 +1027,7 @@ class MyClass {
                                  SELECT DISTINCT keynum FROM nippo WHERE work_syori BETWEEN '{$str_day}' AND '{$end_day}')
                 {$syain_where}
                 ORDER BY k.important DESC,IF(k.progress=100,1,0), k.keynum, IF(s.progress=100,1,0), s.sortno, s.storyno, IF(t.progress=100,1,0), t.sortno, t.taskno";
-        $data["sql"] = $sql;
+        // $data["sql"] = $sql;
         $oldkeynum = 0;
         $kcnt = 0;
         $data["data"]["monthkei"] = 0;

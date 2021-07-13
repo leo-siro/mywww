@@ -430,11 +430,14 @@ $(function() {
             e.preventDefault();
             clickCount = 0;
             if ($this.parent().hasClass('board_story')) {
-                $this.parent().children('.board_task').toggle();
+                // 開始前ストーリーのタスクを表示
+                if ($this.parent().data('syotei') > today_str && $this.parent().children('.board_memo').children('.memo_progress').text() === '0%') {
+                    $this.parent().find('.board_task').toggle();
+                }
             } else if ($this.parent().hasClass('board_task')) {
                 $this.parent().children('.progress_waku').toggle();
             } else {
-                $this.parent().children('.board_story').toggle();
+                // $this.parent().children('.board_story').toggle();
             }
         }        
     });
@@ -850,7 +853,7 @@ $(function() {
                 // 完了ストーリーのタスクと開始前タスクと担当者指定時に他担当者分を非表示
                 $('#board_main_body .board_story').each(function() {
                     if ($(this).children('.board_memo').children('.memo_progress').text() === '100%') {
-                        $(this).find('.board_task').hide();
+                        // $(this).find('.board_task').hide();
                     }
                     if ($(this).data('syotei') > today_str && $(this).children('.board_memo').children('.memo_progress').text() === '0%') {
                         $(this).find('.board_task').hide();
@@ -1013,16 +1016,30 @@ $(function() {
     });
     // 終了ストーリー表示・非表示
     $(document).on('click','.board_comp',function() {
-        if ($(this).children('.board_comp_switch').text() === '▼') {
-            $(this).parent().children('.story_hide').removeClass('story_hide');
-            $(this).children('.board_comp_switch').text('▲');
+        if ($(this).children().eq(0 ).text() === '終了したストーリー（') {
+            if ($(this).children('.board_comp_switch').text() === '▼') {
+                $(this).parent().children('.story_hide').removeClass('story_hide');
+                $(this).children('.board_comp_switch').text('▲');
+            } else {
+                $(this).parent().children('.board_story').each(function() {
+                    if ($(this).children('.board_memo').children('.memo_progress').text() === '100%') {
+                        $(this).addClass('story_hide');
+                    }
+                });
+                $(this).children('.board_comp_switch').text('▼');
+            }
         } else {
-            $(this).parent().children('.board_story').each(function() {
-                if ($(this).children('.board_memo').children('.memo_progress').text() === '100%') {
-                    $(this).addClass('story_hide');
-                }
-            });
-            $(this).children('.board_comp_switch').text('▼');
+            if ($(this).children('.board_comp_switch').text() === '▼') {
+                $(this).parent().children('.task_hide').removeClass('task_hide');
+                $(this).children('.board_comp_switch').text('▲');
+            } else {
+                $(this).parent().children('.board_task').each(function() {
+                    if ($(this).children('.progress_waku').children('.progress').text() === '100%') {
+                        $(this).addClass('task_hide');
+                    }
+                });
+                $(this).children('.board_comp_switch').text('▼');
+            }
         }
     });
     // 各タイトルのホバー時にタイトルが長い時だけツールチップを表示する
@@ -1087,7 +1104,7 @@ $(function() {
             if (key === 'add') {
                 $(this).children('.add_btn').click();
             } else if (key === 'disptask') {
-                $(this).parent().children('.board_task').toggle();
+                // $(this).parent().children('.board_task').toggle();
             } else if (key === 'edit') {
                 $(this).children('.board_title').click();
             } else if (key === 'delete') {
@@ -1127,7 +1144,7 @@ $(function() {
         },
         items: {
             add: { name:'タスク追加', icon:'add', },
-            disptask: {name:'タスク表示／非表示'}, 
+            // disptask: {name:'タスク表示／非表示'}, 
             sep1: '---------',
             edit: { name:'ストーリー編集', icon:'edit', },
             sep2: '---------',
