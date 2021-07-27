@@ -602,7 +602,7 @@ $(function() {
                                 : $this.data('sv'));
                     id = String(parseInt(id) + (parseInt($this.data('id') / 10) * 10));
                 }
-                if (stamps[s_id].type === '2' && String($this.data('id')).length === 1) {
+                if (stamps[s_id].type === '2' && $this.data('sv') !== undefined && String($this.data('id')).length === 1) {
                     // 登録する項目の結合グループが２で現在の項目が結合グループ１の場合、結合する
                     tx = $this.data('sv') + tx;
                     id = String(parseInt(id) + parseInt($this.data('id') % 10));
