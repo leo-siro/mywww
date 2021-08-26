@@ -90,9 +90,15 @@ class MyClass {
         $syozoku_join = "";
         if ($_POST["syaincd"] !== "0") {
             $syain_where = 
-                "AND k.keynum IN (SELECT k.keynum FROM kadai AS k INNER JOIN stories AS s ON s.keynum = k.keynum WHERE s.syaincd = '{$_POST["syaincd"]}' GROUP BY k.keynum)";
+                "AND (k.keynum IN (SELECT k.keynum FROM kadai AS k INNER JOIN stories AS s ON s.keynum = k.keynum ".
+                "WHERE k.jyotai > 0 AND s.syaincd = '{$_POST["syaincd"]}' GROUP BY k.keynum) OR s.keynum IS NULL)";
                 // "AND s.syaincd = '{$_POST["syaincd"]}'";
                 // "AND (s.syaincd = '{$_POST["syaincd"]}' OR k.syutantou LIKE '%{$_POST["syainnm"]}%')";
+                $syozoku_join = 
+                "INNER JOIN (
+                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME 
+                    FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
+                ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
             $sort = "k.sortno,";
         } elseif ($_POST["dept_cd"] !== "0" && trim($_POST["dept_cd"]) !== "") {
             $data["syain_list"] = $this->getSyain($con,$_POST["dept_cd"]);

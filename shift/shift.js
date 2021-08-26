@@ -321,55 +321,6 @@ $(function() {
         }
     }
 // --------------------------------------------------------------------------------------------------------------------
-    // 予定スタンプ関連
-    // 追加ボタンクリック
-    // $('#stamp_add').click(function() {
-    //     showMessage('上段項目２文字、下段項目（補足）は２０文字まで入力可');
-    //     $('#schdule_input_form').show();
-    //     sv_item = null;
-    //     $('#schdule_waku').offset({top:$(this).offset().top+4,left:$(this).offset().left-45});
-    //     // $('#sc_moji').width(40).val('').focus();
-    //     $('#sc_title').width(88).val('');
-    // });
-    // function addStamp(stamp) {
-        // var id = $('input[name="stamp"]:last').prop('id');
-        // id = id.substr(0,5)+(parseInt(id.substr(5,2))+1);
-    //     $('#stamp_group').append(
-    //         '<input name="stamp" class="ui-checkboxradio ui-helper-hidden-accessible" id="'+stamp.id+'" type="radio">'+
-    //         '<label class="buttons ui-button ui-widget ui-checkboxradio-radio-label ui-controlgroup-item ui-checkboxradio-label ui-corner-right add_stmap" for="'+stamp.id+
-    //         '" title="'+stamp.title+'">'+
-    //         '<span class="ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank></span>'+
-    //         '<span class="ui-checkboxradio-icon-space"> </span>'+stamp.btn+'</label>'
-    //     );
-    // }
-    // 予定スタンプボタン削除用（右クリックメニュー）
-    // $.contextMenu({
-    //     selector: '.add_stmap',
-    //     build: function($trigger, e){
-    //         return {
-    //             callback: function(key, options){
-    //                 if (key == 'del') {
-    //                     if (confirm('追加したボタンを削除します！よろしいですか？')) {
-    //                         // ストレージ消去
-    //                         for (var i=0; i<add_stamp.length; i++) {
-    //                             if (add_stamp[i].stamp === $(this).text().trim()) {
-    //                                 add_stamp.splice(i, 1);
-    //                                 break;
-    //                             }
-    //                         }
-    //                         localStorage.setItem('shift_add_stamp',JSON.stringify(add_stamp));
-    //                         $(this).prev().remove();
-    //                         $(this).remove();
-    //                     }
-    //                 }
-    //             },
-    //             items: {
-    //                 "del":{ name:"削除", icon:"delete", },
-    //             }
-    //         };
-    //     },
-    // });
-// --------------------------------------------------------------------------------------------------------------------
     // 編集モードクリック
     // var stamp = '';
     // var stamp_title = '';
@@ -408,6 +359,9 @@ $(function() {
                 function(e) {
                     if (edit_flg === 0 && syaincd == $(this).parent().data('syaincd') || edit_flg > 0) {
                         $(this).text($(this).data('sv')).css('color','');
+                        if ($(this).data('title') !== '') {
+                            $(this).append('<div class="memo">★</div>');
+                        }
                     }
                 }
             ).mousedown(function(e) {
@@ -529,31 +483,21 @@ $(function() {
         $(this).hide();
         clearMessage();
         if ($('#sc_title').val() !== sv_item.prop('title')) {
-            // if (sv_item !== null) {
-                // スケジュール入力
-                sv_item.prop('title',$('#sc_title').val());
-                sv_item.data({title:$('#sc_title').val()});
-                edit = true; 
-                var r = $('#main_body_item .row').index(sv_item.parent());
-                // 編集フラグセット
-                if ($('#main_body_item .row').eq(r).data('edit') === undefined) {
-                    $('#main_body_item .row').eq(r).data('edit',1);
-                }
-                // コメントマーク
-                if (sv_item.children('div').length === 0 && $('#sc_title').val() !== '') {
-                    sv_item.append('<div class="memo">★</div>');
-                } else if (sv_item.children('div').length === 1 && $('#sc_title').val() === '') {
-                    sv_item.children('div').remove();
-                }
-                
-            // } else {
-            //     // 予定スタンプボタン作成
-            //     var wstamp = {stamp:$('#sc_moji').val(),title:$('#sc_title').val()};
-            //     add_stamp.push(wstamp);
-            //     localStorage.setItem('shift_add_stamp',JSON.stringify(add_stamp));
-            //     addStamp(wstamp);
-            //     $('#stamp_group').buttonset('refresh');
-            // }
+            // スケジュール入力
+            sv_item.prop('title',$('#sc_title').val());
+            sv_item.data({title:$('#sc_title').val()});
+            edit = true; 
+            var r = $('#main_body_item .row').index(sv_item.parent());
+            // 編集フラグセット
+            if ($('#main_body_item .row').eq(r).data('edit') === undefined) {
+                $('#main_body_item .row').eq(r).data('edit',1);
+            }
+            // コメントマーク
+            if (sv_item.children('div').length === 0 && $('#sc_title').val() !== '') {
+                sv_item.append('<div class="memo">★</div>');
+            } else if (sv_item.children('div').length === 1 && $('#sc_title').val() === '') {
+                sv_item.children('div').remove();
+            }
         }
     });
     function setStamp(e,$this) {
@@ -610,25 +554,9 @@ $(function() {
                 // 現在項目のテキストとＩＤ、バックアップ（ＳＶ）を置換える
                 $this.text(tx).data({id: parseInt(id), sv: tx});
                 // 現在の項目にタイトルが入っていない場合はタイトルを置換える
-                if ($this.prop('title') === '') {
+                if ($this.prop('title') === '' && $this.data('title') === '') {
                     $this.prop('title',stamps[s_id].title).data('title',stamps[s_id].title);
                 }
-                // 項目セット2020/11/11に下記から上記へ変更、バグがなさそうなら下記は削除する
-                // if (stamps[s_id].type === '2' && stamps[$this.data('id')].type === '1') {
-                //     $this.text($this.data('sv')+stamps[s_id].tx).data({'id':s_id.substr(0,1)+String($this.data('id')),'sv':$this.data('sv')+stamps[s_id].tx,'title':stamps[s_id].title}).prop('title',stamps[s_id].title).css('color','');
-                // } else {
-                //     $this.removeClass(function(index, className) {
-                //         return (className.match(/\bbg\S+/g) || []).join(' ');
-                //     });
-                //     if (stamps[s_id].color !== '0') {
-                //         $this.addClass('bg'+stamps[s_id].color);
-                //     }
-                //     if (stamps[s_id].type === '1' && String($this.data('id')).length === 2) {
-                //         $this.text(stamps[s_id].tx+$this.data('sv')).data({'id':String($this.data('id')).substr(0,1)+s_id,sv:stamps[s_id].tx+$this.data('sv')}).css('color','').prop('title','');
-                //     } else {
-                //         $this.data({'id':s_id,'sv':stamps[s_id].tx,'title':stamps[s_id].title}).text(stamps[s_id].tx).prop('title',stamps[s_id].title).css('color','');
-                //     }
-                // }
                 dispCnt($('#main_body_item .row').index($this.parent()));
             } else if (e.buttons === 2) { // 右クリック
                 $this.removeClass(function(index, className) {
@@ -637,6 +565,9 @@ $(function() {
                 $this.data({'id':0,'sv':'','title':''}).text('').css('color','').prop('title','');
                 dispCnt($('#main_body_item .row').index($this.parent()));
             } else if (s_id !== $this.prop('id')) {  // マウスオーバー
+                if ($this.children('div').length > 0) {
+                    $this.children('div').remove();
+                }
                 $this.data('sv',$this.text()).text(stamps[s_id].btn).css('color','#bbbbbb');
             }
         }        
