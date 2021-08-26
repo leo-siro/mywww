@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=15"></script>
+    <script src="taskman.js?v=16"></script>
 </head>
 <body>
     <header>

@@ -855,9 +855,9 @@ $(function() {
                     if ($(this).children('.board_memo').children('.memo_progress').text() === '100%') {
                         // $(this).find('.board_task').hide();
                     }
-                    if ($(this).data('syotei') > today_str && $(this).children('.board_memo').children('.memo_progress').text() === '0%') {
-                        $(this).find('.board_task').hide();
-                    }
+                    // if ($(this).data('syotei') > today_str && $(this).children('.board_memo').children('.memo_progress').text() === '0%') {
+                    //     $(this).find('.board_task').hide();
+                    // }
                     if ($('#board_syain').val() !== "0" && $('#board_syain option:selected').text() !== $(this).children('.board_memo').children('.memo_syutantou').text() && $(this).hasClass('story_hide') === false) {
                         $(this).hide();
                     }
