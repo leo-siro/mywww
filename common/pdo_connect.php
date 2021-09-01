@@ -8,7 +8,7 @@ class pdoConnect
         $user = 'jyosys';
         $password = 'Jy0Sys8848';
     
-        if (($db === "schedule" || $db === "taskman")
+        if (($db === "schedule" || $db === "taskman" || $db === "devassets")
         && substr($_SERVER["SERVER_NAME"],0,8) === "mywwwdev") {
             $db = $db."_dev";
         }
