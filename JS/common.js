@@ -146,26 +146,42 @@ function ProgressEnd(key) {
 //------------------------------------------------------------------------------------------------------------
 // 画面操作を無効（Now loadingなどのメッセージを表示）
 //------------------------------------------------------------------------------------------------------------
-function BlockScreen(msg) {
-	$('body').append('<div id="block_screen" '+
+function BlockScreen(msg,bgcolor,target) {
+	var bgcolor = typeof bgcolor !== 'undefined' ? bgcolor : 'rgba(0,0,0,0.5)';
+	var target = typeof target !== 'undefined' ? target : null;
+	if (target === null || target.length === 0) {
+		$width = '100%';
+		$height = '100vh';
+		$top = '0';
+		$left = '0';
+		$id = 'block_screen';
+	} else {
+		$width = target.width()+'px';
+		$height = target.height()+'px';
+		$top = target.offset().top+'px';
+		$left = target.offset().left+'px';
+		$id = 'block_screen'+(Math.floor(Math.random() * 1000));
+	}
+	$('body').append('<div id="'+$id+'" '+
 						'style="'+
 							'z-index:9999;'+
 							'position:absolute;'+
-							'width:100%;'+
-							'height:100vh;'+
-							'top:0;'+
-							'left:0;'+
-							'background-color:rgba(0,0,0,0.5);'+
+							'width:'+$width+';'+
+							'height:'+$height+';'+
+							'top:'+$top+';'+
+							'left:'+$left+';'+
+							'background-color:'+bgcolor+';'+
 							'display:flex;'+
 							'justify-content:center;'+
 							'align-items:center;'+
 						'">'+msg+
 					'</div>');
-	document.body.style.cursor = 'wait';
+	 $('#'+$id).css('cursor','wait');
+	 return $id;
 }
-function UnBlockScreen() {
-	$('#block_screen').remove();
-	document.body.style.cursor = 'auto';
+function UnBlockScreen(target) {
+	var target = typeof target !== 'undefined' ? target : 'block_screen';
+	$('#'+target).remove();
 }
 //------------------------------------------------------------------------------------------------------------
 // URLパラメータの取得
