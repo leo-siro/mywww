@@ -1606,6 +1606,7 @@ $(function() {
                 $('#ad_tobansuu').val(ret.toban_suu);
                 $('#ad_yobi').val(ret.yobi_cd);
                 $('#ad_toi').val(ret.toi_cd);
+                $('#ad_jyogai').val(ret.jyogai_syain);
                 dfd.resolve(ret);
             } else {
                 showMessage('データ読込に失敗しました。','#ff0000');
@@ -1660,7 +1661,8 @@ $(function() {
                     toban_x: $('#ad_toban_x').val(),
                     toban_suu: $('#ad_tobansuu').val(),
                     yobi_cd: $('#ad_yobi').val(),
-                    toi_cd: $('#ad_toi').val()
+                    toi_cd: $('#ad_toi').val(),
+                    jyogai_syain: $('#ad_jyogai').val()
                 };
                 BlockScreen('読込中 ...');
                 Ajax('shift.php?func=regAdmin',para).done(function(ret) {

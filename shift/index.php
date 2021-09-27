@@ -53,14 +53,14 @@
     <title>公休予定表</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="/CSS/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="shift.css?v=2">
-	<script src="/JS/jquery-3.5.1.min.js"></script>
-	<script src="/JS/jquery-ui.min.js"></script>
-	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
-    <script src="/JS/common.js"></script>
-    <script src="/JS/jquery.contextMenu.min.js"></script>
-    <script src="/JS/jquery.ui.position.js"></script>    
-    <script src="/JS/eventsource.js"></script>
+    <link rel="stylesheet" href="shift.css?v=3">
+	<script src="/JS/jquery-3.5.1.min.js" defer></script>
+	<script src="/JS/jquery-ui.min.js" defer></script>
+	<script src="/JS/jquery.ui.datepicker-ja.min.js" defer></script>
+    <script src="/JS/common.js" defer></script>
+    <script src="/JS/jquery.contextMenu.min.js" defer></script>
+    <script src="/JS/jquery.ui.position.js" defer></script>    
+    <script src="/JS/eventsource.js" defer></script>
     <script>
         const admin = <?php echo $_SESSION["shift"]["admin"] ? "true" : "false" ?>;
         const syaincd = <?php echo "'{$_SESSION["shift"]["user"]}'"; ?>;
@@ -74,7 +74,7 @@
         var stamps = <?php echo json_encode($_SESSION["shift"]["stamps"]);?>;
         var six = <?php echo json_encode($_SESSION["shift"]["stamp_s"]);?>;
     </script>
-    <script src="shift.js?v=4"></script>
+    <script src="shift.js?v=5" defer></script>
 </head>
 <body>
     <header>
@@ -469,6 +469,7 @@
         </div>
         <div>
             <label>情シストップCD</label><input type="text" id="ad_deptcd" maxlength="2">
+            <label>集計除外</label><input type="text" id="ad_jyogai" maxlength="100">
         </div>
         <div class="msg_bar">
             <span>>></span>

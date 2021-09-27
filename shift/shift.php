@@ -27,14 +27,16 @@ function loadData() {
         }
         $wdate = strtotime('+1 day', $wdate);
     }
-    $sql = "SELECT toban_suu,dept_cd
+    $sql = "SELECT toban_suu,dept_cd,jyogai_syain
             FROM setting 
             WHERE id = 1";
+    $jyogai = "";
     $top_cd = "47";
     $ds = $con->pdo->query($sql);
     if ($row = $ds->fetch()) {
         $toban_suu = intval($row["toban_suu"]);
         $top_cd = $row["dept_cd"];
+        $jyogai = $row["jyogai_syain"];
     }
     // 祝祭日テーブル読込
     $sql = "SELECT holiday,holiday_biko,toban FROM holiday 
@@ -148,12 +150,12 @@ function loadData() {
         $day = $row["yotei_var"] == "" ? array_fill(0,date("j",strtotime($end_day)),"") : explode(",",$row["yotei_var"]);
         $memo = $row["yotei_memo"] == "" ? array_fill(0,date("j",strtotime($end_day)),"") : explode(",",$row["yotei_memo"]);
         $data["item"][$i]["syaincd"] = $row["syaincd"];
-        $data = setItem($data,$i,$day,$memo,"",$kei);
+        $data = setItem($data,$i,$day,$memo,"",$kei,$jyogai);
         // 確定データ取得
         $day = $row["kakutei_var"] == "" ? array_fill(0,date("j",strtotime($end_day)),"") : explode(",",$row["kakutei_var"]);
         $memo = $row["kakutei_memo"] == "" ? array_fill(0,date("j",strtotime($end_day)),"") : explode(",",$row["kakutei_memo"]);
         // $data["item_k"][$i]["syaincd"] = $row["syaincd"];
-        $data = setItem($data,$i,$day,$memo,"_k",$kei);
+        $data = setItem($data,$i,$day,$memo,"_k",$kei,$jyogai);
         // 確定データがある場合
         if ($row["kakutei_var"] != "" && isset($data["kakutei"]) === false) {
             $data["kakutei"] = 1;
@@ -245,7 +247,7 @@ function loadData() {
     $data["code"] = "OK";
     echo json_encode($data);
 }
-function setItem($data,$i,$day,$memo,$kakutei,&$kei) {
+function setItem($data,$i,$day,$memo,$kakutei,&$kei,$jyogai) {
     $kou = 0;
     $asa = 0;
     $tou = 0;
@@ -278,7 +280,7 @@ function setItem($data,$i,$day,$memo,$kakutei,&$kei) {
             //     $kei["kei".$kakutei][1][$j]++;
             // }
             if ($data["head"][$i]["itemnm"] === "ＧＭ" || $data["head"][$i]["itemnm"] === "マネージャー") {
-                if ($id < 100) {
+                if ($id < 100 && strpos($jyogai,$data["head"][$i]["syaincd"]) === false) {
                     // $kei["kei".$kakutei][2][$j]++;
                     $kei["kei".$kakutei][1][$j]++;
                 }
@@ -1322,7 +1324,7 @@ function loadAdmin() {
     require_once "pdo_connect.php";
     $con = new pdoConnect("schedule");
     $data = array();
-    $sql = "SELECT s.dept_cd,k.DEPT_NAME,s.admin_user,s.toban_cd,s.toban_x,s.yobi_cd,s.toi_cd,s.toban_suu
+    $sql = "SELECT s.dept_cd,k.DEPT_NAME,s.admin_user,s.toban_cd,s.toban_x,s.yobi_cd,s.toi_cd,s.toban_suu,s.jyogai_syain
             FROM setting AS s
             LEFT JOIN common.idinfo_soshiki AS k ON k.DEPT_CD = s.dept_cd
             WHERE id = 1";
@@ -1338,7 +1340,8 @@ function loadAdmin() {
             "toban_x" => $row["toban_x"],
             "yobi_cd" => $row["yobi_cd"],
             "toi_cd" => $row["toi_cd"],
-            "toban_suu" => $row["toban_suu"]
+            "toban_suu" => $row["toban_suu"],
+            "jyogai_syain" => $row["jyogai_syain"]
         );
     }
     echo json_encode($data);
@@ -1356,7 +1359,8 @@ function regAdmin() {
                 toban_x = '{$_POST["toban_x"]}',
                 yobi_cd = '{$_POST["yobi_cd"]}',
                 toi_cd = '{$_POST["toi_cd"]}',
-                toban_suu = {$_POST["toban_suu"]}
+                toban_suu = {$_POST["toban_suu"]},
+                jyogai_syain = '{$_POST["jyogai_syain"]}'
              WHERE id = 1";
         if ($con->pdo->exec($sql) === false) {
             throw new Exception($sql);

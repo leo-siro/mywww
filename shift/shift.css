@@ -475,7 +475,7 @@ td.hf_toban {
     border: 1px solid #888888;
 }
 /* 管理者フォーム */
-#ad_syain {
+#ad_syain, #ad_jyogai {
     margin: 0px 5px 10px 5px;
     width: 200px;
 }
