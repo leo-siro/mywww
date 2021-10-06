@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>SlickGrid test</title>
+  <link rel="stylesheet" href="/JS/SlickGrid/slick.grid.css"/>
+  <link rel="stylesheet" href="/JS/SlickGrid/css/smoothness/jquery-ui.css"/>
+  <link rel="stylesheet" href="/JS/SlickGrid/slick-default-theme.css"/>
+  <style> 
+	* {
+		font-family: arial;
+		font-size: 8pt;
+	}
+	#testGrid {
+		background: white;
+		outline: 0;
+		border: 1px solid gray;
+	}
+  </style> 
+</head>
+<body>
+
+<div id="testGrid" style="width:216px;height:158px;"></div>
+
+<script src="/JS/SlickGrid/lib/jquery-3.1.0.js"></script>
+<script src="/JS/SlickGrid/lib/jquery.event.drag-2.3.0.js"></script>
+<script src="/JS/SlickGrid/slick.core.js"></script>
+<script src="/JS/SlickGrid/slick.grid.js"></script>
+<script>
+  var grid;
+  var columns = [
+    {id: "ID", name: "ID", field: "id", width: 50},
+    {id: "name", name: "name", field: "name", width: 80},
+    {id: "romaji", name: "romaji", field: "romaji", width: 80},
+  ];
+
+  var options = {
+    enableCellNavigation: true,
+    enableColumnReorder: false
+  };
+
+  $(function () {
+    var data = [];
+	data[0] = {id:"1",name:"鈴木",romaji:"suzuki"};
+	data[1] = {id:"2",name:"田中",romaji:"tanaka"};
+	data[2] = {id:"3",name:"佐藤",romaji:"sato"};
+	data[3] = {id:"4",name:"竹田",romaji:"takeda"};
+	data[4] = {id:"5",name:"山田",romaji:"yamada"};
+
+    grid = new Slick.Grid("#testGrid", data, columns, options);
+  });
+</script>
+</body>
+</html>

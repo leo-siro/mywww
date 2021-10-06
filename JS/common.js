@@ -564,10 +564,12 @@ if (!String.prototype.repeat) { /* String.repeat が定義されていなけれ�
 })(jQuery);
 
 (function( $ ){
-	$.alert = function(message) {
+	$.alert = function(message,width) {
+		var width = typeof width !== 'undefined' ? width : 400;
 		var dfd = $.Deferred();
 	  	// ダイアログを作成
 	  	var dlg = $( "<div></div>" ).dialog({
+			width: width,
 			title: '確認',
 		  	modal: true,
 		  	buttons: {
@@ -581,11 +583,13 @@ if (!String.prototype.repeat) { /* String.repeat が定義されていなけれ�
 	  	return dfd.promise();
 	};
   
-	$.confirm = function(message) {
+	$.confirm = function(message,width) {
+		var width = typeof width !== 'undefined' ? width : 400;
 	  	var dfd = $.Deferred();
 		var okclick = false;
 	  	// ダイアログを作成
 	  	var dlg = $( "<div></div>" ).dialog({
+			width: width,
 			title: '確認',
 		  	modal: true,
 			close: function() {
