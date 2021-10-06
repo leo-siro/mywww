@@ -99,11 +99,20 @@ function loadData() {
                 y.kakutei_memo,
                 l.msort,
                 y.upd_date,
-                y2.yotei_var AS prev_yotei
-            FROM v_member AS l
+                y2.yotei_var AS prev_yotei";
+    if (date("Y/m/01") <= $_POST["syori_ym"]) {
+        $sql .= "
+                FROM v_member AS l
                 LEFT JOIN schedule AS y ON y.syaincd = l.syaincd AND y.schdule_ym = '{$_POST["syori_ym"]}'
                 LEFT JOIN schedule AS y2 ON y2.syaincd = l.syaincd AND y2.schdule_ym = '{$prev_ym}'
             ";
+    } else {
+        $sql .= "
+                FROM v_member2 AS l
+                INNER JOIN schedule AS y ON y.syaincd = l.syaincd AND y.schdule_ym = '{$_POST["syori_ym"]}'
+                INNER JOIN schedule AS y2 ON y2.syaincd = l.syaincd AND y2.schdule_ym = '{$prev_ym}'
+            ";
+    }
             // echo $sql; exit;
     $ds = $con->pdo->query($sql) or die($sql);
     $cnt = $ds->rowCount();
