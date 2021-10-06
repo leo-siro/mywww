@@ -176,7 +176,7 @@ function loadData() {
             INNER JOIN common.syain_t AS s ON s.syaincd = l.syaincd
             LEFT JOIN common.idinfo_syozoku AS z ON z.EMP_ID = s.syaincd
             WHERE l.syozokucd <> (SELECT dept_cd FROM setting WHERE id = 1)
-              AND EXISTS(SELECT * FROM syain_list WHERE syozokucd LIKE CONCAT(z.DEPT_CD,'%'))
+              AND EXISTS(SELECT * FROM syain_list WHERE syozokucd LIKE CONCAT(z.DEPT_CD,'%') AND del_flg = 0)
             GROUP BY z.DEPT_CD,z.DEPT_NAME
             ORDER BY l.sortno";
     $ds = $con->pdo->query($sql) or die($sql);
@@ -252,6 +252,7 @@ function setItem($data,$i,$day,$memo,$kakutei,&$kei,$jyogai) {
     $asa = 0;
     $tou = 0;
     for ($j=0; $j<count($day); $j++) {
+        if ($day[$j] == "") $day[$j] = 0;
         if ($day[$j] !== "") {
             if ($day[$j] > 9 && $day[$j] < 100) {
                 $id = $day[$j] % 10;
@@ -353,7 +354,7 @@ function toban() {
                 FROM syain_list AS l 
                     INNER JOIN common.syain_t AS st on st.syaincd = l.syaincd
                     LEFT JOIN schedule AS s ON s.syaincd = l.syaincd AND s.schdule_ym = '{$_POST["syori_ym"]}'
-                WHERE s.syaincd IS NULL AND l.toban_flg > 0";
+                WHERE s.syaincd IS NULL AND l.toban_flg > 0 AND l.del_flg = 0";
         $ds = $con->pdo->query($sql);
         while ($row = $ds->fetch()) {
             $sql ="INSERT INTO schedule (syaincd,schdule_ym,yotei_var,yotei_memo)
@@ -413,7 +414,7 @@ function toban() {
         $wdate = date("Y-m-d",strtotime($_POST["syori_ym"]." -12 MONTH"));  // 過去1年分を基本とする
         $sql = "SELECT y.syaincd,y.schdule_ym,y.yotei_var FROM syain_list AS l
                     INNER JOIN schedule AS y ON y.syaincd = l.syaincd
-                WHERE l.toban_flg = 1 AND y.schdule_ym BETWEEN '{$wdate}' AND '{$_POST["syori_ym"]}'
+                WHERE l.toban_flg = 1 AND y.schdule_ym BETWEEN '{$wdate}' AND '{$_POST["syori_ym"]}' AND l.del_flg = 0
                 ORDER BY y.schdule_ym DESC";
         $ds = $con->pdo->query($sql);
         while ($row = $ds->fetch()) {
@@ -659,6 +660,7 @@ function loadSyain($call = false) {
             FROM syain_list AS l
             INNER JOIN common.syain_t AS s ON s.syaincd = l.syaincd 
             LEFT JOIN common.idinfo_soshiki AS k ON k.DEPT_CD = l.syozokucd
+            WHERE l.del_flg = 0
             ORDER BY l.sortno";
     $ds = $con->pdo->query($sql) or die($sql);
     while ($row = $ds->fetch()) {
@@ -706,14 +708,15 @@ function initSyain($call = false) {
     try {
         $con->pdo->beginTransaction();
         $sql = "SET @num=0;";
-        $sql.= "INSERT INTO syain_list(syaincd,syozokucd,toban_flg,edit_flg,sortno)
-                SELECT s.syaincd, s.syozokucd, 1, 0, @num:=@num+1
+        $sql.= "INSERT INTO syain_list(syaincd,user_name,syozokucd,toban_flg,edit_flg,sortno)
+                SELECT s.syaincd, s.name, s.syozokucd, 1, 0, @num:=@num+1
                 FROM common.idinfo_soshiki AS k
                     INNER JOIN common.syain_t AS s ON s.syozokucd = k.DEPT_CD
                 WHERE k.SCCD LIKE '% {$top_cd} %'
                 ORDER BY s.syozokucd, s.rank, s.syainseq
                 ON DUPLICATE KEY UPDATE
-                    syozokucd = s.syozokucd
+                    syozokucd = s.syozokucd,
+                    del_flg = 0
                 ";
         if ($con->pdo->exec($sql) === false) {
             throw new Exception($sql);
@@ -739,31 +742,29 @@ function regSyain() {
         $con->pdo->beginTransaction();
         $i = 1;
         foreach ($_POST["para"] as $para) {
-            if ($para["newcd"] === "1") {
-                $sql = 
-                    "INSERT INTO syain_list(
-                        syaincd,
-                        syozokucd,
-                        toban_flg,
-                        edit_flg,
-                        sortno
-                    ) VALUES (
-                        '{$para["syaincd"]}',
-                        '{$para["syozokucd"]}',
-                        {$para["toban_flg"]},
-                        {$para["edit_flg"]},
-                        {$i}
-                    )";
-            } else {
-                $sql = 
-                    "UPDATE syain_list SET
-                        syozokucd = '{$para["syozokucd"]}',
-                        toban_flg = {$para["toban_flg"]},
-                        edit_flg = {$para["edit_flg"]},
-                        sortno = {$i}
-                    WHERE syaincd = '{$para["syaincd"]}'
-                    ";
-            }
+            $sql = 
+                "INSERT INTO syain_list(
+                    syaincd,
+                    user_name,
+                    syozokucd,
+                    toban_flg,
+                    edit_flg,
+                    sortno
+                ) VALUES (
+                    '{$para["syaincd"]}',
+                    '{$para["user_name"]}',
+                    '{$para["syozokucd"]}',
+                    {$para["toban_flg"]},
+                    {$para["edit_flg"]},
+                    {$i}
+                ) ON DUPLICATE KEY UPDATE
+                    user_name = '{$para["user_name"]}',
+                    syozokucd = '{$para["syozokucd"]}',
+                    toban_flg = {$para["toban_flg"]},
+                    edit_flg = {$para["edit_flg"]},
+                    sortno = {$i},
+                    del_flg = 0
+                ";
             if ($con->pdo->exec($sql) === false) {
                 throw new Exception($sql);
             }
@@ -784,7 +785,8 @@ function delSyain() {
     try {
         $con->pdo->beginTransaction();
         $sql = 
-            "DELETE FROM syain_list 
+            "UPDATE syain_list SET
+                del_flg = 1
              WHERE syaincd = '{$_POST["syaincd"]}'";
         if ($con->pdo->exec($sql) === false) {
             throw new Exception($sql);
@@ -804,7 +806,7 @@ function findSyain() {
     $con->pdo->beginTransaction();
     $sql = 
         "SELECT syaincd FROM syain_list
-            WHERE syaincd = '{$_POST["syaincd"]}'";    
+            WHERE syaincd = '{$_POST["syaincd"]}' AND del_flg = 0";    
     $ds = $con->pdo->query($sql) or die($sql);
     if ($row = $ds->fetch()) {
         $data = array("code" => "HIT");
@@ -837,6 +839,7 @@ function loadHaken() {
                 l.syozokucd,
                 l.corp_name
             FROM haken_list AS l
+            WHERE del_flg = 0
             ORDER BY l.sortno";
     $ds = $con->pdo->query($sql) or die($sql);
     while ($row = $ds->fetch()) {
@@ -859,31 +862,25 @@ function regHaken() {
         $con->pdo->beginTransaction();
         $i = 1;
         foreach ($_POST["para"] as $para) {
-            if ($para["newcd"] === "1") {
-                $sql = 
-                    "INSERT INTO haken_list(
-                        syaincd,
-                        user_name,
-                        syozokucd,
-                        corp_name,
-                        sortno
-                    ) VALUES (
-                        '{$para["syaincd"]}',
-                        '{$para["user_name"]}',
-                        '{$para["syozokucd"]}',
-                        '{$para["corp_name"]}',
-                        {$i}
-                    )";
-            } else {
-                $sql = 
-                    "UPDATE haken_list SET
-                        user_name = '{$para["user_name"]}',
-                        syozokucd = '{$para["syozokucd"]}',
-                        corp_name = '{$para["corp_name"]}',
-                        sortno = {$i}
-                    WHERE syaincd = '{$para["syaincd"]}'
-                    ";
-            }
+            $sql = 
+                "INSERT INTO haken_list(
+                    syaincd,
+                    user_name,
+                    syozokucd,
+                    corp_name,
+                    sortno
+                ) VALUES (
+                    '{$para["syaincd"]}',
+                    '{$para["user_name"]}',
+                    '{$para["syozokucd"]}',
+                    '{$para["corp_name"]}',
+                    {$i}
+                ) ON DUPLICATE KEY UPDATE
+                    user_name = '{$para["user_name"]}',
+                    syozokucd = '{$para["syozokucd"]}',
+                    corp_name = '{$para["corp_name"]}',
+                    sortno = {$i}
+                ";
             if ($con->pdo->exec($sql) === false) {
                 throw new Exception($sql);
             }
@@ -904,7 +901,8 @@ function delHaken() {
     try {
         $con->pdo->beginTransaction();
         $sql = 
-            "DELETE FROM haken_list 
+            "UPDATE haken_list SET
+                del_flg = 1
              WHERE syaincd = '{$_POST["syaincd"]}'";
         if ($con->pdo->exec($sql) === false) {
             throw new Exception($sql);
@@ -924,7 +922,7 @@ function findHaken() {
     $con->pdo->beginTransaction();
     $sql = 
         "SELECT syaincd FROM haken_list
-            WHERE syaincd = '{$_POST["syaincd"]}'";    
+            WHERE syaincd = '{$_POST["syaincd"]}' AND del_flg = 0";    
     $ds = $con->pdo->query($sql) or die($sql);
     if ($row = $ds->fetch()) {
         $data = array("code" => "HIT");

@@ -831,6 +831,7 @@ $(function() {
                         para.push({
                             newcd: $('td.sf_syaincd').eq(i-c).prop('title') === 'New' ? 1 : 0,
                             syaincd: $('td.sf_syaincd').eq(i-c).text(),
+                            user_name: $('td.sf_syainnm').eq(i-c).text(),
                             syozokucd: syozokucd,
                             toban_flg: $('select.sf_toban').eq(i-c).val(),
                             edit_flg: $('select.sf_edit').eq(i-c).val()
