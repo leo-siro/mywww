@@ -1,6 +1,23 @@
 <?php
 // ★★　これを修正する場合は必ずshift.phpのtoban()も修正をし同期して下さい
-require_once "pdo_connect.php";
+class pdoConnect
+{
+    public $pdo;
+
+    public function __construct($db)
+    {
+        $user = 'jyosys';
+        $password = 'Jy0Sys8848';
+    
+        $dsn = "mysql:dbname={$db};host=localhost";
+        try {
+            $this->pdo = new PDO( $dsn, $user, $password );
+        } catch (PDOException $e) {
+            $this->pdo = false;
+        }
+    }
+}
+
 $data = array("code"=>"ERROR","msg"=>"?");
 $con = new pdoConnect("schedule");
 
