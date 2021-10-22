@@ -346,6 +346,7 @@ function regData() {
 // -----------------------------------------------------------------------------------------
 // 当番割当処理
 function toban() {
+    // ★★　これを修正する場合は必ずtoban.phpを修正し/home/webadmin/binへコピーして下さい
     // ini_set("display_errors", 1);
     // error_reporting(E_ALL);
     require_once "pdo_connect.php";
