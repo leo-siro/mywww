@@ -937,6 +937,7 @@ label[for="dl_task_ration"] {
     background: #ffffff;
     font-size: 12px;
     padding: 0px;
+    user-select: none;
 }
 #worktime_sel li {
     list-style-type: none!important;
