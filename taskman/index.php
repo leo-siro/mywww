@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=16">
+    <link rel="stylesheet" href="taskman.css?v=18">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=16"></script>
+    <script src="taskman.js?v=17"></script>
 </head>
 <body>
     <header>
@@ -224,20 +224,20 @@
                             <div class="schdule_waku !{kadai_comp}">
                                 <div class="schdule_title_waku !{kadai_comp}"><div class="schdule_title" data-title="!{kadai_title}">!{kadai_title}</div></div>
                                 <div class="schdule_exwaku">!{sinseino}</div>
-                                <div class="worktime"><div class="worktime_progress">!{kadai_progress}%</div><div class="worktime_time">!{kadai_kei}h</div></div>
+                                <div class="worktime"><div class="worktime_time">!{kadai_kei}h</div><div class="worktime_progress"><div style="width:!{kadai_progress}%"><span>!{kadai_progress}%</span></div></div></div>
                             </div>
                             <div class="schdule_story_waku">
                                 <div class="@{schdule_story} !{story_disp}" data-storyno="!{storyno}" data-kei="!{story_kei}">
                                     <div class="schdule_waku !{story_comp}">
                                         <div class="schdule_title_waku !{story_comp}"><div class="schdule_title" data-title="!{story_title}">!{story_title}</div></div>
                                         <div class="schdule_exwaku">!{user_name}</div>
-                                        <div class="worktime"><div class="worktime_progress">!{story_progress}%</div><div class="worktime_time">!{story_kei}h</div></div>
+                                        <div class="worktime"><div class="worktime_time">!{story_kei}h</div><div class="worktime_progress"><div style="width:!{story_progress}%"></div><span>!{story_progress}%</span></div></div>
                                     </div>
                                     <div class="schdule_task_waku">
                                         <div class="@{schdule_task} !{task_disp}" data-taskno="!{taskno}" data-kei="!{task_kei}">
                                             <div class="schdule_waku">
                                                 <div class="schdule_title_waku !{task_comp}"><div class="schdule_title" data-title="!{task_title}">!{task_title}</div></div>
-                                                <div class="worktime"><div class="worktime_progress">!{task_progress}%</div><div class="worktime_time">!{task_kei}h</div></div>
+                                                <div class="worktime"><div class="worktime_time">!{task_kei}h</div><div class="worktime_progress"><div style="width:!{task_progress}%"><span>!{task_progress}%</span></div></div></div>
                                             </div>
                                         </div>
                                     </div>

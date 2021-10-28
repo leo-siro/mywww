@@ -657,21 +657,21 @@ label[for="dl_task_ration"] {
 #schdule_head {
 	display: flex;
     width: 100%;
-    height: 40px;
+    height: 63px;
     background-color: #54586e;
     color: #ffffff;
 }
 #schdule_head_ctrl {
     display: flex;
 	width: 600px;
-	height: 40px;
+	height: 63px;
 	border: 1px solid #babbf0;
 	border-radius: 3px;
 }
 .schdule_head_title {
     width: 30%;
-    height: 40px;
-    line-height: 40px;
+    height: 63px;
+    line-height: 63px;
     text-align: center;
     font-size: 14px;
 }
@@ -681,7 +681,7 @@ label[for="dl_task_ration"] {
 #schdule_head_item {
 	flex: 1;
     position: relative;
-	height: 40px;
+	height: 63px;
 	border: 1px solid #babbf0;
     border-radius: 3px;
     user-select: none;
@@ -693,7 +693,7 @@ label[for="dl_task_ration"] {
     scrollbar-width : none;
     /* width: calc(100% - 503px); */
 }
-#schdule_head_item > div:first-child {
+#days,#week {
     border-bottom: 1px solid #babbf0;
 }
 #schdule_head_item .cells:not(:last-child),
@@ -826,12 +826,29 @@ label[for="dl_task_ration"] {
 }
 .worktime_time {
     padding: 0 1px;
-    margin-left: 1px;
     background-color: #3a4788;
 }
 .worktime_progress {
+    position: relative;
+    width: 40px;
+    margin-left: 1px;
+    border: 1px solid  #22aa22;
+    background-color: #ffffff;
+}
+.worktime_progress div {
+    height: 100%;
+    /* background-color: #00ee00; */
+    background: linear-gradient(0deg, rgba(0,204,0,1) 0%, rgba(51,255,51,1) 50%, rgba(204,255,204,1) 100%);
+}
+.worktime_progress span {
+    display: block;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 0;
+    left: 0;
     padding: 0 1px;
-    background-color: #47883a;
+    color:#111111;
 }
 .cells {
     cursor: default;
@@ -890,7 +907,7 @@ label[for="dl_task_ration"] {
 }
 #schdule_body_sum .cells {
     height: 20px;
-    line-height: 22px;
+    line-height: 20px;
 }
 /*  */
 .saturday {
@@ -903,7 +920,7 @@ label[for="dl_task_ration"] {
 #today_frame1 {
     display: none;
     position: absolute;
-    height: 40px;
+    height: 64px;
     border-top: 1px solid #38ff38;
     border-left: 2px solid #38ff38;
     border-right: 2px solid #38ff38;

@@ -1307,7 +1307,8 @@ $(function() {
                     $('#board_syain').databind(ret.syain_list);
                 }
                 $('#schdule_body_ctrl').databindex(ret.data.kadai);
-                $('#schdule_body_ctrl').prepend('<div id="schdule_ctrl_sum"></div>');
+                $('#schdule_body_sum').remove();
+                // $('#schdule_body_ctrl').prepend('<div id="schdule_ctrl_sum"></div>');
                 sv_monthkei = ret.data.monthkei;
                 $('#monthkei').text('月合計 '+ret.data.monthkei+' h');
                 let width = ret.daycnt * cellwidth;
@@ -1383,8 +1384,12 @@ $(function() {
                         }
                     });
                 }
-                $('#schdule_body_item').html(headsum.prop('outerHTML')+w_item+'<div id="today_frame2"></div>');
+                // $('#schdule_body_item').html(headsum.prop('outerHTML')+w_item+'<div id="today_frame2"></div>');
+                // setCalender(ret.holiday,width);
+                $('#schdule_body_item').html(w_item+'<div id="today_frame2"></div>');
                 setCalender(ret.holiday,width);
+                $('#schdule_head_item').append(headsum.prop('outerHTML'));
+
                 $('#schdule_body_ctrl').resizable({
                     minWidth: 600,
                     maxWidth: 1000,
@@ -1429,7 +1434,7 @@ $(function() {
             w_syori.addDay(1);
         }
         $('#days').html(w_day).css('width',width);
-        $('#week').html(w_week);
+        $('#week').html(w_week).css('width',width);
         // 当日枠を表示
         let pday = getDays(str_syori,today);
         dispTodayFrame(pday-1);
