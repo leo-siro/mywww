@@ -23,7 +23,7 @@
     --c-dlg-input: #fff;
     --bgc-comp2: #6c6c6c;
     --bgc-kyuka: #4c4c4c;
-}  
+}
 body {
     margin: 0px;
     font-family: "メイリオ",Meiryo;
@@ -151,7 +151,7 @@ label[for="hide_comp"],label[for="disp1"] {
     display: none;
 }
 label[for="dark_mode"] {
-    display: none;    
+    display: none;
 }
 #doc {
     margin-left: 20px;
@@ -243,7 +243,7 @@ main {
     font-size: 16px;
     text-align: center;
 }
-#board_left, 
+#board_left,
 #board_right {
     width: 316px;
     height: 100%;
@@ -697,7 +697,7 @@ label[for="dl_task_ration"] {
     border-bottom: 1px solid #babbf0;
 }
 #schdule_head_item .cells:not(:last-child),
-#schdule_body_item .cells:not(:last-child), 
+#schdule_body_item .cells:not(:last-child),
 .schdule_head_title:not(:last-child) {
     border-right: 1px solid #babbf0;
 }
@@ -780,8 +780,8 @@ label[for="dl_task_ration"] {
     width: 70%;
 }
 .schdule_story_border {
-    position: absolute; 
-    pointer-events: none; 
+    position: absolute;
+    pointer-events: none;
     background-color: rgba(0, 0, 255, 0.1);
     border: 1px solid #0000ff;
 }
@@ -802,6 +802,10 @@ label[for="dl_task_ration"] {
     overflow: hidden;
     background-color: #fefefe;
     background-color: var(--bgc-kadaim);
+}
+.schdule_kadai > div > .schdule_title_waku:hover {
+    cursor: pointer;
+    color: #0077ff;
 }
 .sc_disp {
     border-bottom: 1px solid #babbf0;
@@ -849,6 +853,9 @@ label[for="dl_task_ration"] {
     left: 0;
     padding: 0 1px;
     color:#111111;
+}
+.task_progress {
+    cursor: pointer;
 }
 .cells {
     cursor: default;
@@ -971,6 +978,37 @@ label[for="dl_task_ration"] {
     background-color: #dcdcdc;
     background-color: var(--bgc-comp2);
 }
+/* 日報プログレスバー */
+#nippo_progress_scr {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+#nippo_progress {
+    display: flex;
+    position: fixed;
+    width: 150px;
+    height: 20px;
+    box-shadow: 1px 1px 2px #7c7c7c;
+    background: snow;
+    font-size: 12px;
+    padding: 5px;
+    user-select: none;
+    align-items: center;
+}
+#nippo_progress_tx {
+    width: 35px;
+    text-align: right;
+}
+#nippo_progress_bar {
+    width: 100px;
+    height: 9px;
+    margin-left: 7px;
+}
 /*  */
 #csv_form .groupline {
     margin-top: 30px;
@@ -1069,7 +1107,7 @@ label[for="dl_task_ration"] {
     z-index: 1;
 }
 #kadai_body_item {
-    flex: 1;    
+    flex: 1;
     /* height: 1000px; */
     position: relative;
 	border-top: 1px solid #babbf0;
@@ -1169,7 +1207,7 @@ label[for="dl_task_ration"] {
     color: #ff0000;
 }
 .red {
-    background-color: #ff0000;    
+    background-color: #ff0000;
 }
 .orange {
     background-color: #ff7700;
@@ -1273,7 +1311,7 @@ label[for="dl_task_ration"] {
     border-radius: 12px;
     outline: none;
 }
-.context-menu-root { 
+.context-menu-root {
     z-index: 100 !important;
 }
 .context-menu-input > label > input[type=checkbox], .context-menu-input > label > input[type=radio] {

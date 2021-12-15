@@ -43,7 +43,7 @@ class MyClass {
                 "value" => $row["syozokucd"],
                 "label" => $this->getSyozokunm($row["syozokunm"])
             );
-        }    
+        }
         $data["same_group"] = $this->getSyain($con,$syzokucd);
         $data["code"] = "OK";
         echo json_encode($data);
@@ -89,22 +89,22 @@ class MyClass {
         $syain_where = "";
         $syozoku_join = "";
         if ($_POST["syaincd"] !== "0") {
-            $syain_where = 
+            $syain_where =
                 "AND (k.keynum IN (SELECT k.keynum FROM kadai AS k INNER JOIN stories AS s ON s.keynum = k.keynum ".
                 "WHERE k.jyotai > 0 AND s.syaincd = '{$_POST["syaincd"]}' GROUP BY k.keynum) OR s.keynum IS NULL)";
                 // "AND s.syaincd = '{$_POST["syaincd"]}'";
                 // "AND (s.syaincd = '{$_POST["syaincd"]}' OR k.syutantou LIKE '%{$_POST["syainnm"]}%')";
-                $syozoku_join = 
+                $syozoku_join =
                 "INNER JOIN (
-                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME 
+                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME
                     FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
                 ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
             $sort = "k.sortno,";
         } elseif ($_POST["dept_cd"] !== "0" && trim($_POST["dept_cd"]) !== "") {
             $data["syain_list"] = $this->getSyain($con,$_POST["dept_cd"]);
-            $syozoku_join = 
+            $syozoku_join =
                 "INNER JOIN (
-                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME 
+                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME
                     FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
                 ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
             $sort = "k.sortnoka,";
@@ -119,7 +119,7 @@ class MyClass {
         } else {
             $syain_where .= " AND (k.end_jisseki > DATE_SUB( CURDATE(),INTERVAL 4 WEEK ) OR k.end_jisseki IS NULL)";
         }
-        $sql = "SELECT 
+        $sql = "SELECT
                     k.keynum,
                     k.task1,
                     CASE k.jyotai WHEN 1 THEN 'main' WHEN 2 THEN 'right' ELSE 'left' END AS setdiv,
@@ -134,7 +134,7 @@ class MyClass {
                     k.col,
                     k.colx,
                     s.storyno,
-                    s.title AS story_title,                
+                    s.title AS story_title,
                     s.color,
                     s.syaincd,
                     s.progress AS story_progress,
@@ -154,7 +154,7 @@ class MyClass {
                     LEFT JOIN stories AS s ON s.keynum = k.keynum
                     LEFT JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
                     LEFT JOIN schedule.v_member AS m ON m.syaincd = s.syaincd
-                    {$syozoku_join}         
+                    {$syozoku_join}
                 WHERE k.jyotai < 8
                 {$syain_where}
                 ORDER BY {$sort}k.important DESC,k.keynum, k.jyotai, IF(s.progress=100,1,0), s.sortno, s.storyno, IF(t.progress=100,1,0), t.sortno, t.taskno";
@@ -210,7 +210,7 @@ class MyClass {
                 $oldkeynum = $row["keynum"];
                 $oldstoryno = 0;
                 $scnt = 0;
-                $kadai_progress = 0;            
+                $kadai_progress = 0;
             }
             if ($row["storyno"] !== null && $oldstoryno !== $row["storyno"]) {
                 $data["data_".$row["setdiv"]][$column]["board_kadai"][$cnt[$kadaiix]-1]["board_story"][$scnt] = array(
@@ -290,12 +290,15 @@ class MyClass {
         require_once "../common/pdo_connect.php";
         $con = new pdoConnect("taskman");
 
-        $sql = "SELECT 
+        $sql = "SELECT
                     k.kihyo_date,
                     k.irai_tan,
                     k.kbn,
+                    CASE k.important WHEN 3 THEN '緊急' WHEN 2 THEN '高' WHEN 1 THEN '中' ELSE '低' END AS important,
                     k.tantouka,
+                    k.progress,
                     k.syutantou,
+                    k.task1,
                     k.task2,
                     k.sinseino,
                     k.yoteikosu,
@@ -321,8 +324,11 @@ class MyClass {
                 "kihyo_date" => str_replace("-","/",$row["kihyo_date"]),
                 "irai_tan" => $row["irai_tan"] === null ? "" : $row["irai_tan"],
                 "kbn" => $row["kbn"] === null ? "" : $row["kbn"],
+                "important" => $row["important"] === null ? "" : $row["important"],
                 "tantouka" => $row["tantouka"] === null ? "" : $row["tantouka"],
+                "progress" => $row["progress"] === null ? "0" : $row["progress"],
                 "syutantou" => $row["syutantou"] === null ? "" : $row["syutantou"],
+                "task1" => $row["task1"] === null ? "" : $row["task1"],
                 "task2" => $row["task2"] === null ? "" : $row["task2"],
                 "sinseino" => $row["sinseino"] === null ? "" : $row["sinseino"],
                 "yoteikosu" => $row["yoteikosu"] === null ? "" : $row["yoteikosu"],
@@ -341,7 +347,7 @@ class MyClass {
             $data["code"] = "OK";
         } else {
             $data["code"] = "ERROR";
-        }               
+        }
         echo json_encode($data);
     }
     // タイトル変更
@@ -350,8 +356,8 @@ class MyClass {
         $con = new pdoConnect("taskman");
         try {
             $con->pdo->beginTransaction();
-            $sql = 
-                "INSERT INTO board_title (syozokucd,title{$_POST["ix"]}) 
+            $sql =
+                "INSERT INTO board_title (syozokucd,title{$_POST["ix"]})
                     VALUES('{$_POST["syozokucd"]}','{$_POST["title"]}')
                  ON DUPLICATE KEY UPDATE
                     title{$_POST["ix"]} = '{$_POST["title"]}'";
@@ -364,7 +370,7 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // 状態（作業前・中・完了）の更新＋並び替えの更新
     function changeJyotai() {
@@ -380,7 +386,7 @@ class MyClass {
             }
             $colx[$_POST["dept_cd"]] = $_POST["column"];
             $con->pdo->beginTransaction();
-            $sql = 
+            $sql =
                 "UPDATE kadai SET
                     jyotai = {$_POST["jyotai"]},
                     col = {$_POST["column"]},
@@ -393,7 +399,7 @@ class MyClass {
                 // 並び替え更新
                 $keynum = implode(",",$_POST["orderkey"]);
                 $sql = "SET @sortno:=0;
-                        UPDATE kadai SET 
+                        UPDATE kadai SET
                             sortno{$_POST["sortkey"]} = @sortno:=@sortno+1
                         WHERE keynum IN({$keynum})
                         ORDER BY FIELD(keynum,{$keynum})";
@@ -407,7 +413,7 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // ストーリー並び替え更新
     function orderStory() {
@@ -416,7 +422,7 @@ class MyClass {
         try {
             $con->pdo->beginTransaction();
             for ($i=0; $i<count($_POST["storyno"]); $i++) {
-                $sql = 
+                $sql =
                     "UPDATE stories SET
                         sortno = {$i}
                     WHERE keynum = {$_POST["keynum"]}
@@ -431,7 +437,7 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // タスク並び替え更新
     function orderTask() {
@@ -440,7 +446,7 @@ class MyClass {
         try {
             $con->pdo->beginTransaction();
             for ($i=0; $i<count($_POST["taskno"]); $i++) {
-                $sql = 
+                $sql =
                     "UPDATE tasks SET
                         sortno = {$i}
                     WHERE keynum = {$_POST["keynum"]}
@@ -456,7 +462,7 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // タスク進捗の更新
     function setTaskProgress() {
@@ -464,7 +470,7 @@ class MyClass {
         $con = new pdoConnect("taskman");
         try {
             $con->pdo->beginTransaction();
-            $sql = 
+            $sql =
                 "UPDATE tasks SET
                     progress = {$_POST["value"]}
                 WHERE keynum = {$_POST["keynum"]}
@@ -475,12 +481,25 @@ class MyClass {
             }
             $this->updateProgress($con);
             $con->pdo->commit();
-            $data = array("code"=>"OK","msg"=>$sql);
+            // 日報入力時に進捗を取得
+            if (isset($_POST["getprogress"])) {
+                $sql = "SELECT k.progress AS kadai_progress, s.progress AS story_progress
+                        FROM stories AS s
+                        INNER JOIN kadai AS k ON k.keynum = s.keynum
+                        WHERE s.keynum = {$_POST["keynum"]}
+                          AND s.storyno = {$_POST["storyno"]}";
+                $ds = $con->pdo->query($sql) or die($sql);
+                if ($row = $ds->fetch(PDO::FETCH_ASSOC)) {
+                    $data["kadai_progress"] = $row["kadai_progress"];
+                    $data["story_progress"] = $row["story_progress"];
+                }
+            }
+            $data["code"] = "OK";
         } catch (Exception $e) {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // ストーリー担当者変更
     function updateTantou() {
@@ -488,7 +507,7 @@ class MyClass {
         $con = new pdoConnect("taskman");
         try {
             $con->pdo->beginTransaction();
-            $sql = 
+            $sql =
                 "UPDATE stories SET
                     syaincd = '{$_POST["syaincd"]}'
                 WHERE keynum = {$_POST["keynum"]}
@@ -502,7 +521,7 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // ストーリー登録・更新
     function storyReg() {
@@ -511,13 +530,13 @@ class MyClass {
         try {
             $con->pdo->beginTransaction();
             if ($_POST["storyno"] === "0") {
-                $sql = "SELECT 
+                $sql = "SELECT
                             IFNULL(MAX(storyno),0)+1 AS newno,
                             IFNULL(MAX(sortno)+1,0) AS sortno
-                        FROM stories 
+                        FROM stories
                         WHERE keynum = {$_POST["keynum"]}";
                 $ds = $con->pdo->query($sql) or die($sql);
-                $row = $ds->fetch(PDO::FETCH_ASSOC);            
+                $row = $ds->fetch(PDO::FETCH_ASSOC);
                 $sql = "INSERT INTO stories (
                             keynum,
                             storyno,
@@ -580,9 +599,9 @@ class MyClass {
             }
             $data["ration"] = $this->updateRationStory($con);
             if (isset($newno)) {
-                $sql = "SELECT 
+                $sql = "SELECT
                             s.storyno,
-                            s.title AS story_title,                
+                            s.title AS story_title,
                             s.color,
                             '0%' AS story_progress,
                             s.ration AS story_ration,
@@ -637,13 +656,13 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // ストーリーの自動進捗割合更新
     function updateRationStory($con) {
         $sql = "UPDATE stories AS m
                 INNER JOIN (
-                    SELECT 
+                    SELECT
                         {$_POST["keynum"]} AS keynum,
                         SUM(IF(ration_auto=0,ration,0)) AS ration_sum,
                         SUM(IF(ration_auto=1,1,0)) AS ration_cnt
@@ -670,14 +689,14 @@ class MyClass {
         try {
             $con->pdo->beginTransaction();
             if ($_POST["taskno"] === "0") {
-                $sql = "SELECT 
+                $sql = "SELECT
                             IFNULL(MAX(taskno),0)+1 AS newno,
                             IFNULL(MAX(sortno)+1,0) AS sortno
-                        FROM tasks 
+                        FROM tasks
                         WHERE keynum = {$_POST["keynum"]}
                         AND storyno = {$_POST["storyno"]}";
                 $ds = $con->pdo->query($sql) or die($sql);
-                $row = $ds->fetch(PDO::FETCH_ASSOC);            
+                $row = $ds->fetch(PDO::FETCH_ASSOC);
                 $sql = "INSERT INTO tasks (
                             keynum,
                             storyno,
@@ -723,7 +742,7 @@ class MyClass {
                                 work_time = '{$_POST["work_time"]}'";
                     if ($con->pdo->exec($sql) === false) {
                         throw new Exception($sql);
-                    }                
+                    }
                 }
                 $newno = $row["newno"];
             } else {
@@ -760,12 +779,12 @@ class MyClass {
                                 memo = '{$_POST["memo"]}'";
                     if ($con->pdo->exec($sql) === false) {
                         throw new Exception($sql);
-                    }                
+                    }
                 }
             }
             $data["ration"] = $this->updateRationTask($con);
             if (isset($newno)) {
-                $sql = "SELECT 
+                $sql = "SELECT
                             taskno,
                             title AS task_title,
                             progress AS task_progress,
@@ -798,31 +817,31 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // タスクの自動進捗割合更新
     function updateRationTask($con) {
         $sql = "UPDATE tasks AS m
                     INNER JOIN (
-                        SELECT 
+                        SELECT
                             {$_POST["keynum"]} AS keynum,
                             {$_POST["storyno"]} AS storyno,
                             SUM(IF(ration_auto=0,ration,0)) AS ration_sum,
                             SUM(IF(ration_auto=1,1,0)) AS ration_cnt
                         FROM tasks
                         WHERE keynum = {$_POST["keynum"]}
-                            AND storyno = {$_POST["storyno"]} 
+                            AND storyno = {$_POST["storyno"]}
                     ) AS g ON g.keynum = m.keynum
                 SET m.ration = IF(g.ration_cnt = 0,m.ration,(100 - g.ration_sum) / g.ration_cnt)
-                WHERE m.keynum = {$_POST["keynum"]} 
-                    AND m.storyno = {$_POST["storyno"]} 
+                WHERE m.keynum = {$_POST["keynum"]}
+                    AND m.storyno = {$_POST["storyno"]}
                     AND m.ration_auto = 1";
         if ($con->pdo->exec($sql) === false) {
             throw new Exception($sql);
         }
         $this->updateProgress($con);
         $sql = "SELECT ration FROM tasks
-                WHERE keynum = {$_POST["keynum"]} 
+                WHERE keynum = {$_POST["keynum"]}
                   AND storyno = {$_POST["storyno"]}
                   AND ration_auto = 1 LIMIT 1";
         $ds = $con->pdo->query($sql) or die($sql);
@@ -840,14 +859,14 @@ class MyClass {
         if (isset($_POST["taskno"])) {
             $sql = "UPDATE stories AS s
                         INNER JOIN (
-                            SELECT keynum,storyno,SUM(progress*(ration/100)) AS progress FROM tasks WHERE keynum = {$_POST["keynum"]} AND storyno = {$_POST["storyno"]}
+                            SELECT keynum,storyno,FLOOR(SUM(progress*(ration/100))+0.01) AS progress FROM tasks WHERE keynum = {$_POST["keynum"]} AND storyno = {$_POST["storyno"]}
                         ) AS t ON t.keynum = s.keynum AND t.storyno = s.storyno
                     SET s.progress = t.progress
-                    WHERE s.keynum = {$_POST["keynum"]} 
+                    WHERE s.keynum = {$_POST["keynum"]}
                     AND s.storyno = {$_POST["storyno"]}";
             if ($con->pdo->exec($sql) === false) {
                 throw new Exception($sql);
-            }            
+            }
         }
         $sql = "SELECT FLOOR(SUM(progress*(ration/100))+0.01) - FLOOR(SUM(progress*(ration/100))+0.01) % 5 AS progress FROM stories WHERE keynum = {$_POST["keynum"]}";
         $ds = $con->pdo->query($sql) or die($sql);
@@ -874,7 +893,7 @@ class MyClass {
         require_once "../common/pdo_connect.php";
         $con = new pdoConnect("taskman");
         $sql = "SELECT keynum FROM nippo
-                WHERE keynum = {$_POST["keynum"]} 
+                WHERE keynum = {$_POST["keynum"]}
                     AND storyno = {$_POST["storyno"]} LIMIT 1";
         $ds = $con->pdo->query($sql) or die($sql);
         if ($row = $ds->fetch(PDO::FETCH_ASSOC)) {
@@ -902,14 +921,14 @@ class MyClass {
                 $data = array("code"=>"ERROR","msg"=>$e->getMessage());
             }
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // タスク削除
     function deleteTask() {
         require_once "../common/pdo_connect.php";
         $con = new pdoConnect("taskman");
         $sql = "SELECT keynum FROM nippo
-                WHERE keynum = {$_POST["keynum"]} 
+                WHERE keynum = {$_POST["keynum"]}
                 AND storyno = {$_POST["storyno"]}
                 AND taskno = {$_POST["taskno"]} LIMIT 1";
         $ds = $con->pdo->query($sql) or die($sql);
@@ -933,7 +952,7 @@ class MyClass {
                 $data = array("code"=>"ERROR","msg"=>$e->getMessage());
             }
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // 日報情報ゲット
     function nippoGet() {
@@ -941,7 +960,7 @@ class MyClass {
         $con = new pdoConnect("taskman");
         $data = array("work_time"=>"0","memo"=>"");
         $sql = "SELECT work_time,memo FROM nippo
-                WHERE keynum = {$_POST["keynum"]} 
+                WHERE keynum = {$_POST["keynum"]}
                 AND storyno = {$_POST["storyno"]}
                 AND taskno = {$_POST["taskno"]}
                 AND work_syori = '{$_POST["work_syori"]}'";
@@ -952,7 +971,7 @@ class MyClass {
                 "memo" => $row["memo"]
             );
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // -----------------------------------------------------------------------------------------
     // ここから日報入力
@@ -969,7 +988,7 @@ class MyClass {
         $enissu = date("t",strtotime($end_day));
         $data["daycnt"] = $snissu + $mnissu + $enissu;
         // 祝祭日テーブル読込
-        $sql = "SELECT holiday,holiday_biko,toban FROM schedule.holiday 
+        $sql = "SELECT holiday,holiday_biko,toban FROM schedule.holiday
                 WHERE holiday between '{$str_day}' AND '{$end_day}'";
         $ds = $con->pdo->query($sql);
         while ($row = $ds->fetch(PDO::FETCH_ASSOC)) {
@@ -978,16 +997,16 @@ class MyClass {
         $syain_where = "";
         $syozoku_join = "";
         if ($_POST["syaincd"] !== "0") {
-            $syain_where = 
+            $syain_where =
                 "AND s.syaincd = '{$_POST["syaincd"]}'";
                 // "AND (s.syaincd = '{$_POST["syaincd"]}' OR k.syutantou LIKE '%{$_POST["syainnm"]}%')";
             $sort = "k.sortno,";
         } elseif ($_POST["dept_cd"] !== "0" && trim($_POST["dept_cd"]) !== "") {
             $data["syain_list"] = $this->getSyain($con,$_POST["dept_cd"]);
             $syain_where = "AND m.syozokucd = '{$_POST["dept_cd"]}'";
-            // $syozoku_join = 
+            // $syozoku_join =
             //     "INNER JOIN (
-            //         SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME 
+            //         SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME
             //         FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
             //     ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
             $sort = "k.sortnoka,";
@@ -997,7 +1016,7 @@ class MyClass {
         if (isset($_SESSION["taskman"]["syainkbn"]) && $_SESSION["taskman"]["syainkbn"] === '0') {
             $syain_where .= " AND k.personaluse IS NULL";
         }
-        $sql = "SELECT 
+        $sql = "SELECT
                     k.keynum,
                     k.task1,
                     k.sinseino,
@@ -1027,7 +1046,7 @@ class MyClass {
                         SELECT syaincd,group_concat(yotei_var) AS yotei,group_concat(schdule_ym) AS schdule_ym
                         FROM schedule.schedule WHERE schdule_ym between '{$str_day}' AND '{$end_day}' GROUP BY syaincd
                         ) AS y ON y.syaincd = s.syaincd
-                    {$syozoku_join}         
+                    {$syozoku_join}
                 WHERE k.jyotai IN (1,2)
                 AND k.keynum IN (SELECT DISTINCT keynum FROM stories WHERE end_yotei > '{$str_day}' AND start_yotei < '{$end_day}'
                                  UNION
@@ -1096,7 +1115,7 @@ class MyClass {
                 $oldtaskno = 0;
                 $tcnt = 0;
             }
-            
+
             if ($row["taskno"] !== null && $oldtaskno !== $row["taskno"]) {
                 $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt] = array(
                     "taskno" => $row["taskno"],
@@ -1151,7 +1170,7 @@ class MyClass {
                             $data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["schdule_task"][$tcnt]["task_disp"] = "";
                             break;
                         }
-                    }    
+                    }
                     if ($data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["story_disp"] === "sc_disp" && $flg === 0) {
                         $data["data"]["kadai"][$kcnt]["schdule_story"][$scnt]["story_disp"] = "";
                         $flg = 1;
@@ -1206,7 +1225,7 @@ class MyClass {
             $con->pdo->rollBack();
             $data = array("code"=>"ERROR","msg"=>$e->getMessage());
         }
-        echo json_encode($data);    
+        echo json_encode($data);
     }
     // CSV
     function createCSV() {
@@ -1221,19 +1240,19 @@ class MyClass {
         $data = array("code"=>"ERROR");
         require_once "../common/pdo_connect.php";
         $con = new pdoConnect("taskman");
-        
+
         $syain_where = "";
         $syozoku_join = "";
         if (isset($_POST["syaincd"]) && $_POST["syaincd"] !== "0") {
-            $syain_where = 
+            $syain_where =
                 "AND s.syaincd = '{$_POST["syaincd"]}'";
         } elseif (isset($_POST["dept_cd"]) && $_POST["dept_cd"] !== "0") {
             $data["syain_list"] = $this->getSyain($con,$_POST["dept_cd"]);
-            $syain_where = 
+            $syain_where =
                 "AND m.syozokucd = '{$_POST["dept_cd"]}'";
-            // $syozoku_join = 
+            // $syozoku_join =
             //     "INNER JOIN (
-            //         SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME 
+            //         SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME
             //         FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
             //     ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
         }
@@ -1242,12 +1261,12 @@ class MyClass {
             $herder="申請No,プロジェクト名,担当者名,社員区分,開始日,終了日,稼働日,作業区分,時間,本数,結果";
             $herder = mb_convert_encoding($herder,"SJIS-win","UTF-8")."\r\n";//shift-jisへエンコード
             fwrite($tmp_file,$herder);//ヘッダを書き込む
-    
-            $sql = "SELECT 
+
+            $sql = "SELECT
                         k.system_no,
                         i.system_item,
                         COALESCE(m.user_name,m.user_name,s.syaincd) AS user_name,
-                        IF(LEFT(s.syaincd,2) < '95','社員','協力会社') AS syain_kbn, 
+                        IF(LEFT(s.syaincd,2) < '95','社員','協力会社') AS syain_kbn,
                         DATE_FORMAT(i.kaishi,'%Y/%m/%d') AS kaishi,
                         DATE_FORMAT(i.kanryo,'%Y/%m/%d') AS kanryo,
                         DATE_FORMAT(i.kado,'%Y/%m/%d') AS kado,
@@ -1261,7 +1280,7 @@ class MyClass {
                         INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
                         INNER JOIN it_system AS i ON i.system_no = k.system_no
                         LEFT JOIN schedule.v_member2 AS m ON m.syaincd = s.syaincd
-                        {$syozoku_join}         
+                        {$syozoku_join}
                     WHERE k.jyotai < 8
                     AND n.work_syori between '{$_POST["datef"]}' AND '{$_POST["datet"]}'
                     {$syain_where}
@@ -1275,13 +1294,13 @@ class MyClass {
                 $cnt++;
             }
         } else {
-            $sql = "SELECT k.system_no 
+            $sql = "SELECT k.system_no
                     FROM kadai AS k
                         INNER JOIN stories AS s ON s.keynum = k.keynum
                         INNER JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
                         INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
                         LEFT JOIN schedule.v_member AS m ON m.syaincd = s.syaincd
-                        {$syozoku_join}         
+                        {$syozoku_join}
                     WHERE k.jyotai < 8
                     AND n.work_syori between '{$_POST["datef"]}' AND '{$_POST["datet"]}'
                     {$syain_where}
@@ -1315,11 +1334,11 @@ class MyClass {
                             INNER JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
                             INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
                             LEFT JOIN schedule.v_member AS m ON m.syaincd = s.syaincd
-                            {$syozoku_join}         
+                            {$syozoku_join}
                         WHERE k.jyotai < 8
                         AND n.work_syori = '".date("Y/m/d",$wdate)."'
                         {$syain_where}
-                        
+
                         ";
                 $ds = $con->pdo->query($sql) or die($sql);
                 if ($row = $ds->fetch(PDO::FETCH_NUM)) {
@@ -1340,7 +1359,7 @@ class MyClass {
             "filename"=>"../tmp/".$fname,
             "cnt"=>$cnt
         );
-        echo json_encode($data);        
+        echo json_encode($data);
     }
     // -----------------------------------------------------------------------------------------
     // ここから課題一覧
@@ -1356,7 +1375,7 @@ class MyClass {
         $end_day_t = strtotime($end_day);
         if ($_POST["sel_month"] === "1") {
             // 祝祭日テーブル読込
-            $sql = "SELECT holiday,holiday_biko,toban FROM schedule.holiday 
+            $sql = "SELECT holiday,holiday_biko,toban FROM schedule.holiday
                     WHERE holiday between '{$str_day}' AND '{$end_day}'";
             $ds = $con->pdo->query($sql);
             $data["holiday"] = array_fill(0,substr($end_day,-2),0);
@@ -1367,20 +1386,20 @@ class MyClass {
         $syain_where = "";
         $syozoku_join = "";
         if ($_POST["syaincd"] !== "0") {
-            $syain_where = 
+            $syain_where =
                 "AND (s.syaincd = '{$_POST["syaincd"]}' OR k.syutantou LIKE '%{$_POST["syainnm"]}%')";
         } elseif ($_POST["dept_cd"] !== "0" && trim($_POST["dept_cd"]) !== "") {
             $data["syain_list"] = $this->getSyain($con,$_POST["dept_cd"]);
-            $syozoku_join = 
+            $syozoku_join =
                 "INNER JOIN (
-                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME 
+                    SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME
                     FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
                 ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
         }
         if (isset($_SESSION["taskman"]["syainkbn"]) && $_SESSION["taskman"]["syainkbn"] === '0') {
             $syain_where .= " AND k.personaluse IS NULL";
         }
-        $sql = "SELECT 
+        $sql = "SELECT
                     k.keynum,
                     k.task1,
                     k.sinseino,
@@ -1399,7 +1418,7 @@ class MyClass {
                     LEFT JOIN stories AS s ON s.keynum = k.keynum
                     LEFT JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
                     LEFT JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
-                    {$syozoku_join}         
+                    {$syozoku_join}
                 WHERE k.jyotai < 2
                 AND (k.end_yotei > '{$str_day}' OR k.end_yotei IS NULL)
                 AND (k.start_yotei < '{$end_day}' OR k.start_yotei IS NULL)
@@ -1412,7 +1431,7 @@ class MyClass {
             $yk = "";
             if ($row["start_yotei"] !== null || $row["end_yotei"] !== null) {
                 $yk = "～";
-            }            
+            }
             $data["data"]["head"][] = array(
                 "keynum" => $row["keynum"],
                 "kadai_title" => $row["task1"],

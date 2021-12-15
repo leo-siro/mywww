@@ -25,7 +25,7 @@ $(function() {
         },
         close: function (event, ui) {
             $(".ui-helper-hidden-accessible").empty();
-        }   
+        }
     });
     // 日付選択
     $('#dl_story_start_yotei,#dl_story_end_yotei').datepicker({
@@ -90,12 +90,12 @@ $(function() {
     // 初期処理
     Ajax('taskman.php?func=initLoad').done(function(ret) {
         $('#board_syozoku').databind(ret.syozoku);
-        $('#board_syozoku').val(ret.find_syozoku 
-                                    ? ret.find_syozoku 
-                                    : (syozokucd === '999999' 
-                                        ? ret.syozoku[0].value 
+        $('#board_syozoku').val(ret.find_syozoku
+                                    ? ret.find_syozoku
+                                    : (syozokucd === '999999'
+                                        ? ret.syozoku[0].value
                                         : syozokucd));
-        $('#board_syain').databind(ret.same_group);        
+        $('#board_syain').databind(ret.same_group);
         $('#board_syain').val(ret.find_syain ? ret.find_syain : syaincd);
 
         $('#schdule_syozoku').html($('#board_syozoku').html());
@@ -123,13 +123,13 @@ $(function() {
         if (today_str !== new Date().formatDate('YYYY/MM/DD')) {
             // 処理日が変わっている場合、再読込を行う
             if ($('#board').is(':visible')) {
-                location.href = location.origin+'/leo-mywww/taskman/';
+                location.href = location.origin+location.pathname;
             } else if ($('#schdule').is(':visible')) {
-                location.href = location.origin+'/leo-mywww/taskman/?disp=disp_schdule';
+                location.href = location.origin+location.pathname+'?disp=disp_schdule';
             } else {
-                location.href = location.origin+'/leo-mywww/taskman/?disp=disp_kadai';
+                location.href = location.origin+location.pathname+'?disp=disp_kadai';
             }
-        }    
+        }
     });
     // 再読込
     $('#reload').click(function(e) {
@@ -264,7 +264,7 @@ $(function() {
         // BlockScreen('更新中 ...');
         Ajax('taskman.php?func=ChangeJyotai',para).done(function(ret) {
             if (ret.code !== "OK") {
-                $.alert('更新エラーです。再読込して下さい');    
+                $.alert('更新エラーです。再読込して下さい');
                 // console.log(ret.msg);
             }
         }).fail(function(ret) {
@@ -353,94 +353,74 @@ $(function() {
         }
         e.stopPropagation();
     });
-    // 
-    var clickCount = 0;
+    //
     $(document).on('click','.board_title',function(e) {
         let $this = $(this).parent();
-        if (clickCount === 0) {
-            clickCount++;
-            setTimeout( function() {
-                if (clickCount === 1) {
-                    // シングルクリックの場合
-                    if ($this.parent().hasClass('board_kadai')) {
-                        let para = {
-                            keynum: $this.parent().data('keynum'),
-                        }
-                        Ajax('taskman.php?func=loadKadaiInfo',para).done(function(ret) {
-                            $('#dl_keynum').val(para.keynum);
-                            $('#dl_kihyo_date').val(ret.data.kihyo_date);
-                            $('#dl_irai_tan').val(ret.data.irai_tan);
-                            $('#dl_kadai_kbn').val(ret.data.kbn);
-                            $('#dl_important').val($this.parent().children('.board_memo').children('.memo_important').text());
-                            $('#dl_tantouka').val(ret.data.tantouka);
-                            $('#dl_tantou').val(ret.data.syutantou);
-                            $('#dl_progress').text($this.parent().children('.board_memo').children('.memo_progress').text());
-                            $('#dl_progress_bar').css('width',$('#dl_progress').text());
-                            $('#dl_task1').val($this.children('.board_title').text());
-                            $('#dl_task2').val(ret.data.task2);
-                            $('#dl_sinseino').val(ret.data.sinseino);
-                            $('#dl_yoteikosu').val(ret.data.yoteikosu);
-                            $('#dl_jissekikosu').val(ret.data.jissekikosu);
-                            $('#dl_dev_tan').val(ret.data.dev_tan);
-                            $('#dl_start_yotei').val(ret.data.start_yotei);
-                            $('#dl_end_yotei').val(ret.data.end_yotei);
-                            $('#dl_start_jisseki').val(ret.data.start_jisseki);
-                            $('#dl_end_jisseki').val(ret.data.end_jisseki);
-                            $('#dl_bikou').val(ret.data.bikou);
-                            $('#dl_add_date').val(ret.data.add_date);
-                            $('#dl_add_syain').val(ret.data.add_syain);
-                            $('#dl_upd_date').val(ret.data.upd_date);
-                            $('#dl_upd_syain').val(ret.data.upd_syain);
 
-                            $('#edit_kadai').dialog('open');
-                            $('#edit_kadai').next().find('button').focus();
-                        }).fail(function(ret) {
-                            $.alert('読込エラーです。再試行して下さい');
-                        });                
-                    } else if ($this.parent().hasClass('board_story')) {
-                        sv_obj = $this.parent();
-                        sv_parent = sv_obj.parent();
-                        $('#edit_story').dialog('option', 'title', 'ストーリー編集');
-                        $('#edit_story .bg'+sv_obj.data('color')).click();
-                        $('#dl_story_title').val(sv_obj.children('.board_title_waku').children('.board_title').data('title'));
-                        $('#dl_story_start_yotei').val(sv_obj.data('syotei'));
-                        $('#dl_story_end_yotei').val(sv_obj.data('eyotei'));
-                        $('#dl_story_ration_auto').prop('checked',(sv_obj.data('ration_auto') === 1));
-                        $('#dl_story_ration').val(sv_obj.data('ration')).prop('disabled',(sv_obj.data('ration_auto') === 1));
-                        $('#dl_story_bikou').val(sv_obj.data('bikou'));
-                        $('#dl_story_syain').val(sv_obj.data('syain'));
-                        $('#edit_story').dialog('open');
-                    } else if ($this.parent().hasClass('board_task')) {
-                        sv_obj = $this.parent();
-                        sv_parent = sv_obj.parent();
-                        $('#edit_task').dialog('option', 'title', 'タスク編集');
-                        $('#dl_task_title').val(sv_obj.children('.board_title_waku').children('.board_title').data('title'));
-                        $('#dl_task_ration_auto').prop('checked',(sv_obj.data('ration_auto') === 1));
-                        $('#dl_task_ration').val(sv_obj.data('ration')).prop('disabled',(sv_obj.data('ration_auto') === 1));
-                        $('#dl_task_progress').slider('value',sv_obj.find('.slide_bar').data('val'));
-                        $('#dl_task_progress_tx').text(sv_obj.find('.slide_bar').data('val')+'%');
-                        $('#dl_task_bikou').val(sv_obj.data('bikou'));
-                        $('#edit_task').dialog('open');
-                    }    
-                }
-                clickCount = 0;
-            }, 350 ) ;
-        } else {
-            // ダブルクリックの場合
-            e.preventDefault();
-            clickCount = 0;
-            if ($this.parent().hasClass('board_story')) {
-                // 開始前ストーリーのタスクを表示
-                if ($this.parent().data('syotei') > today_str && $this.parent().children('.board_memo').children('.memo_progress').text() === '0%') {
-                    $this.parent().find('.board_task').toggle();
-                }
-            } else if ($this.parent().hasClass('board_task')) {
-                $this.parent().children('.progress_waku').toggle();
-            } else {
-                // $this.parent().children('.board_story').toggle();
-            }
-        }        
+        if ($this.parent().hasClass('board_kadai')) {
+            dispKadaiForm($this.parent().data('keynum'));
+        } else if ($this.parent().hasClass('board_story')) {
+            sv_obj = $this.parent();
+            sv_parent = sv_obj.parent();
+            $('#edit_story').dialog('option', 'title', 'ストーリー編集');
+            $('#edit_story .bg'+sv_obj.data('color')).click();
+            $('#dl_story_title').val(sv_obj.children('.board_title_waku').children('.board_title').data('title'));
+            $('#dl_story_start_yotei').val(sv_obj.data('syotei'));
+            $('#dl_story_end_yotei').val(sv_obj.data('eyotei'));
+            $('#dl_story_ration_auto').prop('checked',(sv_obj.data('ration_auto') === 1));
+            $('#dl_story_ration').val(sv_obj.data('ration')).prop('disabled',(sv_obj.data('ration_auto') === 1));
+            $('#dl_story_bikou').val(sv_obj.data('bikou'));
+            $('#dl_story_syain').val(sv_obj.data('syain'));
+            $('#edit_story').dialog('open');
+        } else if ($this.parent().hasClass('board_task')) {
+            sv_obj = $this.parent();
+            sv_parent = sv_obj.parent();
+            $('#edit_task').dialog('option', 'title', 'タスク編集');
+            $('#dl_task_title').val(sv_obj.children('.board_title_waku').children('.board_title').data('title'));
+            $('#dl_task_ration_auto').prop('checked',(sv_obj.data('ration_auto') === 1));
+            $('#dl_task_ration').val(sv_obj.data('ration')).prop('disabled',(sv_obj.data('ration_auto') === 1));
+            $('#dl_task_progress').slider('value',sv_obj.find('.slide_bar').data('val'));
+            $('#dl_task_progress_tx').text(sv_obj.find('.slide_bar').data('val')+'%');
+            $('#dl_task_bikou').val(sv_obj.data('bikou'));
+            $('#edit_task').dialog('open');
+        }
     });
+    function dispKadaiForm(keynum) {
+        let para = {
+            keynum: keynum
+        }
+        Ajax('taskman.php?func=loadKadaiInfo',para).done(function(ret) {
+            $('#dl_keynum').val(para.keynum);
+            $('#dl_kihyo_date').val(ret.data.kihyo_date);
+            $('#dl_irai_tan').val(ret.data.irai_tan);
+            $('#dl_kadai_kbn').val(ret.data.kbn);
+            $('#dl_important').val(ret.data.important);
+            $('#dl_tantouka').val(ret.data.tantouka);
+            $('#dl_tantou').val(ret.data.syutantou);
+            $('#dl_progress').text(ret.data.progress+'%');
+            $('#dl_progress_bar').css('width',$('#dl_progress').text());
+            $('#dl_task1').val(ret.data.task1);
+            $('#dl_task2').val(ret.data.task2);
+            $('#dl_sinseino').val(ret.data.sinseino);
+            $('#dl_yoteikosu').val(ret.data.yoteikosu);
+            $('#dl_jissekikosu').val(ret.data.jissekikosu);
+            $('#dl_dev_tan').val(ret.data.dev_tan);
+            $('#dl_start_yotei').val(ret.data.start_yotei);
+            $('#dl_end_yotei').val(ret.data.end_yotei);
+            $('#dl_start_jisseki').val(ret.data.start_jisseki);
+            $('#dl_end_jisseki').val(ret.data.end_jisseki);
+            $('#dl_bikou').val(ret.data.bikou);
+            $('#dl_add_date').val(ret.data.add_date);
+            $('#dl_add_syain').val(ret.data.add_syain);
+            $('#dl_upd_date').val(ret.data.upd_date);
+            $('#dl_upd_syain').val(ret.data.upd_syain);
+
+            $('#edit_kadai').dialog('open');
+            $('#edit_kadai').next().find('button').focus();
+        }).fail(function(ret) {
+            $.alert('読込エラーです。再試行して下さい');
+        });
+    }
     $('#edit_kadai').dialog({
 		autoOpen: false,
 		width: 540,
@@ -501,7 +481,7 @@ $(function() {
                 if ($('#dl_story_ration_auto').prop('checked') === false) {
                     if ($('#dl_story_ration').val().isNumeric() === false) {
                         showMessage2($('#dl_story_ration'),'進捗割合を数値で入力して下さい','#ff0000');
-                        return;    
+                        return;
                     }
                     var ration_sum = 0;
                     sv_parent.children('.board_story').each(function(i) {
@@ -511,7 +491,7 @@ $(function() {
                     });
                     if (parseInt($('#dl_story_ration').val()) + ration_sum > 100) {
                         showMessage2($('#dl_story_ration'),'進捗割合を'+(100-ration_sum)+'以下で入力して下さい','#ff0000');
-                        return;    
+                        return;
                     }
                 }
                 var para = {
@@ -605,7 +585,7 @@ $(function() {
                 if ($('#dl_task_ration_auto').prop('checked') === false) {
                     if ($('#dl_task_ration').val().isNumeric() === false) {
                         showMessage2($('#dl_task_ration'),'進捗割合を数値で入力して下さい','#ff0000');
-                        return;    
+                        return;
                     }
                     var ration_sum = 0;
                     sv_parent.children('.board_task').each(function(i) {
@@ -615,16 +595,16 @@ $(function() {
                     });
                     if (parseInt($('#dl_task_ration').val()) + ration_sum > 100) {
                         showMessage2($('#dl_task_ration'),'進捗割合を'+(100-ration_sum)+'以下で入力して下さい','#ff0000');
-                        return;    
+                        return;
                     }
                 }
                 if ($('#dl_task_nippodate').val().isDate() === false) {
                     showMessage2($('#dl_task_nippodate'),'日報入力日を正しく入力して下さい','#ff0000');
-                    return;    
+                    return;
                 }
                 if ($('#dl_task_nippodate').val() > today_str) {
                     showMessage2($('#dl_task_nippodate'),'日報入力日に未来の日付は指定できません','#ff0000');
-                    return;    
+                    return;
                 }
                 var para = {
                     keynum: sv_parent.parent().data('keynum'),
@@ -638,7 +618,7 @@ $(function() {
                     work_syori: $('#dl_task_nippodate').val(),
                     work_time: $('#dl_task_worktime').val(),
                     memo: $('#dl_task_nippomemo').val(),
-                    nippo: ($('#dl_task_worktime').val() !== String($('#dl_task_worktime').data('sv_val')) 
+                    nippo: ($('#dl_task_worktime').val() !== String($('#dl_task_worktime').data('sv_val'))
                             || $('#dl_task_nippomemo').val() !== $('#dl_task_nippomemo').data('sv_val') ? '1' : '0')
                 }
                 Ajax('taskman.php?func=taskReg',para).done(function(ret) {
@@ -728,11 +708,11 @@ $(function() {
     });
     // プログレス値計算
     function calcProgress(kadai) {
-        let kadai_val = 0;
+        let kadai_val = 0.0;
         // let old_progress = kadai.children('.board_memo').children('.memo_progress').text();
         let comp_cnt = 0;
         kadai.children('.board_story').each(function() {
-            let story_val = 0;
+            let story_val = 0.0;
             $(this).children('.board_task').each(function() {
                 story_val += parseInt($(this).find('.slide_bar').data('val')) * ($(this).data('ration') / 100);
             });
@@ -741,11 +721,11 @@ $(function() {
             if (story_proress === '100%') {
                 comp_cnt++;
             }
+            story_val = Math.floor(story_val+0.01);
             kadai_val += story_val * ($(this).data('ration') / 100);
         });
-        kadai_val = Math.floor(kadai_val + 0.01);
-        let new_progress = (kadai_val - kadai_val % 5)+'%';
-        kadai.children('.board_memo').children('.memo_progress').text(new_progress);
+        let new_progress = Math.floor(kadai_val + 0.01) - Math.floor(kadai_val + 0.01) % 5;
+        kadai.children('.board_memo').children('.memo_progress').text(new_progress+'%');
         kadai.children('.board_comp').children('.board_comp_cnt').text(comp_cnt);
     }
     // メイン域の幅変更時
@@ -846,9 +826,9 @@ $(function() {
                 $('.slide_bar').each(function() {
                     setSilder($(this));
                     // 完了タスクのスライドバーを非表示
-                    if ($(this).data('val') === 100) {
-                        $(this).parent().hide();
-                    }
+                    // if ($(this).data('val') === 100) {
+                    //     $(this).parent().hide();
+                    // }
                 });
                 // 完了ストーリーのタスクと開始前タスクと担当者指定時に他担当者分を非表示
                 $('#board_main_body .board_story').each(function() {
@@ -881,11 +861,11 @@ $(function() {
         }
         // ストーリの並び替え
         $this.sortable({
-            items: '.board_story', 
+            items: '.board_story',
             axis: 'y',
             start: function() {
                 $(document).tooltip('disable');
-            },                    
+            },
             stop: function(e,ui) {
                 let storyno = [];
                 ui.item.parents('.board_kadai').children('.board_story').each(function() {
@@ -910,11 +890,11 @@ $(function() {
         }
         // タスクの並び替え
         $this.sortable({
-            items: '.board_task', 
+            items: '.board_task',
             axis: 'y',
             start: function() {
                 $(document).tooltip('disable');
-            },                    
+            },
             stop: function(e,ui) {
                 let taskno = [];
                 ui.item.parents('.board_story').children('.board_task').each(function() {
@@ -928,7 +908,7 @@ $(function() {
                 Ajax('taskman.php?func=orderTask',para).done(function(ret) {
                 }).fail(function(ret) {
                     $.alert('更新エラーです。再読込して下さい');
-                });                    
+                });
                 $(document).tooltip('enable');
             }
         });
@@ -955,7 +935,7 @@ $(function() {
                     taskno: $this.parents('.board_task').data('taskno'),
                     value: ui.value
                 }
-                $this = $this;                      
+                // $this = $this;
                 Ajax('taskman.php?func=setTaskProgress',para).done(function(ret) {
                     let task = $this.parent().parent().children('.board_title_waku').children('.board_title');
                     if (ui.value === 100 && task.hasClass('comp') === false) {
@@ -972,7 +952,7 @@ $(function() {
                     }
                 }).fail(function(ret) {
                     $.alert('更新エラーです。再読込して下さい');
-                });       
+                });
                 calcProgress($this.parents('.board_kadai'));
             }
         });
@@ -1008,7 +988,7 @@ $(function() {
             sv_obj.text($this.text());
         }).fail(function(ret) {
             $.alert('変更できませんでした');
-        });       
+        });
     });
     // 担当者変更画面非表示
     $('#select_syain_scr').click(function() {
@@ -1016,7 +996,7 @@ $(function() {
     });
     // 終了ストーリー表示・非表示
     $(document).on('click','.board_comp',function() {
-        if ($(this).children().eq(0 ).text() === '終了したストーリー（') {
+        if ($(this).children().eq(0).text() === '終了したストーリー（') {
             if ($(this).children('.board_comp_switch').text() === '▼') {
                 $(this).parent().children('.story_hide').removeClass('story_hide');
                 $(this).children('.board_comp_switch').text('▲');
@@ -1049,8 +1029,8 @@ $(function() {
                 $(this).attr('title', $(this).data('title'));
             }
 		}
-        if ($(this)[0].className === 'schdule_title' 
-        && $(this).parent().next()[0].className === 'schdule_exwaku' 
+        if ($(this)[0].className === 'schdule_title'
+        && $(this).parent().next()[0].className === 'schdule_exwaku'
         && $(this).parent().parent().height() === 23
         && $(this).attr('title') !== $(this).parent().next().text()) {
             if ($(this).attr('title') === undefined) {
@@ -1064,20 +1044,20 @@ $(function() {
         selector: '.board_kadai > .board_title_waku',
         callback: function(key, options) {
             if (key === 'add') {
-                $(this).children('.add_btn').click();                
+                $(this).children('.add_btn').click();
             } else if (key === 'dispstory') {
                 if ($('#board_syain').val() !== "0") {
                     $(this).parent().children('.board_story').not('.story_hide').each(function() {
                         if ($('#board_syain option:selected').text() !== $(this).children('.board_memo').children('.memo_syutantou').text()) {
                             $(this).toggle();
-                        }        
+                        }
                     });
                 }
             } else if (key === 'edit') {
                 $(this).children('.board_title').click();
             } else if (key === 'link') {
                 window.open('https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do?i=I07002_KADAI_DTL.do&p='+$(this).parent().data('keynum'));
-            } 
+            }
         },
         items: {
             add:{ name:'ストーリー追加', icon:'add', },
@@ -1090,16 +1070,16 @@ $(function() {
         events: {
             show: function(opt) {
                 $.contextMenu.setInputValues(opt, {jyotai: '2'});
-            }, 
+            },
             hide: function(opt) {
                 var $this = this;
                 $.contextMenu.getInputValues(opt, $this.data());
             }
-        }        
+        }
     });
     // コンテキストメニュー ストーリー
     $.contextMenu({
-        selector: '.board_story > .board_title_waku', 
+        selector: '.board_story > .board_title_waku',
         callback: function(key, options) {
             if (key === 'add') {
                 $(this).children('.add_btn').click();
@@ -1132,7 +1112,7 @@ $(function() {
                                     if ($(this).data('ration_auto') === 1 && ret.ration) {
                                         $(this).data('ration',ret.ration);
                                     }
-                                });                            
+                                });
                                 calcProgress(sv_parent);
                             }
                         }).fail(function(ret) {
@@ -1144,7 +1124,7 @@ $(function() {
         },
         items: {
             add: { name:'タスク追加', icon:'add', },
-            // disptask: {name:'タスク表示／非表示'}, 
+            // disptask: {name:'タスク表示／非表示'},
             sep1: '---------',
             edit: { name:'ストーリー編集', icon:'edit', },
             sep2: '---------',
@@ -1154,15 +1134,15 @@ $(function() {
             show: function(opt) {
                 sv_obj = $(this).parent();
             }
-        }        
+        }
     });
     // コンテキストメニュー タスク
     $.contextMenu({
-        selector: '.board_task > .board_title_waku', 
+        selector: '.board_task > .board_title_waku',
         callback: function(key, options) {
-            if (key === 'disptask') {
-                $(this).parent().children('.progress_waku').toggle();
-            } else if (key === 'edit') {
+            // if (key === 'disptask') {
+            //     $(this).parent().children('.progress_waku').toggle();
+            if (key === 'edit') {
                 $(this).children('.board_title').click();
             } else if (key === 'delete') {
                 // ゲストは更新不可
@@ -1192,7 +1172,7 @@ $(function() {
                                     if ($(this).data('ration_auto') === 1 && ret.ration) {
                                         $(this).data('ration',ret.ration);
                                     }
-                                });                            
+                                });
                                 calcProgress(sv_parent.parent());
                             }
                         }).fail(function(ret) {
@@ -1203,8 +1183,8 @@ $(function() {
             }
         },
         items: {
-            disptask: {name:'プログレス表示／非表示'},            
-            sep1: '---------',            
+            // disptask: {name:'プログレス表示／非表示'},
+            // sep1: '---------',
             edit: { name:'タスク編集', icon:'edit', },
             sep2: '---------',
             delete: { name:'タスク削除', icon:'delete', },
@@ -1213,7 +1193,7 @@ $(function() {
             show: function(opt) {
                 sv_obj = $(this).parent();
             }
-        }        
+        }
     });
     $(document).on('click','.sub_menu',function(e) {
         $(this).parent().contextMenu();
@@ -1239,7 +1219,7 @@ $(function() {
     $('#prev_ym').click(function() {
         syori_ym.addMonth(-1);
         str_syori = new Date(syori_ym).addMonth(-1);
-        end_syori = new Date(syori_ym).addMonth(2).addDay(-1);            
+        end_syori = new Date(syori_ym).addMonth(2).addDay(-1);
         dataLoadSchdule();
     });
     // 処理年月変更（翌月クリック）
@@ -1247,7 +1227,7 @@ $(function() {
         if (today.formatDate('YYYYMM') > syori_ym.formatDate('YYYYMM')) {
             syori_ym.addMonth(1);
             str_syori = new Date(syori_ym).addMonth(-1);
-            end_syori = new Date(syori_ym).addMonth(2).addDay(-1);            
+            end_syori = new Date(syori_ym).addMonth(2).addDay(-1);
             dataLoadSchdule();
         } else {
             showMessage('これより先のデータは選択できません','#0000ff');
@@ -1260,7 +1240,7 @@ $(function() {
     //     if (scroll_flg === false) {
     //         if ($(this).scrollLeft() === 0) {
     //             scroll_flg = false;
-    //             $('#prev_ym').click();                
+    //             $('#prev_ym').click();
     //         }
     //     }
     // })
@@ -1286,6 +1266,16 @@ $(function() {
         localStorage.setItem('taskman_schdule_hidecomp',($('#hide_comp').prop('checked') ? '1' : '0'));
         localStorage.setItem('taskman_schdule_disp1',($('#disp1').prop('checked') ? '1' : '0'));
     });
+    $(document).on('click','.schdule_title_waku',function() {
+        if ($(this).parent().parent().hasClass('schdule_kadai')) {
+            // 課題
+            dispKadaiForm($(this).parents('.schdule_kadai').data('keynum'));
+        } else if ($(this).parent().parent().hasClass('schdule_story')) {
+            // ストーリー
+        } else if ($(this).parent().parent().hasClass('schdule_task')) {
+            // タスク
+        }
+    });
     // 日報データ読込
     const cellwidth = 33;
     function dataLoadSchdule() {
@@ -1297,7 +1287,7 @@ $(function() {
             syainnm: $('#schdule_syain option:selected').text(),
             hidecomp: $('#hide_comp').prop('checked') ? 1 : 0,
             disp1: $('#disp1').prop('checked') ? 1 : 0
-        } 
+        }
         kyuka = ['',' kyuka'];
         sv_monthkei = 0;
         Ajax('taskman.php?func=loadSchdule',para).done(function(ret) {
@@ -1349,7 +1339,7 @@ $(function() {
                                                         'left:'+b_left+'px;width:'+b_width+'px"></div>';
                                     }
                                 }
-                                
+
                                 srec.schdule_task.forEach(function(trec) {
                                     w_item += '<div class="row" style="width:'+width+'px'+(trec.task_disp === 'sc_hide' ? ';display:none':'')+'">';
                                     if (trec.task_disp !== 'sc_hide') {
@@ -1378,7 +1368,7 @@ $(function() {
                                         w_syori.addDay(1);
                                         i++;
                                     }
-                                    w_item += '</div>';           
+                                    w_item += '</div>';
                                 });
                             });
                         }
@@ -1499,7 +1489,7 @@ $(function() {
         if (sv_obj.hasClass('kyuka')) {
             showMessage('休みの為、入力不可です。','#0000ff');
             return false;
-        }                
+        }
         let dcnt = sv_obj.parent().children('.cells').index(sv_obj);
         let pcnt = new Date(syori_ym).addDay(-1).getDate();
         if (pcnt < dcnt) {
@@ -1511,7 +1501,7 @@ $(function() {
             }
         } else {
             sv_syori = new Date(str_syori).addDay(dcnt);
-        }        
+        }
         return true;
     }
     // 作業時間選択
@@ -1616,6 +1606,89 @@ $(function() {
             $(this).datepicker('refresh');
         }
     });
+    // 日報入力プログレスバークリック
+    $(document).on('click','.task_progress',function() {
+        if ($('#schdule_syain option:selected').text() !== $('#user_name').text()) {
+            return false;
+        }
+        let pos = $(this).offset();
+        $('#nippo_progress').css({top:pos.top-12,left:pos.left-65});
+        $('#nippo_progress_tx').text($(this).data('progress')+'%');
+        $('#nippo_progress_bar').data('val',$(this).data('progress'));
+        setSilder2($('#nippo_progress_bar'),$(this));
+        $('#nippo_progress_scr').show(200);
+    });
+    $('#nippo_progress').click(function() {
+        return false;
+    });
+    $('#nippo_progress_scr').click(function() {
+        $('#nippo_progress_bar').slider('destroy');
+        $(this).hide(100);
+    });
+    // 日報入力用プログレスバー
+    function setSilder2($this,$target) {
+        $this.slider({
+            range: 'min',
+            min: 0,
+            max: 100,
+            step: 10,
+            value: $this.data('val'),
+            slide: function( e, ui ) {
+                // ゲストは更新不可
+                // if (user_name === 'ゲスト' || String($this.parents('.board_story').data('syain')) !== syaincd) {
+                //     return false;
+                // }
+                $(this).prev().text(ui.value+'%');
+            },
+            change: function( e, ui ) {
+                $this.data('val',ui.value);
+                let para = {
+                    keynum: $target.parents('.schdule_kadai').data('keynum'),
+                    storyno: $target.parents('.schdule_story').data('storyno'),
+                    taskno: $target.parents('.schdule_task').data('taskno'),
+                    value: ui.value,
+                    getprogress: 1
+                }
+                // $target = $target;
+                Ajax('taskman.php?func=setTaskProgress',para).done(function(ret) {
+                    let task = $target.parent().prev();
+                    $target.children('div').css('width',ui.value+'%');
+                    $target.children('div').children('span').text(ui.value+'%');
+                    $target.data('progress',ui.value);
+                    if (ui.value === 100 && task.hasClass('comp2') === false) {
+                        task.addClass('comp2');
+                    } else if (ui.value < 100 && task.hasClass('comp2')) {
+                        task.removeClass('comp2');
+                    }
+                    let story = $target.parents('.schdule_story').children('.schdule_waku');
+                    story.find('.worktime_progress').children('div').css('width',ret.story_progress+'%');
+                    story.find('.worktime_progress').children('div').children('span').text(ret.story_progress+'%');
+                    if (ret.story_progress == 100 && story.hasClass('comp2') === false) {
+                        story.addClass('comp2');
+                        story.children('.schdule_title_waku').addClass('comp2');
+                    } else if (ret.story_progress != 100 && story.hasClass('comp2')) {
+                        story.removeClass('comp2');
+                        story.children('.schdule_title_waku').removeClass('comp2');
+                    }
+                    let kadai = $target.parents('.schdule_kadai').children('.schdule_waku');
+                    kadai.find('.worktime_progress').children('div').css('width',ret.kadai_progress+'%');
+                    kadai.find('.worktime_progress').children('div').children('span').text(ret.kadai_progress+'%');
+                    if (ret.kadai_progress == 100 && kadai.hasClass('comp2') === false) {
+                        kadai.addClass('comp2');
+                        kadai.children('.schdule_title_waku').addClass('comp2');
+                    } else if (ret.kadai_progress != 100 && kadai.hasClass('comp2')) {
+                        kadai.removeClass('comp2');
+                        kadai.children('.schdule_title_waku').removeClass('comp2');
+                    }
+                    $('#nippo_progress_bar').slider('destroy');
+                    $('#nippo_progress_scr').hide(100);
+                }).fail(function(ret) {
+                    $.alert('更新エラーです。再読込して下さい');
+                });
+            }
+        });
+    }
+    // ＣＳＶ
     $('#csv_form').dialog({
 		autoOpen: false,
 		width: 420,
@@ -1686,13 +1759,13 @@ $(function() {
             '閉じる': function() {
                 $(this).dialog('close');
             }
-        }        
+        }
     });
     // コンテキストメニュー日報セル
     let sv_cell = {work_time:0,memo:'',disabled:true};
     let cell_proc; // コピー・切り取り・貼り付け選択チェック
     $.contextMenu({
-        selector: '#schdule_body_item .cells', 
+        selector: '#schdule_body_item .cells',
         callback: function(key, options) {
             if (key === 'copy') {
                 sv_cell = {
@@ -1728,8 +1801,8 @@ $(function() {
         },
         items: {
             memo: {
-                name: "作業メモ", 
-                type: 'text', 
+                name: "作業メモ",
+                type: 'text',
                 events: {
                     keydown: function(e) {
                         // add some fancy key handling here?
@@ -1767,7 +1840,7 @@ $(function() {
                 if (sv_syori > today) {
                     showMessage('入力不可です。','#0000ff');
                     return false;
-                }                
+                }
                 $(document).tooltip('disable');
                 let disflg = (sv_obj.text() === '' && sv_obj.data('memo') === '');
                 opt.commands.copy.disabled = disflg;
@@ -1780,7 +1853,7 @@ $(function() {
             },
             hide: function(opt) {
                 $(document).tooltip('enable');
-                if (cell_proc === false && 
+                if (cell_proc === false &&
                    (opt.commands.work_time.selected !== $('select[name="context-menu-input-work_time"]').val() ||
                     opt.commands.memo.value !== $('input[name="context-menu-input-memo"]').val())) {
                     cellUpdate($('select[name="context-menu-input-work_time"]').val(),$('input[name="context-menu-input-memo"]').val().trim()).done(function(ret) {
@@ -1792,7 +1865,7 @@ $(function() {
                     });
                 }
                 // $.contextMenu.getInputValues(opt, $this.data());
-            }            
+            }
         }
     });
     $('input[name="context-menu-input-memo"]').attr('maxlength',50);
@@ -1801,7 +1874,7 @@ $(function() {
     // --------------------------------- //
     $('#kadai_body_ctrl').databind();
     $('#kadai_body_item').databind();
-    
+
     $('#kadai_head_ctrl,#kadai_body_ctrl').width(localStorage.getItem('taskman_kadai_width') || 450);
     // 課題一覧クリック
     $('#disp_kadai').change(function() {
@@ -1813,7 +1886,7 @@ $(function() {
     // 処理年月変更（前月クリック）
     $('#prev_ym2').click(function() {
         str_kadai.addMonth(-1);
-        end_kadai.addDay(end_kadai.getDate()*-1);            
+        end_kadai.addDay(end_kadai.getDate()*-1);
         dataLoadKadai();
     });
     // 処理年月変更（翌月クリック）
@@ -1833,16 +1906,16 @@ $(function() {
     // $('input[name="kadai_sel"]').change(function() {
     //     if ($('#kadai_sel_month').prop('checked')) {
     //         str_kadai = new Date(today.formatDate('YYYY/MM/01'));
-    //         end_kadai = new Date(str_kadai).addMonth(1).addDay(-1);    
+    //         end_kadai = new Date(str_kadai).addMonth(1).addDay(-1);
     //     } else if ($('#kadai_sel_month4').prop('checked')) {
     //         str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
-    //         end_kadai = new Date(str_kadai).addMonth(4).addDay(-1);    
+    //         end_kadai = new Date(str_kadai).addMonth(4).addDay(-1);
     //     } else if ($('#kadai_sel_month6').prop('checked')) {
     //         str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
-    //         end_kadai = new Date(str_kadai).addMonth(6).addDay(-1);    
+    //         end_kadai = new Date(str_kadai).addMonth(6).addDay(-1);
     //     } else if ($('#kadai_sel_month12').prop('checked')) {
     //         str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
-    //         end_kadai = new Date(str_kadai).addMonth(12).addDay(-1);    
+    //         end_kadai = new Date(str_kadai).addMonth(12).addDay(-1);
     //     }
     //     dataLoadKadai();
     // });
@@ -1877,7 +1950,7 @@ $(function() {
             for (let w_date=new Date(str_kadai); w_date<end_kadai; w_date.addMonth(1)) {
                 mcnt[i] = new Date(w_date).addMonth(1).addDay(-1).getDate();
                 cnt += mcnt[i];
-                i++; 
+                i++;
             }
             i = 0;
             for (let w_date=new Date(str_kadai); w_date<end_kadai; w_date.addMonth(1)) {
@@ -1912,7 +1985,7 @@ $(function() {
                 if (str_kadai <= today && end_kadai >= today) {
                     let hour = new Date().getHours();
                     let nissu =  Math.ceil((today-str_kadai)/(60*60*24*1000))+(hour < 9 ? 0 : (hour > 18 ? 1 : ((hour-9) / 10)));
-                    
+
                     $('#kadai_body_item').append('<div id="today_bar" style="left:'+(nissu*width)+'%"></div>');
                 }
                 $('#kadai_body_ctrl').resizable({

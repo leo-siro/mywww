@@ -4,9 +4,9 @@
         require "../common/pdo_connect.php";
         $header = getallheaders();
         if ((isset($header["iv-user"]) && $header["iv-user"] === '95H04') || isset($header["iv-user"]) === false) {
-            $_SESSION["taskman"]["user"] = isset($_GET["syaincd"]) 
-                                            ? $_GET["syaincd"]  
-                                            : (isset($header["iv-user"]) 
+            $_SESSION["taskman"]["user"] = isset($_GET["syaincd"])
+                                            ? $_GET["syaincd"]
+                                            : (isset($header["iv-user"])
                                                 ? $header["iv-user"]
                                                 : "99999");
         } else {
@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=18">
+    <link rel="stylesheet" href="taskman.css?v=19">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=17"></script>
+    <script src="taskman.js?v=18"></script>
 </head>
 <body>
     <header>
@@ -69,7 +69,7 @@
             </select>
             <select id="board_syain">
                 <option value="!{value}">!{label}</option>
-            </select>            
+            </select>
             <div id="disp_data">
                 <input type="checkbox" id="disp_left" name="disp_data"><label for="disp_left">未振分</label>
                 <!-- <input type="checkbox" id="disp_main" name="disp_data" checked><label for="disp_main">作業中</label> -->
@@ -195,7 +195,7 @@
                 </div>
             </div>
         </div>
-        <!-- 日報入力 -->        
+        <!-- 日報入力 -->
         <div id="schdule">
             <div id="schdule_head">
                 <div id="schdule_head_ctrl">
@@ -224,26 +224,47 @@
                             <div class="schdule_waku !{kadai_comp}">
                                 <div class="schdule_title_waku !{kadai_comp}"><div class="schdule_title" data-title="!{kadai_title}">!{kadai_title}</div></div>
                                 <div class="schdule_exwaku">!{sinseino}</div>
-                                <div class="worktime"><div class="worktime_time">!{kadai_kei}h</div><div class="worktime_progress"><div style="width:!{kadai_progress}%"><span>!{kadai_progress}%</span></div></div></div>
+                                <div class="worktime">
+                                    <div class="worktime_time">!{kadai_kei}h</div>
+                                    <div class="worktime_progress">
+                                        <div style="width:!{kadai_progress}%">
+                                            <span>!{kadai_progress}%</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="schdule_story_waku">
                                 <div class="@{schdule_story} !{story_disp}" data-storyno="!{storyno}" data-kei="!{story_kei}">
                                     <div class="schdule_waku !{story_comp}">
                                         <div class="schdule_title_waku !{story_comp}"><div class="schdule_title" data-title="!{story_title}">!{story_title}</div></div>
                                         <div class="schdule_exwaku">!{user_name}</div>
-                                        <div class="worktime"><div class="worktime_time">!{story_kei}h</div><div class="worktime_progress"><div style="width:!{story_progress}%"></div><span>!{story_progress}%</span></div></div>
+                                        <div class="worktime">
+                                            <div class="worktime_time">!{story_kei}h</div>
+                                            <div class="worktime_progress">
+                                                <div style="width:!{story_progress}%">
+                                                    <span>!{story_progress}%</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="schdule_task_waku">
                                         <div class="@{schdule_task} !{task_disp}" data-taskno="!{taskno}" data-kei="!{task_kei}">
                                             <div class="schdule_waku">
                                                 <div class="schdule_title_waku !{task_comp}"><div class="schdule_title" data-title="!{task_title}">!{task_title}</div></div>
-                                                <div class="worktime"><div class="worktime_time">!{task_kei}h</div><div class="worktime_progress"><div style="width:!{task_progress}%"><span>!{task_progress}%</span></div></div></div>
+                                                <div class="worktime">
+                                                    <div class="worktime_time">!{task_kei}h</div>
+                                                    <div class="worktime_progress task_progress" data-progress="!{task_progress}">
+                                                        <div style="width:!{task_progress}%">
+                                                            <span>!{task_progress}%</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                     <div id="schdule_body_item">
                     </div>
@@ -317,6 +338,12 @@
             <li>11.5</li>
             <li>12.0</li>
         </ul>
+    </div>
+    <!-- 日報入力プログレスバー -->
+    <div id="nippo_progress_scr">
+        <div id="nippo_progress">
+            <div id="nippo_progress_tx"></div><div id="nippo_progress_bar"></div>
+        </div>
     </div>
     <!-- 課題表示ダイアログ -->
     <form id="edit_kadai" title="課題情報">
@@ -402,7 +429,7 @@
                 <td><input type="text" id="dl_upd_syain" readonly></td>
             </tr>
         </table>
-    </form>    
+    </form>
     <!-- ストーリー編集ダイアログ -->
     <form id="edit_story">
         <div class="groupline">
@@ -514,6 +541,6 @@
             <span>>></span>
             <p id="csv_msg" class="msg"></p>
         </div>
-    </form>    
+    </form>
 </body>
 </html>
