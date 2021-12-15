@@ -21,7 +21,7 @@ class pdoConnect
 $data = array("code"=>"ERROR","msg"=>"?");
 $con = new pdoConnect("schedule");
 
-$syori_ym = date("Y-m-01");
+$syori_ym = date("Y-m-01",strtotime("+1 Month"));
 $wdate = new DateTime($syori_ym);
 
 // 当月データが無い人のデータを初期化する
