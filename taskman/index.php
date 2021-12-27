@@ -205,7 +205,7 @@
                     <div class="schdule_head_title">
                         <span>タスク</span>
                         <input type="checkbox" id="hide_comp"><label for="hide_comp">完了非表示</label>
-                        <input type="checkbox" id="disp1"><label for="disp1" title="過去10日間に日報入力有のデータのみ表示">入力有</label>
+                        <input type="checkbox" id="disp1"><label for="disp1" title="過去30日間に日報入力有のデータのみ表示">入力有</label>
                     </div>
                 </div>
                 <div id="schdule_head_item">
