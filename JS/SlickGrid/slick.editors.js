@@ -302,7 +302,7 @@
         showOn: "button",
         showOtherMonths: true,
         selectOtherMonths: true,
-        showButtonPanel: true,        
+        showButtonPanel: true,
         buttonImageOnly: true,
         beforeShow: function () {
           calendarOpen = true;
@@ -659,11 +659,11 @@
           args.grid.onCompositeEditorChange.notify({ row: activeCell.row, cell: activeCell.cell, item: scope.args.item, column: scope.args.column, formValues: scope.args.compositeEditorOptions.formValues });
         });
       } else {
-        $("<DIV style='text-align:right'><BUTTON>Save</BUTTON><BUTTON>Cancel</BUTTON></DIV>")
-          .appendTo($wrapper);
+        // $("<DIV style='text-align:right'><BUTTON>Save</BUTTON><BUTTON>Cancel</BUTTON></DIV>")
+        //   .appendTo($wrapper);
 
-        $wrapper.find("button:first").on("click", this.save);
-        $wrapper.find("button:last").on("click", this.cancel);
+        // $wrapper.find("button:first").on("click", this.save);
+        // $wrapper.find("button:last").on("click", this.cancel);
         $input.on("keydown", this.handleKeyDown);
         scope.position(args.position);
       }
@@ -769,8 +769,14 @@
 
     this.init = function () {
         var option_str = "";
-        for( key in args.column.options ){
+        if (args.column.options2 && args.column.options2.length > 0) {
+          for( key in args.column.options2 ){
+            option_str += "<OPTION value='" + args.column.options2[key].key +"'>" + args.column.options2[key].value + "</OPTION>";
+          }
+        } else {
+          for( key in args.column.options ){
             option_str += "<OPTION value='" + key +"'>" + args.column.options[key] + "</OPTION>";
+          }
         }
         $select = $("<SELECT tabIndex='0' class='editor-text'>"+ option_str +"</SELECT>");
         $select.appendTo(args.container);
@@ -820,29 +826,24 @@
 
     this.init = function () {
       var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
+      var pos = $(args.container).offset();
       $input = $("<INPUT type=text class='editor-text' />")
         .appendTo(args.container)
         .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
         .focus()
-        .select();      
+        .select();
       $input.autocomplete({
         source: args.column.options,
+        position: { my : (document.body.clientHeight - pos.top) < 290 ? 'left bottom' : 'left top', at: (document.body.clientHeight - pos.top) < 290 ? 'left top' : 'left bottom' },
         minLength: 0,
         select: function (e, ui) {
           $(this).val(ui.item.value);
-          // trigger onCompositeEditorChange event when input changes and it's a Composite Editor
-          if (args.compositeEditorOptions) {
-            var activeCell = args.grid.getActiveCell();
-
-            // when valid, we'll also apply the new value to the dataContext item object
-            if (scope.validate().valid) {
-              scope.applyValue(scope.args.item, scope.serializeValue());
-            }
-            scope.applyValue(scope.args.compositeEditorOptions.formValues, scope.serializeValue());
-            args.grid.onCompositeEditorChange.notify({ row: activeCell.row, cell: activeCell.cell, item: scope.args.item, column: scope.args.column, formValues: scope.args.compositeEditorOptions.formValues });
+          if (scope.validate().valid) {
+            scope.applyValue(scope.args.item, scope.serializeValue());
           }
-          // return false;
         }
+      }).click(function() {
+        $input.autocomplete('search', '');
       });
       $input.autocomplete('search', '');
     };
@@ -891,6 +892,91 @@
     this.init();
   }
 
+  function AuroCompEditorSvr(args) {
+    var $input;
+    var defaultValue;
+    var scope = this;
+    this.args = args;
+
+    this.init = function () {
+      var navOnLR = args.grid.getOptions().editorCellNavOnLRKeys;
+      var pos = $(args.container).offset();
+      $input = $("<INPUT type=text class='editor-text' />")
+        .appendTo(args.container)
+        .on("keydown.nav", navOnLR ? handleKeydownLRNav : handleKeydownLRNoNav)
+        .focus()
+        .select();
+      $input.autocomplete({
+        source: function (request, response) {
+          Ajax(args.column.svrurl, { keyword: (request.term == '0' ? '' : request.term), option: (args.column.options ? args.column.options : '') }).done(function (item) {
+              response($.map(item, function (item) {
+                  return { label: item.label, value: item.value, other: item.other ? item.other : '' };
+              }));
+          }).fail(function (ret) {
+              response(['']);
+          });
+        },
+        position: { my : (document.body.clientHeight - pos.top) < 290 ? 'left bottom' : 'left top', at: (document.body.clientHeight - pos.top) < 290 ? 'left top' : 'left bottom' },
+        minLength: 0,
+        select: function (e, ui) {
+          // Autocomplateの仕様なのか、どうしてもvalの内容がCDになる為、Timeoutでずらしてセット
+          setTimeout(function() {
+            $input.val(ui.item.label).data('value',ui.item.value).data('other',JSON.stringify(ui.item.other));
+            scope.applyValue(scope.args.item, scope.serializeValue());
+            scope.args.grid.navigateNext();
+          },1)
+        }
+      }).click(function() {
+        $input.autocomplete('search', '');
+      });
+      $input.autocomplete('search', '');
+    };
+
+    this.destroy = function () {
+      $input.remove();
+    };
+
+    this.focus = function () {
+      $input.focus();
+    };
+
+    this.loadValue = function (item) {
+      defaultValue = item[args.column.field];
+      $input.val(defaultValue.label);
+      $input.data('value',defaultValue.value);
+      $input.select();
+    };
+
+    this.serializeValue = function () {
+      return {value: $input.data('value'), label: $input.val(), other: $input.data('other') ? JSON.parse($input.data('other')) : ''};
+    };
+
+    this.applyValue = function (item, state) {
+      if (defaultValue === undefined || (state.value !== defaultValue.value && state.label !== defaultValue.label)) {
+        item[args.column.field] = state;
+      }
+    };
+
+    this.isValueChanged = function () {
+      return (!($input.val() === "" && defaultValue == null)) && ($input.val() != defaultValue);
+    };
+
+    this.validate = function () {
+      if (args.column.validator) {
+        var validationResults = args.column.validator($input.val(), args);
+        if (!validationResults.valid) {
+          return validationResults;
+        }
+      }
+
+      return {
+        valid: true,
+        msg: null
+      };
+    };
+
+    this.init();
+  }
   /*
    * Depending on the value of Grid option 'editorCellNavOnLRKeys', us
    * Navigate to the cell on the left if the cursor is at the beginning of the input string
@@ -924,7 +1010,8 @@
         "PercentComplete": PercentCompleteEditor,
         "LongText": LongTextEditor,
         "Select": SelectEditor,
-        "AutoComp": AuroCompEditor
+        "AutoComp": AuroCompEditor,
+        "AutoCompSvr": AuroCompEditorSvr,
       }
     }
   });

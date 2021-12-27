@@ -57,7 +57,18 @@
       return "";
     }
     return columnDef.options[value];
-  }  
+  } 
+
+  function AutoCompSvrFormatter(row, cell, value, columnDef, dataContext) {
+    if (value.label === undefined || value.value === undefined ) {
+      if (value === undefined) {
+        return '';
+      } else {
+        return value;
+      }
+    }
+    return value.label;
+  }
   // exports
   $.extend(true, window, {
     "Slick": {
@@ -67,7 +78,8 @@
         "YesNo": YesNoFormatter,
         "Checkmark": CheckmarkFormatter,
         "Checkbox": CheckboxFormatter,
-        "Select": SelectFormatter
+        "Select": SelectFormatter,
+        "AutoCompSvr": AutoCompSvrFormatter
       }
     }
   });

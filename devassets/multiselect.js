@@ -25,8 +25,8 @@
             for( var i=0; args.item[args.column.field] !== "" && i<args.item[args.column.field].length; i++) {
                 select += '<SELECT style="margin-bottom: 1px" tabIndex="0" class="editor-mselect">'+ option_str +'</SELECT>';
             }
-            $mselect = $('<DIV style="white-space:pre-wrap;border:2px solid #8888aa">'+ select +'</DIV>');
-            $mselect.appendTo(args.container);
+            $mselect = $('<DIV style="display:none;z-index:10000;position:absolute;white-space:pre-wrap;border:2px solid #8888aa;width:'+(args.column.width+1)+'px">'+ select +'</DIV>')
+                .appendTo($('body'));
             $mselect.children('SELECT').eq(0).focus();
 
             $mselect.on('change','select',function() {
@@ -36,6 +36,7 @@
                     $(this).remove();
                 }
             });
+            scope.position(args.position);
         };
 
         this.destroy = function () {
@@ -44,6 +45,17 @@
 
         this.focus = function () {
             $mselect.children('SELECT').eq(0).focus();
+        };
+        this.hide = function () {
+            $mselect.hide();
+        };
+        this.show = function () {
+            $mselect.show();
+        };
+        this.position = function (position) {
+            $mselect
+              .css("top", position.top)
+              .css("left", position.left).show();
         };
 
         this.loadValue = function (item) {
@@ -74,10 +86,10 @@
         this.isValueChanged = function () {
             var value = [];
             $mselect.children('SELECT').each(function(i) {
-                if ($(this).val() !== '0' && $(this).val() !== '') {
+                if ($(this).val() !== '0' && $(this).val() !== '' && $(this).val() !== null) {
                     value.push($(this).val());
                 }
-            });            
+            });
             return (JSON.stringify(value) != JSON.stringify(defaultValue));
         };
 
@@ -99,7 +111,7 @@
         value.forEach(function(item) {
             lbl.push(columnDef.options[item]);
         });
-        return lbl.join('\n');
+        return lbl.join(' / ');
     }
 
 })(jQuery);

@@ -1,5 +1,5 @@
 body {
-    font-size: 14px;
+    font-size: 12px;
 }
 /* ヘッダー */
 header {
@@ -13,32 +13,57 @@ main {
     width: 100vw;
 }
 .proc_frame {
-    display: none;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
 }
 .find_frame {
     width: 100%;
-    height: 60px;
+    padding-top: 10px;
+    padding-bottom: 5px;
 }
 .find_frame input[type="text"] {
     width: 130px;
 }
-#system .find_frame,
-#release .find_frame,
-#trouble .find_frame   {
-    background-color: #d3e3f3;
+.find_frame select {
+    max-width: 150px;
 }
-#server .find_frame,
-#mente .find_frame,
+.find_item {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 1;
+}
+#fdv_os, #fdv_role {
+    width: 150px;
+}
+#system .find_frame {
+    background-color: rgba(0,123,255,0.2);
+}
+#release .find_frame {
+    background-color: rgba(23,162,184,0.2);
+}
+#trouble .find_frame {
+    background-color: rgba(40,167,69,0.2);
+}
+#sagyo .find_frame {
+    background-color: rgba(108,117,125,0.2);
+}
+#server .find_frame {
+    background-color: rgba(220,53,69,0.2);
+}
+#mente .find_frame {
+    background-color: rgba(232,62,140,0.2);
+}
 #strouble .find_frame {
-    background-color: #f3e0e3;
+    background-color: rgba(253,126,20,0.2);
 }
 
 .proc_grid {
+    flex: 1;
     display: flex;
     width: 100%;
-    height: calc(100% - 60px);
+    height: calc(100% - 50px);
 }
 .form_msg {
     float: left;
@@ -62,22 +87,24 @@ main {
     background-color: #eee;
 }
 .form_item, .multi_select, .multi_text, .upload_area {
-    width: calc(100% - 130px) !important
+    width: calc(100% - 115px) !important
 }
 fieldset label {
-    width: 90px;
+    width: 75px;
     text-align: right;
 }
 /* システムフォーム */
 #system_detail {
-    overflow-y: auto;
     overflow-x: hidden;
+    height: 100%;
+    border-color: #007bff !important;
+    background-color: rgba(0,123,255,0.05) !important;
 }
 .shosai_width {
     width: 750px;
     /* padding: 0px 10px; */
 }
-
+/* フォーム共通 */
 #fs_temp_file,
 #ft_temp_file,
 #fv_temp_file,
@@ -86,12 +113,60 @@ fieldset label {
     margin-left: 0.5rem;
 }
 #system_server {
-    min-height: 120px;
+    height: 30%;
+    border-color: #dc3545 !important;
+    background-color: rgba(220,53,69,0.05) !important;
+}
+#system_release {
+    height: 35%;
+    border-color: #17a2b8 !important;
+    background-color: rgba(23,162,184,0.05) !important;
+}
+#system_trouble {
+    height: 35%;
+    border-color: #28a745 !important;
+    background-color: rgba(40,167,69,0.05) !important;
+}
+#release_form fieldset {
+    border-color: #17a2b8 !important;
+    background-color: rgba(23,162,184,0.05) !important;
+}
+#trouble_form fieldset {
+    border-color: #28a745 !important;
+    background-color: rgba(40,167,69,0.05) !important;
+}
+#sagyo_form fieldset {
+    border-color: #6c757d !important;
+    background-color: rgba(108,117,125,0.05) !important;
+}
+#server_detail {
+    border-color: #dc3545 !important;
+    background-color: rgba(220,53,69,0.05) !important;
+}
+#server_system {
+    border-color: #007bff !important;
+    background-color: rgba(0,123,255,0.05) !important;
+}
+#server_mente {
+    border-color: #e83e8c !important;
+    background-color: rgba(232,62,140,0.05) !important;
+}
+#server_trouble {
+    border-color: #fd7e14 !important;
+    background-color: rgba(253,126,20,0.05) !important;
+}
+#mente_form fieldset {
+    border-color: #e83e8c !important;
+    background-color: rgba(232,62,140,0.05) !important;
+}
+#strouble_form fieldset {
+    border-color: #fd7e14 !important;
+    background-color: rgba(253,126,20,0.05) !important;
 }
 .form_grid {
     display: flex;
     width: 100%;
-    height: calc(100% + 5px);    
+    height: calc(100% + 5px);
     margin-top: -5px;
     border-left: 1px solid #ccc;
     border-right: 1px solid #ccc;
@@ -99,7 +174,37 @@ fieldset label {
 }
 _:-ms-lang(x)::-ms-backdrop, .form_grid {
 	/* 適用したいスタイル */
-    height: calc(100% - 25px);    
+    height: calc(100% - 25px);
+}
+#grid_contextmenu {
+    position: absolute;
+    display: none;
+    background: #f2f2f2;
+    border: 1px solid gray;
+    padding: 2px;
+    min-width: 100px;
+    box-shadow: 2px 2px 2px silver;
+    list-style: none;
+    z-index: 99999;
+}
+#grid_contextmenu .menuline {
+    height: 5px;
+    border-bottom: 1px solid #cccccc;
+    margin-bottom: 3px;
+}
+#grid_contextmenu li:not(.menuline) {
+    padding-left: 5px;
+}
+#grid_contextmenu li:not(.menuline):hover {
+    cursor: pointer;
+    background-color: #91c9f7;
+}
+#new_release,
+#new_trouble,
+#new_mente,
+#new_strouble {
+    margin-left: 10px;
+    margin-right: 10px;
 }
 /* メンテナンスフォーム */
 #fm_start_date,
@@ -108,7 +213,7 @@ _:-ms-lang(x)::-ms-backdrop, .form_grid {
 }
 #fm_start_time,
 #fm_end_time {
-    width: calc(100% - 298px) !important;
+    width: calc(100% - 283px) !important;
 }
 /* フッター */
 footer {
@@ -164,7 +269,7 @@ label[for="form_sort"] {
 fieldset.nonebootstrap {
     border: 1px solid #aaa !important;
     border-radius: 5px !important;
-    padding: 0 1em 1em 1em !important;
+    /* padding: 0 1em 1em 1em !important; */
 }
 
 legend.nonebootstrap {
@@ -182,6 +287,7 @@ legend.nonebootstrap {
     height: 21px;
     width: calc(100% - 14px);
     border-bottom: 1px solid #ced4da;
+    font-size: 12px;
 }
 .msel_item_del {
     cursor: pointer;
@@ -201,6 +307,7 @@ legend.nonebootstrap {
     border-right: none;
     border-left: none;
     border-bottom: 1px solid #ced4da;
+    font-size: 12px !important;
 }
 .mtxt_item::-ms-clear {
     visibility: hidden;
@@ -223,6 +330,17 @@ legend.nonebootstrap {
     padding: 3px 5px;
     border: 1px solid #d4440d;
     z-index: 9998;
+}
+.hissu {
+    position: relative;
+}
+.hissu:after {
+    position: absolute;
+    content: '*';
+    color: #ff0000;
+    /* font-size: 0.8em; */
+    top: 1px;
+    right: -3px;
 }
 /* アップロード関連 */
 #doc_upload {
@@ -259,95 +377,95 @@ legend.nonebootstrap {
 }
 a[href$='.pdf']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/pdf.png");
 }
 a[href$='.zip']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/zip.png");
 }
 a[href$='.csv']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/csv.png");
 }
 a[href$='.xlsm']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/xlsm.png");
 }
 a[href$='.xlsx']::before,
 a[href$='.xls']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/xls.png");
 }
 a[href$='.docx']::before,
 a[href$='.doc']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/word.png");
 }
 a[href$='.pptx']::before,
 a[href$='.ppt']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/ppt.png");
 }
 a[href$='.accdb']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/accdb.png");
 }
 a[href$='.txt']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/txt.png");
 }
 a[href$='.png']::before,
@@ -355,12 +473,12 @@ a[href$='.gif']::before,
 a[href$='.jpeg']::before,
 a[href$='.jpg']::before {
     margin-right: 3px;
-    display: inline-block;    
+    display: inline-block;
 	content: "";
     vertical-align: text-top;
     width: 16px;
     height: 16px;
-    background-size: contain;    
+    background-size: contain;
     background-image: url("/Images/png.png");
 }
 /*  */
@@ -397,6 +515,9 @@ a[href$='.jpg']::before {
     overflow-x: hidden;
     padding-right: 20px;
 }
+.col-form-label-sm {
+    font-size: 1em;
+}
 #jquery-ui-autocomplete label {
     float: left;
     margin-right: 0.5em;
@@ -411,4 +532,7 @@ input::placeholder {
 }
 textarea {
     resize: none;
+}
+.xinput {
+    background-color: #f0f0f0;
 }
