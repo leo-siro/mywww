@@ -539,3 +539,6 @@ textarea {
 .slick-row.odd {
     background-color: #fff4e1;
 }
+.slick-cell.selected {
+    background-color: #ffff99;
+}
