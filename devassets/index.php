@@ -102,7 +102,7 @@
     <link rel="stylesheet" href="/JS/SlickGrid/slick.grid.css" type="text/css"/>
     <link rel="stylesheet" href="/JS/SlickGrid/slick-default-theme.css" type="text/css"/>
     <link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
-    <link rel="stylesheet" href="devassets.css?v=1" >
+    <link rel="stylesheet" href="devassets.css?v=2" >
 	<script src="/JS/jquery-3.5.1.min.js" defer></script>
     <script src="/JS/bootstrap4.5/bootstrap.js" defer></script>
 	<script src="/JS/jquery-ui.min.js" defer></script>

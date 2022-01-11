@@ -536,3 +536,6 @@ textarea {
 .xinput {
     background-color: #f0f0f0;
 }
+.slick-row.odd {
+    background-color: #fff4e1;
+}
