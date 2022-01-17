@@ -1135,15 +1135,15 @@ class MyClass {
                 $oldtaskno = $row["taskno"];
                 $tcnt++;
             }
+            if ($_POST["disp1"] === "1" && (date("Y/m/d",strtotime("-30 Day")) <= $row["work_syori"]) || $row["task_progress"] !== "100") {
+                $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_disp"] = "sc_disp";
+                $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_disp"] = "sc_disp";
+                $data["data"]["kadai"][$kcnt-1]["kadai_disp"] = "sc_disp";
+            }
             if ($row["work_syori"] !== null) {
                 if ($str_day <= $row["work_syori"] && $end_day >= $row["work_syori"]) {
                     $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["nippo"][$row["work_syori"]] = $row["work_time"] === "0.0" ? "" : $row["work_time"];
                     $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["memo"][$row["work_syori"]] = $row["memo"];
-                    if ($_POST["disp1"] === "1" && date("Y/m/d",strtotime("-30 Day")) <= $row["work_syori"]) {
-                        $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["schdule_task"][$tcnt-1]["task_disp"] = "sc_disp";
-                        $data["data"]["kadai"][$kcnt-1]["schdule_story"][$scnt-1]["story_disp"] = "sc_disp";
-                        $data["data"]["kadai"][$kcnt-1]["kadai_disp"] = "sc_disp";
-                    }
                 }
                 // 当月の工数合計
                 if (substr($row["work_syori"],0,7) === substr($_POST["syori_ym"],0,7)) {
