@@ -716,9 +716,10 @@
     };
 
     this.position = function (position) {
+      let chosei = window.innerWidth < $wrapper.width() + position.left + 10 ? ($wrapper.width() + position.left) - window.innerWidth + 40 : 5;
       $wrapper
         .css("top", position.top - 5)
-        .css("left", position.left - 5);
+        .css("left", position.left - chosei);
     };
 
     this.destroy = function () {
