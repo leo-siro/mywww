@@ -8,8 +8,9 @@ var today = new Date(today_str);
 var syori_ym = new Date(today.formatDate('YYYY/MM/01'));
 var str_syori = new Date(syori_ym).addMonth(-1);
 var end_syori = new Date(syori_ym).addMonth(2).addDay(-1);
-var str_kadai = new Date(str_syori);
-var end_kadai = new Date(syori_ym).addMonth(3).addDay(-1);
+// 課題タブの初期集計期間
+var str_kadai = new Date(syori_ym).addMonth(-8)
+var end_kadai = new Date(syori_ym).addMonth(4).addDay(-1);
 var column_cnt = 0;  // メインボディーの列数
 var jyotai_s;
 var jyotai_e;
@@ -1922,6 +1923,8 @@ $(function() {
     $('#kadai_sel').change(function() {
         if ($(this).val() === '1') {
             str_kadai = new Date(today.formatDate('YYYY/MM/01'));
+        } else if ($(this).val() === '12') {
+            str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-8);
         } else {
             str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
         }

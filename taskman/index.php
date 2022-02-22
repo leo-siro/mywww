@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=19">
+    <link rel="stylesheet" href="taskman.css?v=20">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=18"></script>
+    <script src="taskman.js?v=19"></script>
 </head>
 <body>
     <header>
@@ -107,9 +107,9 @@
             </div> -->
             <select id="kadai_sel">
                 <option value="1">１ヶ月</option>
-                <option value="4" selected>４ヶ月</option>
+                <option value="4">４ヶ月</option>
                 <option value="6">半年</option>
-                <option value="12">１年</option>
+                <option value="12" selected>１年</option>
             </select>
         </div>
         <div id="header_right">
