@@ -1057,7 +1057,7 @@ $(function() {
             } else if (key === 'edit') {
                 $(this).children('.board_title').click();
             } else if (key === 'link') {
-                window.open('https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do?i=I07002_KADAI_DTL.do&p='+$(this).parent().data('keynum'));
+                window.open('https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do?i=I07002_KADAI_DTL&p='+$(this).parent().data('keynum'));
             }
         },
         items: {
@@ -1923,10 +1923,12 @@ $(function() {
     $('#kadai_sel').change(function() {
         if ($(this).val() === '1') {
             str_kadai = new Date(today.formatDate('YYYY/MM/01'));
-        } else if ($(this).val() === '12') {
-            str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-8);
-        } else {
+        } else if ($(this).val() === '4') {
             str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-1);
+        } else if ($(this).val() === '6') {
+            str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-3);
+        } else { // 12
+            str_kadai = new Date(today.formatDate('YYYY/MM/01')).addMonth(-8);
         }
         end_kadai = new Date(str_kadai).addMonth($(this).val()).addDay(-1);
         dataLoadKadai();
@@ -2016,7 +2018,7 @@ $(function() {
         });
     }
     $(document).on('click','.kadai_title_waku',function() {
-        window.open('https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do?i=I07002_KADAI_DTL.do&p='+$(this).data('keynum'));
+        window.open('https://leoportal.leopalace21.com/leo-wperformer/WP_Jsystem/_link.do?i=I07002_KADAI_DTL&p='+$(this).data('keynum'));
     });
     // セッション切れ防止
     setInterval(function() {
