@@ -28,7 +28,7 @@ $(function() {
     } else {
         $('#user_name').text(user_name);
     }
-    if (admin) {    
+    if (admin) {
         $('#holiday_table tbody').databind();
         $('#syain_table tbody').databind();
         $('#stamp_table tbody').databind();
@@ -59,7 +59,7 @@ $(function() {
                 '" title="'+stamps[six[i]].title+'">'+
                 '<span class="ui-checkboxradio-icon ui-corner-all ui-icon ui-icon-background ui-icon-blank></span>'+
                 '<span class="ui-checkboxradio-icon-space"> </span>'+stamps[six[i]].btn+'</label>'
-            );        
+            );
         }
         $('#stamp_group').buttonset('refresh');
     }
@@ -73,7 +73,10 @@ $(function() {
     });
     // 処理年月変更（翌月クリック）
     $('#next_ym').click(function() {
-        if ((today.formatDate('YYYYMM') >= syori_ym.formatDate('YYYYMM')) || (today.formatDate('MM') === '11' && syori_ym.formatDate('MM') === '12')) {
+        // 鈴木マネジャー依頼で翌月制限を翌々月制限に変更 2022/3/18
+        var wtoday = new Date(new Date().formatDate('YYYY/MM/01')).addMonth(2);
+        // if ((today.formatDate('YYYYMM') >= syori_ym.formatDate('YYYYMM')) || (today.formatDate('MM') === '11' && syori_ym.formatDate('MM') === '12')) {
+        if ((wtoday.formatDate('YYYYMM') > syori_ym.formatDate('YYYYMM'))) {
             syori_ym.addMonth(1);
             loadData();
         } else {
@@ -99,7 +102,7 @@ $(function() {
             event.returnValue = '変更が反映されていませんがよろしいですか？';
 			return '変更が反映されていませんがよろしいですか？';
 		}
-	});    
+	});
     // データ取得
     function loadData() {
         clearMessage();
@@ -142,7 +145,7 @@ $(function() {
                         $('select.tf_syozoku').databind(ret.syozoku);
                         $('#haken_table tbody').databind();
                         $('#tempsyain_table tbody').databind();
-                    }                    
+                    }
                 }
                 max_upd = ret.max_upd;
                 initflg = false;
@@ -208,7 +211,7 @@ $(function() {
             }
             if (sv_holiday[i] === "1" || w_syori.getDay() === 0 || w_syori.getDay() === 6) {
                 $('.row .day'+(i+1)).addClass('kokyu');
-            }            
+            }
             w_syori.addDay(1);
         }
         if (findcd !== '' || $('#findfilter').val() !== '') {
@@ -244,9 +247,9 @@ $(function() {
     });
     function filterData() {
         $('#main_body_ctrl > div').each(function(i) {
-            if ((findcd !== '' && String($(this).data('syozokucd')).indexOf(findcd) > -1) 
+            if ((findcd !== '' && String($(this).data('syozokucd')).indexOf(findcd) > -1)
              || (findcd === '' && $(this).text().indexOf($('#findfilter').val()) > -1)) {
-                $(this).show(); 
+                $(this).show();
                 $('#main_body_item > div').eq(i).show();
                 $('#main_body_memo > div').eq(i).show();
             } else {
@@ -355,7 +358,7 @@ $(function() {
                     if (edit_flg === 0 && syaincd == $(this).parent().data('syaincd') || edit_flg > 0) {
                         setStamp(e,$(this));
                     }
-                }, 
+                },
                 function(e) {
                     if (edit_flg === 0 && syaincd == $(this).parent().data('syaincd') || edit_flg > 0) {
                         $(this).text($(this).data('sv')).css('color','');
@@ -388,7 +391,7 @@ $(function() {
                     // 月間公休数と週毎公休数をチェックするかのフラグ
                     // 社員で且つ、当日が20を超えているか、当月以前はチェック対象
                     var chkflg = ($('#main_body_ctrl .row').eq(i).data('user_flg') === 0
-                                && (today.getDate() > 20 
+                                && (today.getDate() > 20
                                  || today.formatDate('YYYYMM') >= syori_ym.formatDate('YYYYMM'))) ? true : false;
                     if ($(this).data('edit')) {
                         if (chkflg && $('#main_body_memo .memo_kokyu').eq(i).text() !== '' && $('#main_body_memo .memo_kokyu').eq(i).text() !== $('#kokyu_cnt').text()) {
@@ -443,14 +446,14 @@ $(function() {
                         edit = false;
                     } else {
                         alert('データ登録に失敗しました。再読込します。');
-                        location.reload();    
+                        location.reload();
                     }
                 }).fail(function(ret) {
                     alert('データ登録に失敗しました。再読込します。');
                     location.reload();
                 }).always(function(ret) {
                     UnBlockScreen();
-                });                
+                });
             }
             findcd = '';
             $('#findfilter').val('');
@@ -486,7 +489,7 @@ $(function() {
             // スケジュール入力
             sv_item.prop('title',$('#sc_title').val());
             sv_item.data({title:$('#sc_title').val()});
-            edit = true; 
+            edit = true;
             var r = $('#main_body_item .row').index(sv_item.parent());
             // 編集フラグセット
             if ($('#main_body_item .row').eq(r).data('edit') === undefined) {
@@ -504,7 +507,7 @@ $(function() {
         if (s_id !== '' || e.buttons === 2) {
             clearMessage();
             // 右クリック（消去 s_id=''）か登録する結合タイプが１以外で且つ対象セルが当番の場合
-            if ((s_id === '' || stamps[s_id].type !== '1') && String($this.data('id')).length === 2 
+            if ((s_id === '' || stamps[s_id].type !== '1') && String($this.data('id')).length === 2
             && (parseInt($this.data('id') / 10)*10 === parseInt(toban_cd) || parseInt($this.data('id') / 10)*10 === parseInt(yobi_cd))) {
                 // 所属長や管理者（edit_flg>0）でないと編集できない
                 if (edit_flg === 0) {
@@ -518,14 +521,14 @@ $(function() {
                 }
                 // 処理日が20日以下で来月以降の編集が対象（社員のみ）
                 if (today.getDate() <= 20 // && $this.hasClass('kokyu')
-                && today.formatDate('YYYYMM') < syori_ym.formatDate('YYYYMM') 
+                && today.formatDate('YYYYMM') < syori_ym.formatDate('YYYYMM')
                 && syaincd < '95000') {
                     // 当番ｘと問のみ入力可能
                     if (s_id !== toban_x && s_id !== toi_cd) {
                         // 1月10日までは編集可能にする：2020/12/02
                         if (syori_ym.getMonth() > 0 || $this.parent().children('.cells').index($this) > 9) {
                             showMessage('２０日迄は”当ｘ”と”問”のみ入力可能です','#ff3333');
-                            return;    
+                            return;
                         }
                     }
                 }
@@ -541,7 +544,7 @@ $(function() {
                 var id = s_id;
                 if (stamps[s_id].type === '1' && String($this.data('id')).length === 2) {
                     // 登録する項目の結合グループが１で現在の項目が結合グループ２が含まれる場合、結合する
-                    tx = tx + ($this.data('sv').length === 2 
+                    tx = tx + ($this.data('sv').length === 2
                                 ? $this.data('sv').substr(1,1)
                                 : $this.data('sv'));
                     id = String(parseInt(id) + (parseInt($this.data('id') / 10) * 10));
@@ -570,7 +573,7 @@ $(function() {
                 }
                 $this.data('sv',$this.text()).text(stamps[s_id].btn).css('color','#bbbbbb');
             }
-        }        
+        }
     }
     // 各スタンプクリック
     $(document).on('click','input[name="stamp"]',function() {
@@ -634,7 +637,7 @@ $(function() {
             loadData();
         }
     });
-    
+
 // --------------------------------------------------------------------------------------------------------------------
     // 当番割当処理ボタンクリック
     $('#set_toban').click(function() {
@@ -741,7 +744,7 @@ $(function() {
                         var selected = ui.item.data('multidrag');
                         ui.item.after(selected);
                         ui.item.remove();
-                    }                    
+                    }
                 });
                 dfd.resolve(ret);
             } else {
@@ -797,7 +800,7 @@ $(function() {
                         showMessage('取込に失敗しました。','#ff0000');
                     }).always(function(ret) {
                         UnBlockScreen();
-                    });            
+                    });
                 }
             },
             '使い方': function() {
@@ -850,9 +853,9 @@ $(function() {
                         showMessage('登録に失敗しました。','#ff0000');
                     }).always(function(ret) {
                         UnBlockScreen();
-                    });            
+                    });
                 }
-            },            
+            },
             '閉じる': function() {
                 $(this).dialog('close');
             }
@@ -882,7 +885,7 @@ $(function() {
             showMessage2($this,'社員CDに誤りがあります。','#ff0000');
         }).always(function(ret) {
             UnBlockScreen();
-        });    
+        });
     });
     // 社員削除
     $(document).on('click','.sf_del button',function() {
@@ -904,7 +907,7 @@ $(function() {
                 showMessage('削除に失敗しました。','#ff0000');
             }).always(function(ret) {
                 UnBlockScreen();
-            });    
+            });
         }
     });
 // --------------------------------------------------------------------------------------------------------------------
@@ -956,7 +959,7 @@ $(function() {
                         var selected = ui.item.data('multidrag');
                         ui.item.after(selected);
                         ui.item.remove();
-                    }                    
+                    }
                 });
                 dfd.resolve(ret);
             } else {
@@ -1029,9 +1032,9 @@ $(function() {
                         showMessage('登録に失敗しました。','#ff0000');
                     }).always(function(ret) {
                         UnBlockScreen();
-                    });            
+                    });
                 }
-            },            
+            },
             '閉じる': function() {
                 $(this).dialog('close');
             }
@@ -1061,7 +1064,7 @@ $(function() {
             showMessage2($this,'社員CDに誤りがあります。','#ff0000');
         }).always(function(ret) {
             UnBlockScreen();
-        });    
+        });
     });
     // 派遣社員削除
     $(document).on('click','.kf_del button',function() {
@@ -1083,9 +1086,9 @@ $(function() {
                 showMessage('削除に失敗しました。','#ff0000');
             }).always(function(ret) {
                 UnBlockScreen();
-            });    
+            });
         }
-    });        
+    });
 // --------------------------------------------------------------------------------------------------------------------
     // 新・中途社員設定ボタンクリック
     $('#set_tempsyain').click(function() {
@@ -1175,9 +1178,9 @@ $(function() {
                         showMessage('登録に失敗しました。','#ff0000');
                     }).always(function(ret) {
                         UnBlockScreen();
-                    });            
+                    });
                 }
-            },            
+            },
             '閉じる': function() {
                 $(this).dialog('close');
             }
@@ -1207,7 +1210,7 @@ $(function() {
             showMessage2($this,'社員CDに誤りがあります。','#ff0000');
         }).always(function(ret) {
             UnBlockScreen();
-        });    
+        });
     });
     // 新・中途社員削除
     $(document).on('click','.tf_del button',function() {
@@ -1229,9 +1232,9 @@ $(function() {
                 showMessage('削除に失敗しました。','#ff0000');
             }).always(function(ret) {
                 UnBlockScreen();
-            });    
+            });
         }
-    });        
+    });
 // --------------------------------------------------------------------------------------------------------------------
     // 祝日・休暇設定ボタンクリック
     $('#set_holiday').click(function() {
@@ -1295,7 +1298,7 @@ $(function() {
             showButtonPanel: true,
             showOtherMonths: true,
             selectOtherMonths: true,
-            changeYear: true, 
+            changeYear: true,
             changeMonth: true,
             onClose: function (e) {
                 $(this).datepicker("refresh");
@@ -1353,11 +1356,11 @@ $(function() {
                         showMessage('登録に失敗しました。','#ff0000');
                     }).always(function(ret) {
                         UnBlockScreen();
-                    });            
+                    });
                 } else {
                     showMessage('変更箇所がありません','#0000ff');
                 }
-            },            
+            },
             '閉じる': function() {
                 $(this).dialog('close');
             }
@@ -1382,7 +1385,7 @@ $(function() {
                 showMessage('削除に失敗しました。','#ff0000');
             }).always(function(ret) {
                 UnBlockScreen();
-            });    
+            });
         }
     });
 // --------------------------------------------------------------------------------------------------------------------
@@ -1403,7 +1406,7 @@ $(function() {
                     $('select.sp_color').eq(i).val(rec.color);
                     if (rec.color !== '0') {
                         $('select.sp_color').eq(i).addClass('bg'+rec.color);
-                        $('select.sp_color').eq(i).parent().addClass('bg'+rec.color);                    
+                        $('select.sp_color').eq(i).parent().addClass('bg'+rec.color);
                     }
                     $('#stamp_table tbody').selectable({
                         cancel: '.sp_type, .sp_color, .sp_del, .ui-selected',
@@ -1441,8 +1444,8 @@ $(function() {
                             var selected = ui.item.data('multidrag');
                             ui.item.after(selected);
                             ui.item.remove();
-                        }                    
-                    });    
+                        }
+                    });
                 });
                 dfd.resolve(ret);
             } else {
@@ -1466,7 +1469,7 @@ $(function() {
         });
         if ($(this).val() !== '0') {
             $(this).addClass('bg'+$(this).val());
-            $(this).parent().addClass('bg'+$(this).val());            
+            $(this).parent().addClass('bg'+$(this).val());
         }
     })
     // ボタンダイアログ
@@ -1494,7 +1497,7 @@ $(function() {
                 $('#stamp_table tbody').databind('newrow');
                 $('td.sp_id:last').text('New');
                 $('input.sp_btn:last').focus();
-                $('#stamp_table tbody').scrollTop(999);        
+                $('#stamp_table tbody').scrollTop(999);
             },
             '登録': function() {
                 var para = [];
@@ -1540,7 +1543,7 @@ $(function() {
                                 $('select.sp_color').eq(i).data('sv_val',$('select.sp_color').eq(i).val());
                             });
                             stamps = ret.stamps;
-                            six = ret.stamp_s;        
+                            six = ret.stamp_s;
                             wflg = true;
                             showMessage('登録しました。','#0000ff');
                         } else {
@@ -1550,17 +1553,17 @@ $(function() {
                         showMessage('登録に失敗しました。','#ff0000');
                     }).always(function(ret) {
                         UnBlockScreen();
-                    });            
+                    });
                 } else {
                     showMessage('変更箇所がありません','#0000ff');
                 }
-            },            
+            },
             '閉じる': function() {
                 $(this).dialog('close');
             }
         }
     });
-    $('.ui-dialog-buttonpane button:contains("新規"):eq(3)').css('margin-right','280px');    
+    $('.ui-dialog-buttonpane button:contains("新規"):eq(3)').css('margin-right','280px');
     // ボタン削除
     $(document).on('click','.sp_del button',function() {
         var ix = $('.sp_del button').index($(this));
@@ -1584,7 +1587,7 @@ $(function() {
                 showMessage('削除に失敗しました。','#ff0000');
             }).always(function(ret) {
                 UnBlockScreen();
-            });    
+            });
         }
     });
 // --------------------------------------------------------------------------------------------------------------------
@@ -1630,7 +1633,7 @@ $(function() {
         });
         if ($(this).val() !== '0') {
             $(this).addClass('bg'+$(this).val());
-            $(this).parent().addClass('bg'+$(this).val());            
+            $(this).parent().addClass('bg'+$(this).val());
         }
     })
     // 入力行追加
@@ -1676,8 +1679,8 @@ $(function() {
                     showMessage(ret.msg ? ret.msg : 'データ登録できませんでした。','#ff0000');
                 }).always(function(ret) {
                     UnBlockScreen();
-                });        
-            },            
+                });
+            },
             '閉じる': function() {
                 $(this).dialog('close');
             }

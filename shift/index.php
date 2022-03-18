@@ -4,10 +4,10 @@
         $_SESSION["shift"]["admin"] = false;
         require "pdo_connect.php";
         $header = getallheaders();
-        $_SESSION["shift"]["user"] = isset($header["iv-user"]) 
-                                    ? $header["iv-user"] 
+        $_SESSION["shift"]["user"] = isset($header["iv-user"])
+                                    ? $header["iv-user"]
                                     : (isset($_GET["syaincd"])
-                                        ? $_GET["syaincd"] 
+                                        ? $_GET["syaincd"]
                                         : "99999");
         $con = new pdoConnect("schedule");
         $sql = "SELECT admin_user,toban_cd,toban_x,yobi_cd,toi_cd FROM setting";
@@ -59,7 +59,7 @@
 	<script src="/JS/jquery.ui.datepicker-ja.min.js" defer></script>
     <script src="/JS/common.js" defer></script>
     <script src="/JS/jquery.contextMenu.min.js" defer></script>
-    <script src="/JS/jquery.ui.position.js" defer></script>    
+    <script src="/JS/jquery.ui.position.js" defer></script>
     <script src="/JS/eventsource.js" defer></script>
     <script>
         const admin = <?php echo $_SESSION["shift"]["admin"] ? "true" : "false" ?>;
@@ -74,7 +74,7 @@
         var stamps = <?php echo json_encode($_SESSION["shift"]["stamps"]);?>;
         var six = <?php echo json_encode($_SESSION["shift"]["stamp_s"]);?>;
     </script>
-    <script src="shift.js?v=6" defer></script>
+    <script src="shift.js?v=7" defer></script>
 </head>
 <body>
     <header>
@@ -229,7 +229,7 @@
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
         </main>
         <nav>
             <input type="checkbox" id="edit_mode"><label for="edit_mode" class="buttons">編集Mode</label>
@@ -308,7 +308,7 @@
             <span>>></span>
             <p id="sf_msg" class="msg"></p>
         </div>
-    </div>    
+    </div>
     <!-- 派遣社員設定 -->
     <div id="haken_form" title="派遣社員設定">
         <table class="headerlock" id="haken_table">
@@ -339,7 +339,7 @@
             <span>>></span>
             <p id="kf_msg" class="msg"></p>
         </div>
-    </div>       
+    </div>
     <!-- 新・中途社員設定 -->
     <div id="tempsyain_form" title="新・中途社員設定">
         <table class="headerlock" id="tempsyain_table">
@@ -374,7 +374,7 @@
             <span>>></span>
             <p id="tf_msg" class="msg"></p>
         </div>
-    </div>       
+    </div>
     <!-- 祝日設定 -->
     <div id="holiday_form" title="祝日・休暇設定">
         <select id="holiday_yy">
