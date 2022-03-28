@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=20">
+    <link rel="stylesheet" href="taskman.css?v=21">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=20"></script>
+    <script src="taskman.js?v=21"></script>
 </head>
 <body>
     <header>
@@ -127,15 +127,15 @@
                 <div id="board_left_body">
                     <div class="column">
                     <div class="@{board_kadai}" data-keynum=!{keynum} data-syotei="!{kadai_syotei}" data-eyotei="!{kadai_eyotei}">
-                        <div class="board_title_waku"><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
+                        <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="add_btn">＋</div></div>
                         <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
                         <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                         <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
-                            <div class="board_title_waku"><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
+                            <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="add_btn">＋</div></div>
                             <div class="board_memo"><div class="memo_progress">!{story_progress}%</div><div class="memo_kikan">!{story_kikan}</div><div class="memo_syutantou">!{tantou}</div></div>
                             <div class="board_comp !{board_comp_show2}"><span>終了したタスク（</span><div class="board_comp_cnt">!{board_comp_cnt2}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                             <div class="@{board_task} !{task_hide}" data-taskno=!{taskno} data-ration="!{task_ration}" data-ration_auto="!{task_ration_auto}" data-bikou="!{task_bikou}">
-                                <div class="board_title_waku"><div class="board_title !{task_comp}" data-title="!{task_title}">!{task_title}</div><div class="sub_menu">≡</div></div>
+                                <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{task_comp}" data-title="!{task_title}">!{task_title}</div></div>
                                 <div class="progress_waku"><div class="progress">!{task_progress}%</div><div class="slide_bar" data-val="!{task_progress}"></div></div>
                             </div>
                         </div>
@@ -156,15 +156,15 @@
                     <div id="board_main_body">
                         <div class="column">
                         <div class="@{board_kadai}" data-keynum=!{keynum} data-syotei="!{kadai_syotei}" data-eyotei="!{kadai_eyotei}">
-                            <div class="board_title_waku"><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
+                            <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="add_btn">＋</div></div>
                             <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
                             <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                             <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
-                                <div class="board_title_waku"><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
+                                <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="add_btn">＋</div></div>
                                 <div class="board_memo"><div class="memo_progress">!{story_progress}%</div><div class="memo_kikan">!{story_kikan}</div><div class="memo_syutantou">!{tantou}</div></div>
                                 <div class="board_comp !{board_comp_show2}"><span>終了したタスク（</span><div class="board_comp_cnt">!{board_comp_cnt2}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                                 <div class="@{board_task} !{task_hide}" data-taskno=!{taskno} data-ration="!{task_ration}" data-ration_auto="!{task_ration_auto}" data-bikou="!{task_bikou}">
-                                    <div class="board_title_waku"><div class="board_title !{task_comp}" data-title="!{task_title}">!{task_title}</div><div class="sub_menu">≡</div></div>
+                                    <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{task_comp}" data-title="!{task_title}">!{task_title}</div></div>
                                     <div class="progress_waku"><div class="progress">!{task_progress}%</div><div class="slide_bar" data-val="!{task_progress}"></div></div>
                                 </div>
                             </div>
@@ -178,15 +178,15 @@
                 <div id="board_right_body">
                     <div class="column">
                     <div class="@{board_kadai}" data-keynum=!{keynum} data-syotei="!{kadai_syotei}" data-eyotei="!{kadai_eyotei}">
-                        <div class="board_title_waku"><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
+                        <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="add_btn">＋</div></div>
                         <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
                         <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                         <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
-                            <div class="board_title_waku"><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="sub_menu">≡</div><div class="add_btn">＋</div></div>
+                            <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="add_btn">＋</div></div>
                             <div class="board_memo"><div class="memo_progress">!{story_progress}%</div><div class="memo_kikan">!{story_kikan}</div><div class="memo_syutantou">!{tantou}</div></div>
                             <div class="board_comp !{board_comp_show2}"><span>終了したタスク（</span><div class="board_comp_cnt">!{board_comp_cnt2}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                             <div class="@{board_task} !{task_hide}" data-taskno=!{taskno} data-ration="!{task_ration}" data-ration_auto="!{task_ration_auto}" data-bikou="!{task_bikou}">
-                                <div class="board_title_waku"><div class="board_title !{task_comp}" data-title="!{task_title}">!{task_title}</div><div class="sub_menu">≡</div></div>
+                                <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{task_comp}" data-title="!{task_title}">!{task_title}</div></div>
                                 <div class="progress_waku"><div class="progress">!{task_progress}%</div><div class="slide_bar" data-val="!{task_progress}"></div></div>
                             </div>
                         </div>

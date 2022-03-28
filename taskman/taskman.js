@@ -424,7 +424,7 @@ $(function() {
     }
     $('#edit_kadai').dialog({
 		autoOpen: false,
-		width: 540,
+		width: 548,
 		modal: true,
         resizable: false,
         buttons: {

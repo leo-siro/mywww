@@ -24,6 +24,17 @@
     --bgc-comp2: #6c6c6c;
     --bgc-kyuka: #4c4c4c;
 }
+@font-face {
+    font-family: 'LigatureSymbols';
+    src: url('/fonts/LigatureSymbols-2.11.eot');
+    src: url('/fonts/LigatureSymbols-2.11.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/LigatureSymbols-2.11.woff') format('woff'),
+         url('/fonts/LigatureSymbols-2.11.ttf') format('truetype'),
+         url('/fonts/LigatureSymbols-2.11.svg#LigatureSymbols') format('svg');
+    src: url('/fonts/LigatureSymbols-2.11.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
 body {
     margin: 0px;
     font-family: "メイリオ",Meiryo;
@@ -337,6 +348,7 @@ _:-ms-lang(x)::-ms-backdrop, #board_main_body {
     width: 100%;
     height: 18px;
     overflow: hidden;
+    display: flex;
 }
 .board_kadai > .board_title_waku > .board_title {
     font-weight: bold;
@@ -347,11 +359,14 @@ _:-ms-lang(x)::-ms-backdrop, #board_main_body {
 }
 .sub_menu {
     display: none;
-    position: absolute;
+    /* position: absolute;
     top: 0px;
-    left: 0px;
-    color: transparent;
+    left: 0px; */
+    /* color: transparent; */
+    color: #7e7e7e;
     cursor: pointer;
+    margin-top: -2px;
+    margin-left: -2px;
     font-size: 20px;
     height: 20px;
     width: 20px;
@@ -375,13 +390,16 @@ _:-ms-lang(x)::-ms-backdrop, #board_main_body {
 #board_main_body .add_btn {
     display: block;
 }
-.sub_menu:hover,
 .add_btn:hover {
     color: #ffffff;
     background-color: #2d2f3a;
 }
 .sub_menu:hover ~ .add_btn {
     display: none;
+}
+.sub_menu:before {
+    font-family: 'LigatureSymbols';
+    content: '\E08e';
 }
 .progress_waku {
     display: flex;
