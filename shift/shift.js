@@ -390,8 +390,9 @@ $(function() {
                 $('#main_body_item .row').each(function(i) {
                     // 月間公休数と週毎公休数をチェックするかのフラグ
                     // 社員で且つ、当日が20を超えているか、当月以前はチェック対象
+                    let kijyun = (today.getMonth() === 3 ? 10 : 20);
                     var chkflg = ($('#main_body_ctrl .row').eq(i).data('user_flg') === 0
-                                && (today.getDate() > 20
+                                && (today.getDate() > kijyun
                                  || today.formatDate('YYYYMM') >= syori_ym.formatDate('YYYYMM'))) ? true : false;
                     if ($(this).data('edit')) {
                         if (chkflg && $('#main_body_memo .memo_kokyu').eq(i).text() !== '' && $('#main_body_memo .memo_kokyu').eq(i).text() !== $('#kokyu_cnt').text()) {
@@ -520,14 +521,15 @@ $(function() {
                     $this.data('id',0);
                 }
                 // 処理日が20日以下で来月以降の編集が対象（社員のみ）
-                if (today.getDate() <= 20 // && $this.hasClass('kokyu')
+                let kijyun = (today.getMonth() === 3 ? 10 : 20);
+                if (today.getDate() <= kijyun // && $this.hasClass('kokyu')
                 && today.formatDate('YYYYMM') < syori_ym.formatDate('YYYYMM')
                 && syaincd < '95000') {
                     // 当番ｘと問のみ入力可能
                     if (s_id !== toban_x && s_id !== toi_cd) {
                         // 1月10日までは編集可能にする：2020/12/02
                         if (syori_ym.getMonth() > 0 || $this.parent().children('.cells').index($this) > 9) {
-                            showMessage('２０日迄は”当ｘ”と”問”のみ入力可能です','#ff3333');
+                            showMessage(kijyun + '日迄は”当ｘ”と”問”のみ入力可能です','#ff3333');
                             return;
                         }
                     }

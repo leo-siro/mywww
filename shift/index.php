@@ -74,7 +74,7 @@
         var stamps = <?php echo json_encode($_SESSION["shift"]["stamps"]);?>;
         var six = <?php echo json_encode($_SESSION["shift"]["stamp_s"]);?>;
     </script>
-    <script src="shift.js?v=7" defer></script>
+    <script src="shift.js?v=8" defer></script>
 </head>
 <body>
     <header>
