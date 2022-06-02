@@ -1244,7 +1244,6 @@ class MyClass {
         $con = new pdoConnect("taskman");
 
         $syain_where = "";
-        $syozoku_join = "";
         if (isset($_POST["syaincd"]) && $_POST["syaincd"] !== "0") {
             $syain_where =
                 "AND s.syaincd = '{$_POST["syaincd"]}'";
@@ -1252,11 +1251,6 @@ class MyClass {
             $data["syain_list"] = $this->getSyain($con,$_POST["dept_cd"]);
             $syain_where =
                 "AND m.syozokucd = '{$_POST["dept_cd"]}'";
-            // $syozoku_join =
-            //     "INNER JOIN (
-            //         SELECT CONCAT('%',CASE DEPT_LEVEL WHEN 2 THEN LV2NM WHEN 3 THEN LV3NM WHEN 4 THEN LV4NM WHEN 5 THEN LV5NM ELSE '' END,'%') AS DEPT_NAME
-            //         FROM common.idinfo_soshiki WHERE DEPT_CD LIKE '{$_POST["dept_cd"]}%'
-            //     ) AS X ON k.tantouka collate utf8_unicode_ci like X.DEPT_NAME";
         }
         $cnt = 0;
         if ($_POST["csv_type"] === "1") {
@@ -1282,7 +1276,6 @@ class MyClass {
                         INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
                         INNER JOIN it_system AS i ON i.system_no = k.system_no
                         LEFT JOIN schedule.v_member2 AS m ON m.syaincd = s.syaincd
-                        {$syozoku_join}
                     WHERE k.jyotai < 8
                     AND n.work_syori between '{$_POST["datef"]}' AND '{$_POST["datet"]}'
                     {$syain_where}
@@ -1295,14 +1288,13 @@ class MyClass {
                 fputcsv($tmp_file,$row);
                 $cnt++;
             }
-        } else {
+        } elseif ($_POST["csv_type"] === "2") {
             $sql = "SELECT k.system_no
                     FROM kadai AS k
                         INNER JOIN stories AS s ON s.keynum = k.keynum
                         INNER JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
                         INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
                         LEFT JOIN schedule.v_member AS m ON m.syaincd = s.syaincd
-                        {$syozoku_join}
                     WHERE k.jyotai < 8
                     AND n.work_syori between '{$_POST["datef"]}' AND '{$_POST["datet"]}'
                     {$syain_where}
@@ -1336,7 +1328,6 @@ class MyClass {
                             INNER JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
                             INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
                             LEFT JOIN schedule.v_member AS m ON m.syaincd = s.syaincd
-                            {$syozoku_join}
                         WHERE k.jyotai < 8
                         AND n.work_syori = '".date("Y/m/d",$wdate)."'
                         {$syain_where}
@@ -1352,6 +1343,67 @@ class MyClass {
                     mb_convert_variables("SJIS-win","UTF-8",$row);
                     fputcsv($tmp_file,$row);
                 }
+                $cnt++;
+            }
+        } elseif ($_POST["csv_type"] === "3") {
+            $herder="課題No,課題名,申請No,プロジェクト名,時間";
+            $herder = mb_convert_encoding($herder,"SJIS-win","UTF-8")."\r\n";//shift-jisへエンコード
+            fwrite($tmp_file,$herder);//ヘッダを書き込む
+
+            $sql = "SELECT
+                        k.keynum,
+                        k.task1,
+                        k.system_no,
+                        i.system_item,
+                        SUM(n.work_time) AS work_time
+                    FROM kadai AS k
+                        INNER JOIN stories AS s ON s.keynum = k.keynum
+                        INNER JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
+                        INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
+                        INNER JOIN it_system AS i ON i.system_no = k.system_no
+                        LEFT JOIN schedule.v_member2 AS m ON m.syaincd = s.syaincd
+                    WHERE k.jyotai < 8
+                    AND n.work_syori between '{$_POST["datef"]}' AND '{$_POST["datet"]}'
+                    {$syain_where}
+                    GROUP BY k.keynum
+                    ORDER BY k.keynum";
+                    // "{$sort} k.important DESC,k.keynum, k.jyotai";
+            $ds = $con->pdo->query($sql) or die($sql);
+            while ($row = $ds->fetch(PDO::FETCH_NUM)) {
+                mb_convert_variables("SJIS-win","UTF-8",$row);
+                fputcsv($tmp_file,$row);
+                $cnt++;
+            }
+
+        } elseif ($_POST["csv_type"] === "4") {
+            $herder="課題No,課題名,申請No,プロジェクト名,担当者名,社員区分,時間";
+            $herder = mb_convert_encoding($herder,"SJIS-win","UTF-8")."\r\n";//shift-jisへエンコード
+            fwrite($tmp_file,$herder);//ヘッダを書き込む
+
+            $sql = "SELECT
+                        k.keynum,
+                        k.task1,
+                        k.system_no,
+                        i.system_item,
+                        COALESCE(m.user_name,m.user_name,s.syaincd) AS user_name,
+                        IF(LEFT(s.syaincd,2) < '95','社員','協力会社') AS syain_kbn,
+                        SUM(n.work_time) AS work_time
+                    FROM kadai AS k
+                        INNER JOIN stories AS s ON s.keynum = k.keynum
+                        INNER JOIN tasks AS t ON t.keynum = k.keynum AND t.storyno = s.storyno
+                        INNER JOIN nippo AS n ON n.keynum = k.keynum AND n.storyno = s.storyno AND n.taskno = t.taskno
+                        INNER JOIN it_system AS i ON i.system_no = k.system_no
+                        LEFT JOIN schedule.v_member2 AS m ON m.syaincd = s.syaincd
+                    WHERE k.jyotai < 8
+                    AND n.work_syori between '{$_POST["datef"]}' AND '{$_POST["datet"]}'
+                    {$syain_where}
+                    GROUP BY k.keynum,s.syaincd
+                    ORDER BY k.keynum,s.syaincd";
+                    // "{$sort} k.important DESC,k.keynum, k.jyotai";
+            $ds = $con->pdo->query($sql) or die($sql);
+            while ($row = $ds->fetch(PDO::FETCH_NUM)) {
+                mb_convert_variables("SJIS-win","UTF-8",$row);
+                fputcsv($tmp_file,$row);
                 $cnt++;
             }
         }
@@ -1447,7 +1499,7 @@ class MyClass {
                 "color" => ($row["end_yotei"] !== null && $row["end_yotei"] < date("Y/m/d")
                             ? "fred"
                             : ($row["end_yotei"] !== null && $row["end_yotei"] < date("Y/m/d",strtotime("1 week"))
-                                ? "fblue"
+                                ? "forange"
                                 : ""))
             );
             $left = 0;

@@ -1,6 +1,7 @@
 :root {
     --bgc-main: #d3d3d3;
     --bgc-kadaim: #fffefe;
+    --bgc-kadaib: #fff4e1;
     --bgc-kadairl: #efeeee;
     --c-kadai: #000000;
     --bgc-sc: #fffefe;
@@ -14,6 +15,7 @@
 :root[theme="dark"] {
     --bgc-main: #939393;
     --bgc-kadaim: #333434;
+    --bgc-kadaib: #455757;
     --bgc-kadairl: #666767;
     --c-kadai: #ffffff;
     --bgc-sc: #333434;
@@ -61,6 +63,15 @@ input::placeholder {
 }
 .mt10 {
     margin-top: 10px;
+}
+.mt30 {
+    margin-top: 30px;
+}
+.mb30 {
+    margin-bottom: 30px;
+}
+.ml40 {
+    margin-left: 40px;
 }
 form label {
     /* display: inline-block; */
@@ -449,6 +460,10 @@ _:-ms-lang(x)::-ms-backdrop, #board_main_body {
 }
 .board_story .memo_syutantou {
     cursor: pointer;
+}
+#board_main_body .system_no:hover {
+    cursor: pointer;
+    color: #0077ff;
 }
 #select_syain_scr {
     display: none;
@@ -1028,10 +1043,6 @@ label[for="dl_task_ration"] {
     margin-left: 7px;
 }
 /*  */
-#csv_form .groupline {
-    margin-top: 30px;
-    margin-bottom: 30px;
-}
 #dl_csv_f,
 #dl_csv_t {
     width: 100px;
@@ -1146,8 +1157,8 @@ label[for="dl_task_ration"] {
 	border-bottom: 1px solid #babbf0;
 }
 .kadai_waku:nth-child(even) {
-    background-color: #fefefe;
-    background-color: var(--bgc-kadaim);
+    background-color: #fff4e1;
+    background-color: var(--bgc-kadaib);
 }
 .kadai_title_waku {
     padding-left: 2px;
@@ -1197,9 +1208,9 @@ label[for="dl_task_ration"] {
 .kadai_item_waku:not(:last-of-type) {
 	border-bottom: 1px solid #babbf0;
 }
-.kadai_item_waku:nth-child(odd) {
-    background-color: #fffefe;
-    background-color: var(--bgc-sc);
+.kadai_item_waku:nth-child(even) {
+    background-color: #fff4e1;
+    background-color: var(--bgc-kadaib);
 }
 .kadai_bar {
     position: absolute;
@@ -1229,6 +1240,9 @@ label[for="dl_task_ration"] {
 }
 .orange {
     background-color: #ff7700;
+}
+.forange {
+    color: #ff8800;
 }
 .fblue {
     color: #0077ff;

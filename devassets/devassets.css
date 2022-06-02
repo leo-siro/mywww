@@ -163,6 +163,10 @@ fieldset label {
     border-color: #fd7e14 !important;
     background-color: rgba(253,126,20,0.05) !important;
 }
+.linkitem a {
+    color: #007bff;
+    text-decoration: underline;
+}
 .form_grid {
     display: flex;
     width: 100%;
@@ -458,7 +462,8 @@ a[href$='.accdb']::before {
     background-size: contain;
     background-image: url("/Images/accdb.png");
 }
-a[href$='.txt']::before {
+a[href$='.txt']::before,
+a[href$='.html']::before {
     margin-right: 3px;
     display: inline-block;
 	content: "";

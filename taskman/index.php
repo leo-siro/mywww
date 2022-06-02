@@ -39,7 +39,7 @@
     <title>タスク管理</title>
 	<link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-contextmenu/2.7.1/jquery.contextMenu.min.css">
-    <link rel="stylesheet" href="taskman.css?v=21">
+    <link rel="stylesheet" href="taskman.css?v=25">
 	<script src="/JS/jquery-3.5.1.min.js"></script>
 	<script src="/JS/jquery-ui.min.js"></script>
 	<script src="/JS/jquery.ui.datepicker-ja.min.js"></script>
@@ -52,7 +52,7 @@
         const syozokucd = <?php echo "'{$_SESSION["taskman"]["syozokucd"]}'"; ?>;
         const disp_app = <?php echo "'{$disp_app}'"; ?>;
     </script>
-    <script src="taskman.js?v=21"></script>
+    <script src="taskman.js?v=23"></script>
 </head>
 <body>
     <header>
@@ -128,7 +128,7 @@
                     <div class="column">
                     <div class="@{board_kadai}" data-keynum=!{keynum} data-syotei="!{kadai_syotei}" data-eyotei="!{kadai_eyotei}">
                         <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="add_btn">＋</div></div>
-                        <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
+                        <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou system_no">!{sinseino}</div></div>
                         <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                         <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
                             <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="add_btn">＋</div></div>
@@ -157,7 +157,7 @@
                         <div class="column">
                         <div class="@{board_kadai}" data-keynum=!{keynum} data-syotei="!{kadai_syotei}" data-eyotei="!{kadai_eyotei}">
                             <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="add_btn">＋</div></div>
-                            <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
+                            <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou system_no">!{sinseino}</div></div>
                             <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                             <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
                                 <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="add_btn">＋</div></div>
@@ -179,7 +179,7 @@
                     <div class="column">
                     <div class="@{board_kadai}" data-keynum=!{keynum} data-syotei="!{kadai_syotei}" data-eyotei="!{kadai_eyotei}">
                         <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title" data-title="!{kadai_title}">!{kadai_title}</div><div class="add_btn">＋</div></div>
-                        <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou">!{sinseino}</div></div>
+                        <div class="board_memo"><div class="memo_progress">!{kadai_progress}%</div><div class="memo_important !{important_css}">!{important}</div><div class="memo_kikan">!{kadai_kikan}</div><div class="memo_syutantou system_no">!{sinseino}</div></div>
                         <div class="board_comp !{board_comp_show}"><span>終了したストーリー（</span><div class="board_comp_cnt">!{board_comp_cnt}</div><span>）</span><div class="board_comp_switch">▼</div></div>
                         <div class="@{board_story} bg!{color} !{story_hide}" data-storyno=!{storyno} data-ration="!{story_ration}" data-ration_auto="!{story_ration_auto}" data-syotei="!{story_syotei}" data-eyotei="!{story_eyotei}" data-bikou="!{story_bikou}" data-color="!{color}" data-syain="!{syain}">
                             <div class="board_title_waku"><div class="sub_menu"></div><div class="board_title !{story_comp}" data-title="!{story_title}">!{story_title}</div><div class="add_btn">＋</div></div>
@@ -529,13 +529,17 @@
     </form>
     <!-- CSV出力ダイアログ -->
     <form id="csv_form" title="CSV出力">
-        <div class="groupline">
+        <div class="groupline mt30 mb30">
             <label>集計期間</label><input type="text" id="dl_csv_f" maxlength="10"><label>～</label><input type="text" id="dl_csv_t" maxlength="10">
         </div>
-        <div class="groupline">
-            <label>出力タイプ</label>
+        <label>出力タイプ</label>
+        <div class="groupline mt10 ml40">
             <input type="radio" name="dl_csv_type" id="dl_csv_type1" value="1" checked><label for="dl_csv_type1">プロジェクト報告用</label>
             <input type="radio" name="dl_csv_type" id="dl_csv_type2" value="2"><label for="dl_csv_type2">日毎</label>
+        </div>
+        <div class="groupline mt10 mb30 ml40">
+            <input type="radio" name="dl_csv_type" id="dl_csv_type3" value="3"><label for="dl_csv_type3">課題別</label>
+            <input type="radio" name="dl_csv_type" id="dl_csv_type4" value="4"><label for="dl_csv_type4">課題担当者別</label>
         </div>
         <div class="msg_bar">
             <span>>></span>

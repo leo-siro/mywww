@@ -30,6 +30,7 @@ class MyClass {
                     s.dev_env,
                     s.dev_lang,
                     s.dev_kbn,
+                    s.url,
                     s.save_folder,
                     s.biko,
                     (SELECT group_concat(filename separator '\n') FROM t_system_file WHERE sys_key = s.sys_key) AS temp_file
@@ -53,6 +54,7 @@ class MyClass {
                 "dev_env" => $row["dev_env"] === "" ? "" : explode(",",$row["dev_env"]),
                 "dev_lang" => $row["dev_lang"] === "" ? "" : explode(",",$row["dev_lang"]),
                 "dev_kbn" => $row["dev_kbn"],
+                "url" => $row["url"],
                 "save_folder" => $row["save_folder"],
                 "biko" => $row["biko"],
                 "temp_file" => $row["temp_file"]
@@ -82,6 +84,7 @@ class MyClass {
                         dev_env,
                         dev_lang,
                         dev_kbn,
+                        url,
                         save_folder,
                         biko,
                         add_date,
@@ -100,6 +103,7 @@ class MyClass {
                         :dev_env,
                         :dev_lang,
                         :dev_kbn,
+                        :url,
                         :save_folder,
                         :biko,
                         now(),
@@ -122,6 +126,7 @@ class MyClass {
                         dev_env = :dev_env,
                         dev_lang = :dev_lang,
                         dev_kbn = :dev_kbn,
+                        url = :url,
                         save_folder = :save_folder,
                         biko = :biko,
                         upd_tan = '{$_SESSION["devassets"]["user"]}'
@@ -141,6 +146,7 @@ class MyClass {
             $sth->bindValue(':dev_env', $_POST["dev_env"], PDO::PARAM_STR);
             $sth->bindValue(':dev_lang', $_POST["dev_lang"], PDO::PARAM_STR);
             $sth->bindValue(':dev_kbn', $_POST["dev_kbn"], PDO::PARAM_INT);
+            $sth->bindValue(':url', $_POST["url"], PDO::PARAM_STR);
             $sth->bindValue(':save_folder', $_POST["save_folder"], PDO::PARAM_STR);
             $sth->bindValue(':biko', $_POST["biko"], PDO::PARAM_STR);
             if ($sth->execute() === false) {
@@ -398,6 +404,7 @@ class MyClass {
                         dev_env = :dev_env,
                         dev_lang = :dev_lang,
                         dev_kbn = :dev_kbn,
+                        url = :url,
                         save_folder = :save_folder,
                         biko = :biko,
                         upd_date = now(),
@@ -415,6 +422,7 @@ class MyClass {
                 $sth->bindValue(':dev_env', implode(",",$_POST["data"][$i]["dev_env"]), PDO::PARAM_STR);
                 $sth->bindValue(':dev_lang', implode(",",$_POST["data"][$i]["dev_lang"]), PDO::PARAM_STR);
                 $sth->bindValue(':dev_kbn', $_POST["data"][$i]["dev_kbn"], PDO::PARAM_INT);
+                $sth->bindValue(':url', $_POST["data"][$i]["url"], PDO::PARAM_STR);
                 $sth->bindValue(':save_folder', $_POST["data"][$i]["save_folder"], PDO::PARAM_STR);
                 $sth->bindValue(':biko', $_POST["data"][$i]["biko"], PDO::PARAM_STR);
                 if ($sth->execute() === false) {
@@ -591,7 +599,7 @@ class MyClass {
         $con = new pdoConnect("devassets","leockdb01.leopalace21.com");
 
         $cnt = 0;
-        $herder="No,システム名,概要,稼働開始日,稼働終了日,稼働状況,開発区分,情シス開発部署,情シス開発担当,運用部署,運用担当,開発環境,開発言語,格納フォルダ,備考,添付ファイル名,登録日,登録担当者,更新日,更新担当者";
+        $herder="No,システム名,概要,稼働開始日,稼働終了日,稼働状況,開発区分,情シス開発部署,情シス開発担当,運用部署,運用担当,開発環境,開発言語,URL/FILE,設計書フォルダ,備考,添付ファイル名,登録日,登録担当者,更新日,更新担当者";
         $herder = mb_convert_encoding($herder,"SJIS-win","UTF-8")."\r\n";//shift-jisへエンコード
         fwrite($tmp_file,$herder);//ヘッダを書き込む
 
@@ -615,6 +623,7 @@ class MyClass {
                     s.unyo_tanto,
                     s.dev_env,
                     s.dev_lang,
+                    s.url,
                     s.save_folder,
                     s.biko,
                     (SELECT group_concat(filename separator '\n') FROM t_system_file WHERE sys_key = s.sys_key) AS temp_file,
@@ -1453,6 +1462,9 @@ class MyClass {
                     v.role,
                     v.db_type,
                     v.gaiyo,
+                    v.core_cnt,
+                    v.memory_size,
+                    v.hdd_cap,
                     v.kanri_busho,
                     v.kanri_tanto,
                     v.biko,
@@ -1478,6 +1490,9 @@ class MyClass {
                 "role" => $row["role"] === "" ? "" : explode(",",$row["role"]),
                 "db_type" => $row["db_type"],
                 "gaiyo" => $row["gaiyo"],
+                "core_cnt" => $row["core_cnt"] === "0" ? "" : $row["core_cnt"],
+                "memory_size" => $row["memory_size"] === "0" ? "" : $row["memory_size"],
+                "hdd_cap" => $row["hdd_cap"],
                 "kanri_busho" => $row["kanri_busho"],
                 "kanri_tanto" => $row["kanri_tanto"],
                 "biko" => $row["biko"],
@@ -1509,6 +1524,9 @@ class MyClass {
                         role,
                         db_type,
                         gaiyo,
+                        core_cnt,
+                        memory_size,
+                        hdd_cap,
                         kanri_busho,
                         kanri_tanto,
                         biko,
@@ -1529,6 +1547,9 @@ class MyClass {
                         :role,
                         :db_type,
                         :gaiyo,
+                        :core_cnt,
+                        :memory_size,
+                        :hdd_cap,
                         :kanri_busho,
                         :kanri_tanto,
                         :biko,
@@ -1553,6 +1574,9 @@ class MyClass {
                         role = :role,
                         db_type = :db_type,
                         gaiyo = :gaiyo,
+                        core_cnt = :core_cnt,
+                        memory_size = :memory_size,
+                        hdd_cap = :hdd_cap,
                         kanri_busho = :kanri_busho,
                         kanri_tanto = :kanri_tanto,
                         biko = :biko,
@@ -1574,6 +1598,9 @@ class MyClass {
             $sth->bindValue(':role', $_POST["role"], PDO::PARAM_STR);
             $sth->bindValue(':db_type', isset($_POST["db_type"]) ? $_POST["db_type"] : "", PDO::PARAM_STR);
             $sth->bindValue(':gaiyo', $_POST["gaiyo"], PDO::PARAM_STR);
+            $sth->bindValue(':core_cnt', $_POST["core_cnt"] === "" ? 0 : $_POST["core_cnt"], PDO::PARAM_INT);
+            $sth->bindValue(':memory_size', $_POST["memory_size"] === "" ? 0 : $_POST["memory_size"], PDO::PARAM_INT);
+            $sth->bindValue(':hdd_cap', $_POST["hdd_cap"], PDO::PARAM_STR);
             $sth->bindValue(':kanri_busho', $_POST["kanri_busho"], PDO::PARAM_STR);
             $sth->bindValue(':kanri_tanto', $_POST["kanri_tanto"], PDO::PARAM_STR);
             $sth->bindValue(':biko', $_POST["biko"], PDO::PARAM_STR);
@@ -1752,6 +1779,9 @@ class MyClass {
                         ip_adrs = :ip_adrs,
                         db_type = :db_type,
                         gaiyo = :gaiyo,
+                        core_cnt = :core_cnt,
+                        memory_size = :memory_size,
+                        hdd_cap = :hdd_cap,
                         kanri_busho = :kanri_busho,
                         kanri_tanto = :kanri_tanto,
                         biko = :biko,
@@ -1770,6 +1800,9 @@ class MyClass {
                 $sth->bindValue(':ip_adrs', $_POST["data"][$i]["ip_adrs"], PDO::PARAM_STR);
                 $sth->bindValue(':db_type', $_POST["data"][$i]["db_type"], PDO::PARAM_STR);
                 $sth->bindValue(':gaiyo', $_POST["data"][$i]["gaiyo"], PDO::PARAM_STR);
+                $sth->bindValue(':core_cnt', $_POST["data"][$i]["core_cnt"] === "" ? 0 : $_POST["data"][$i]["core_cnt"], PDO::PARAM_INT);
+                $sth->bindValue(':memory_size', $_POST["data"][$i]["memory_size"] === "" ? 0 : $_POST["data"][$i]["memory_size"], PDO::PARAM_INT);
+                $sth->bindValue(':hdd_cap', $_POST["data"][$i]["hdd_cap"], PDO::PARAM_STR);
                 $sth->bindValue(':kanri_busho', $_POST["data"][$i]["kanri_busho"], PDO::PARAM_STR);
                 $sth->bindValue(':kanri_tanto', $_POST["data"][$i]["kanri_tanto"], PDO::PARAM_STR);
                 $sth->bindValue(':biko', $_POST["data"][$i]["biko"], PDO::PARAM_STR);
@@ -1932,13 +1965,10 @@ class MyClass {
         $con = new pdoConnect("devassets","leockdb01.leopalace21.com");
 
         $cnt = 0;
-        $herder="No,物理筐体,ホスト名,別名,環境区分,設置場所,概要,稼働開始日,稼働終了日,稼働状況,ＯＳ,役割,ＤＢ,IPアドレス,管理部署,管理者,備考,添付ファイル名,登録日,登録担当者,更新日,更新担当者";
+        $herder="No,物理筐体,ホスト名,別名,環境区分,設置場所,概要,稼働開始日,稼働終了日,稼働状況,ＯＳ,CPUコア数,メモリー,HDD容量,役割,ＤＢ,IPアドレス,管理部署,管理者,備考,添付ファイル名,登録日,登録担当者,更新日,更新担当者";
         $herder = mb_convert_encoding($herder,"SJIS-win","UTF-8")."\r\n";//shift-jisへエンコード
         fwrite($tmp_file,$herder);//ヘッダを書き込む
 
-        for ($i=0; $i<count($_SESSION["devassets"]["devrole"]); $i++) {
-            $devrole[$_SESSION["devassets"]["devrole"][$i]["value"]] = $_SESSION["devassets"]["devrole"][$i]["label"];
-        }
         $sql = "SELECT
                     v.svr_key,
                     sv.nm1 AS sv_name,
@@ -1951,7 +1981,10 @@ class MyClass {
                     v.end_date,
                     CASE v.kado_jyokyo WHEN 1 THEN '運用中' WHEN 7 THEN '停止予定' WHEN 8 THEN '運用停止' WHEN 9 THEN '廃止済' ELSE '' END,
                     os.nm1 AS os_nm,
-                    v.role,
+                    v.core_cnt,
+                    v.memory_size,
+                    v.hdd_cap,
+                    (SELECT group_concat(nm1 separator '\n') FROM m_code WHERE FIND_IN_SET(code,v.role) AND syubetu = 'devrole') AS role_name,
                     db.nm1 AS db_nm,
                     v.ip_adrs,
                     v.kanri_busho,
@@ -1984,7 +2017,6 @@ class MyClass {
                 " ORDER BY v.svr_key DESC";
         $ds = $con->pdo->query($sql) or die($sql);
         while ($row = $ds->fetch(PDO::FETCH_NUM)) {
-            $row[8] = $this->Code2Name($row[8],$devrole);
             mb_convert_variables("SJIS-win","UTF-8",$row);
             fputcsv($tmp_file,$row);
             $cnt++;

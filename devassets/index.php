@@ -102,7 +102,7 @@
     <link rel="stylesheet" href="/JS/SlickGrid/slick.grid.css" type="text/css"/>
     <link rel="stylesheet" href="/JS/SlickGrid/slick-default-theme.css" type="text/css"/>
     <link rel="stylesheet" href="/CSS/jquery-ui.min.css" >
-    <link rel="stylesheet" href="devassets.css?v=3" >
+    <link rel="stylesheet" href="devassets.css?v=1" >
 	<script src="/JS/jquery-3.5.1.min.js" defer></script>
     <script src="/JS/bootstrap4.5/bootstrap.js" defer></script>
 	<script src="/JS/jquery-ui.min.js" defer></script>
@@ -133,7 +133,6 @@
         const devsvplace = <?php echo json_encode($_SESSION["devassets"]["devsvplace"]);?>;
         const syozokulist = <?php echo json_encode($_SESSION["devassets"]["syozokulist"]);?>;
         const busholist = <?php echo json_encode($_SESSION["devassets"]["busholist"]);?>;
-        const widthReset = <?php echo (isset($_GET["reset"]) ? "true" : "false");?>
     </script>
     <script src="multiselect.js?v=1" defer></script>
     <script src="devassets.js?v=1" defer></script>
@@ -499,8 +498,14 @@
                         <div class="form-row">
                             <div class="col">
                                 <div class="row pb-1">
-                                    <label for="fs_save_folder" class="col-form-label col-form-label-sm">格納フォルダ</label>
-                                    <input type="text" id="fs_save_folder" name="save_folder" class="form_item form-control form-control-sm ml-2" placeholder="webアプリはアドレスを入力" tabindex="13" autocomplete="off">
+                                    <label for="fs_url" class="col-form-label col-form-label-sm">URL/FILE</label>
+                                    <input type="text" id="fs_url" name="url" class="form_item form-control form-control-sm ml-2" placeholder="webアプリはURLを入力" tabindex="13" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <label for="fs_save_folder" class="col-form-label col-form-label-sm">設計書ﾌｫﾙﾀﾞ</label>
+                                    <input type="text" id="fs_save_folder" name="save_folder" class="form_item form-control form-control-sm ml-2" tabindex="13" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -826,7 +831,7 @@
                             <div class="col-md-3">
                                 <div class="row pb-1">
                                     <label for="fv_env_type" class="col-form-label col-form-label-sm">環境区分</label>
-                                    <select id="fv_env_type" name="env_type" class="form_item form-control form-control-sm ml-2" tabindex="5">
+                                    <select id="fv_env_type" name="env_type" class="form_item form-control form-control-sm ml-2" tabindex="3">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -834,7 +839,7 @@
                             <div class="col-md-3">
                                 <div class="row pb-1">
                                     <label for="fv_sv_place" class="col-form-label col-form-label-sm">設置場所</label>
-                                    <select id="fv_sv_place" name="sv_place" class="form_item form-control form-control-sm ml-2" tabindex="5">
+                                    <select id="fv_sv_place" name="sv_place" class="form_item form-control form-control-sm ml-2" tabindex="4">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -852,19 +857,19 @@
                             <div class="col-md-3">
                                 <div class="row pb-1">
                                     <label for="fv_start_date" class="col-form-label col-form-label-sm hissu">稼働開始日</label>
-                                    <input type="text" id="fv_start_date" name="start_date" class="form_date form_item form-control form-control-sm ml-2" tabindex="3" autocomplete="off">
+                                    <input type="text" id="fv_start_date" name="start_date" class="form_date form_item form-control form-control-sm ml-2" tabindex="6" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="row pb-1">
                                     <label for="fv_end_date" class="col-form-label col-form-label-sm">稼働終了日</label>
-                                    <input type="text" id="fv_end_date" name="end_date" class="form_date form_item form-control form-control-sm ml-2" tabindex="4" autocomplete="off">
+                                    <input type="text" id="fv_end_date" name="end_date" class="form_date form_item form-control form-control-sm ml-2" tabindex="7" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row pb-1">
                                     <label for="fv_os" class="col-form-label col-form-label-sm">ＯＳ</label>
-                                    <select id="fv_os" name="os" class="form_item form-control form-control-sm ml-2" tabindex="5">
+                                    <select id="fv_os" name="os" class="form_item form-control form-control-sm ml-2" tabindex="8">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -874,7 +879,27 @@
                             <div class="col">
                                 <div class="row pb-1">
                                     <label for="fv_server_gaiyo" class="col-form-label col-form-label-sm">概要</label>
-                                    <textarea id="fv_server_gaiyo" name="gaiyo" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="6" data-minline="6" data-maxline="6"></textarea>
+                                    <textarea id="fv_server_gaiyo" name="gaiyo" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="9" data-minline="6" data-maxline="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <label for="fv_core_cnt" class="col-form-label col-form-label-sm">CPUコア数</label>
+                                    <input type="number" id="fv_core_cnt" name="core_cnt" class="form_item form-control form-control-sm ml-2 text-right" tabindex="10" autocomplete="off" min="0" max="32">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <label for="fv_memory_size" class="col-form-label col-form-label-sm">メモリー</label>
+                                    <input type="number" id="fv_memory_size" name="memory_size" class="form_item form-control form-control-sm ml-2 text-right" tabindex="11" autocomplete="off" min="0" step="1024">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="row pb-1">
+                                    <label for="fv_hdd_cap" class="col-form-label col-form-label-sm">HDD容量</label>
+                                    <input type="text" id="fv_hdd_cap" name="hdd_cap" class="form_item form-control form-control-sm ml-2 text-right" tabindex="12" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -882,34 +907,34 @@
                             <div class="col">
                                 <div class="row pb-1">
                                     <label for="fv_kanri_busho" class="col-form-label col-form-label-sm">管理部署</label>
-                                    <textarea id="fv_kanri_busho" name="kanri_busho" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="9" data-minline="1" data-maxline="3"></textarea>
+                                    <textarea id="fv_kanri_busho" name="kanri_busho" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="13" data-minline="1" data-maxline="3"></textarea>
                                 </div>
                                 <div class="row pb-1">
                                     <label for="fv_kanri_tanto" class="col-form-label col-form-label-sm">管理者</label>
-                                    <textarea id="fv_kanri_tanto" name="kanri_tanto" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="10" data-minline="1" data-maxline="3"></textarea>
+                                    <textarea id="fv_kanri_tanto" name="kanri_tanto" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="14" data-minline="1" data-maxline="3"></textarea>
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="row pb-1">
                                     <label for="fv_other_name" class="col-form-label col-form-label-sm">別名</label>
-                                    <div id="fv_other_name" class="multi_text form-control form-control-sm ml-2 d-flex flex-wrap" tabindex="7"></div>
+                                    <div id="fv_other_name" class="multi_text form-control form-control-sm ml-2 d-flex flex-wrap" tabindex="15"></div>
                                     <input type="hidden" id="fv_other_name_hidden" name="other_name">
                                 </div>
                                 <div class="row pb-1">
                                     <label for="fv_ip_adrs" class="col-form-label col-form-label-sm">IPアドレス</label>
-                                    <div id="fv_ip_adrs" class="multi_text form-control form-control-sm ml-2 d-flex flex-wrap" tabindex="12"></div>
+                                    <div id="fv_ip_adrs" class="multi_text form-control form-control-sm ml-2 d-flex flex-wrap" tabindex="17"></div>
                                     <input type="hidden" id="fv_ip_adrs_hidden" name="ip_adrs">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="row pb-1">
                                     <label for="fv_role" class="col-form-label col-form-label-sm hissu">役割</label>
-                                    <div id="fv_role" class="multi_select form-control form-control-sm ml-2 d-flex flex-wrap" tabindex="8"></div>
+                                    <div id="fv_role" class="multi_select form-control form-control-sm ml-2 d-flex flex-wrap" tabindex="16"></div>
                                     <input type="hidden" id="fv_role_hidden" name="role">
                                 </div>
                                 <div class="row pb-1">
                                     <label for="fv_db_type" class="col-form-label col-form-label-sm">ＤＢ</label>
-                                    <select id="fv_db_type" name="db_type" class="form_item form-control form-control-sm ml-2" tabindex="11">
+                                    <select id="fv_db_type" name="db_type" class="form_item form-control form-control-sm ml-2" tabindex="18">
                                         <option value="0"></option>
                                     </select>
                                 </div>
@@ -919,7 +944,7 @@
                             <div class="col">
                                 <div class="row pb-1">
                                     <label for="fv_server_biko" class="col-form-label col-form-label-sm">備考</label>
-                                    <textarea id="fv_server_biko" name="biko" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="13" data-minline="4" data-maxline="6"></textarea>
+                                    <textarea id="fv_server_biko" name="biko" class="form_item form-control form-control-sm ml-2 auto-resize" tabindex="19" data-minline="4" data-maxline="6"></textarea>
                                 </div>
                                 <div class="row pb-1">
                                     <label for="fv_temp_file" class="col-form-label col-form-label-sm">添付ファイル</label>

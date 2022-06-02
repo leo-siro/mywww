@@ -1078,6 +1078,31 @@ $(function() {
             }
         }
     });
+    // コンテキストメニュー システムNo
+    $.contextMenu({
+        selector: '#board_main_body .system_no',
+        callback: function(key, options) {
+            if (key === 'add_release') {
+                window.open('../devassets/?disp_app=release&system_no='+$(this).text()+'&syain='+$('#board_syain option:selected').text());
+            } else if (key === 'add_sagyo') {
+                window.open('../devassets/?disp_app=sagyo&system_no='+$(this).text()+'&syain='+$('#board_syain option:selected').text());
+            }
+        },
+        items: {
+            add_release:{ name:'課題管理　リリース登録', icon:'add', },
+            sep1: '---------',
+            add_sagyo:{ name:'課題管理　作業登録', icon:'add', },
+        },
+        events: {
+            show: function(opt) {
+                $.contextMenu.setInputValues(opt, {jyotai: '2'});
+            },
+            hide: function(opt) {
+                var $this = this;
+                $.contextMenu.getInputValues(opt, $this.data());
+            }
+        }
+    });
     // コンテキストメニュー ストーリー
     $.contextMenu({
         selector: '.board_story > .board_title_waku',

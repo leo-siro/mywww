@@ -51,6 +51,14 @@ var devsvplace_opt = {};
 var devdb_opt = {};
 
 // フォーマッター
+function file_or_url(row, cell, value) {
+    if (value.substr(0,4) === 'http') {
+        return '<a href="'+value+'" target="_new" title="'+value+'">リンク</a>';
+    } else if (value.substr(1,1) === ':' || value.substr(0,2) === '\\\\') {
+        return '<a href="file:///'+value+'" title="'+value+'">リンク</a>';
+    }
+    return value;
+}
 function formatDBName(row, cell, value, columnDef, dataContext) {
     if (value === '') {
         return '';
@@ -98,15 +106,8 @@ var columns = {
         {id: 'unyo_tanto', name: '運用担当', field: 'unyo_tanto', width: 150, editor: Slick.Editors.LongText, headerCssClass: 'center', formatter: formatMulitiLine},
         {id: 'dev_env', name: '開発環境', field: 'dev_env', width: 150, headerCssClass: 'center', editor: Extends.Editors.MultiSelect, formatter: Extends.Formatters.MultiSelect, options: devenv_opt},
         {id: 'dev_lang', name: '開発言語', field: 'dev_lang', width: 120, headerCssClass: 'center', editor: Extends.Editors.MultiSelect, formatter: Extends.Formatters.MultiSelect, options: devlang_opt},
-        {id: 'save_folder', name: '格納フォルダ', field: 'save_folder', width: 150, editor: Slick.Editors.Text, headerCssClass: 'center', cssClass: 'linkitem',
-            formatter: function (row, cell, value) {
-                if (value.substr(0,4) === 'http') {
-                    return '<a href="'+value+'" target="_new">'+value+'</a>';
-                } else if (value.substr(1,1) === ':') {
-                    return '<a href="file:///'+value+'">'+value+'</a>';
-                }
-                return value;
-            }},
+        {id: 'url', name: 'URL/FILE', field: 'url', width: 80, editor: Slick.Editors.Text, headerCssClass: 'center', cssClass: 'center linkitem', formatter: file_or_url},
+        {id: 'save_folder', name: '設計書フォルダ', field: 'save_folder', width: 100, editor: Slick.Editors.Text, headerCssClass: 'center', cssClass: 'center linkitem', formatter: file_or_url},
         {id: 'biko', name: '備考', field: 'biko', editor: Slick.Editors.LongText, width: 200, headerCssClass: 'center'},
         {id: 'kado_jyokyo', name: '稼働状況', field: 'kado_jyokyo', width: 80, editor: Slick.Editors.Select, formatter: Slick.Formatters.Select, options: kado_jyokyo_opt, headerCssClass: 'center', cssClass: 'center'},
         {id: 'dev_kbn', name: '開発区分', field: 'dev_kbn', width: 80, editor: Slick.Editors.Select, formatter: Slick.Formatters.Select, options: dev_kbn_opt, headerCssClass: 'center', cssClass: 'center'},
@@ -222,6 +223,9 @@ var columns = {
         {id: 'sv_place', name: '設置場所', field: 'sv_place', width: 70, editor: Slick.Editors.Select, formatter: Slick.Formatters.Select, options: devsvplace_opt, headerCssClass: 'center'},
         {id: 'gaiyo', name: '概要', field: 'gaiyo', editor: Slick.Editors.LongText, width: 200, headerCssClass: 'center'},
         {id: 'os', name: 'ＯＳ', field: 'os', width: 200,editor: Slick.Editors.Select, formatter: Slick.Formatters.Select, options: devserver_opt, headerCssClass: 'center'},
+        {id: 'core_cnt', name: 'コア数', field: 'core_cnt', editor: Slick.Editors.Integer, width: 46, headerCssClass: 'center', cssClass: 'right'},
+        {id: 'memory_size', name: 'メモリー', field: 'memory_size', editor: Slick.Editors.Integer, width: 58, headerCssClass: 'center', cssClass: 'right'},
+        {id: 'hdd_cap', name: 'HDD容量', field: 'hdd_cap', editor: Slick.Editors.Text, width: 68, headerCssClass: 'center', cssClass: 'right'},
         {id: 'role', name: '役割', field: 'role', width: 100, headerCssClass: 'center', cssClass: 'svr_role', editor: Extends.Editors.MultiSelect, formatter: Extends.Formatters.MultiSelect, options: devrole_opt},
         {id: 'db_type', name: 'ＤＢ', field: 'db_type', width: 100, editor: Slick.Editors.Select, formatter: Slick.Formatters.Select, options: devdb_opt, headerCssClass: 'center', cssClass: 'svr_db'},
         {id: 'ip_adrs', name: 'IPアドレス', field: 'ip_adrs', editor: Slick.Editors.LongText, width: 120, headerCssClass: 'center', cssClass: 'ipadrs center', sortable: true, validator: ipadrsCheck,
@@ -528,13 +532,15 @@ $(function() {
     // ---------------------------------------------------------------------------------------------------------------------------
     // 初期処理
     // ---------------------------------------------------------------------------------------------------------------------------
+    let ipara = getParam();
+    history.replaceState('','','./');
     // フォームエリアを初期値は非表示にし（ちらつき防止）ダイアログ作成時は表示にしする（gridが崩れるのを防ぐため）
     $('#form_area').show();
     $('#fds_develop').val(syozokunm);
     $(window).resize(function() {
         grid[frame_type].resizeCanvas();
     });
-    if (widthReset === false) {
+    if (ipara.reset) {
         // グリッドの横幅をセット
         var grid_width = JSON.parse(localStorage.getItem('devassets_grid_width'));
         if (grid_width) {
@@ -986,6 +992,7 @@ $(function() {
         // 開発言語選択リスト
         $('#fs_dev_lang').mulitiSelect({source:devlang,value:item.dev_lang,label:devlang_opt,maxcnt:10,mincnt:5});
         $('#fs_dev_kbn').val(item.dev_kbn);
+        $('#fs_url').val(item.url);
         $('#fs_save_folder').val(item.save_folder);
         $('#fs_system_biko').val(item.biko);
         if (item.temp_file === null) {
@@ -1521,8 +1528,6 @@ $(function() {
         $('#fds_dev_lang').append('<option value="'+item.value+'">'+item.label+'</option>');
         devlang_opt[item.value] = item.label;
     });
-    // システム画面表示
-    $('input[name="disp_type"]:eq(0)').change();
     // ---------------------------------------------------------------------------------------------------------------------------
     // リリース画面処理
     // ---------------------------------------------------------------------------------------------------------------------------
@@ -2083,6 +2088,9 @@ $(function() {
         $('#fv_role').val(item.role);
         $('#fv_db_type').val(item.db_type);
         $('#fv_server_gaiyo').val(item.gaiyo);
+        $('#fv_core_cnt').val(item.core_cnt);
+        $('#fv_memory_size').val(item.memory_size);
+        $('#fv_hdd_cap').val(item.hdd_cap);
         $('#fv_kanri_busho').val(item.kanri_busho);
         $('#fv_kanri_tanto').val(item.kanri_tanto);
         $('#fv_server_biko').val(item.biko);
@@ -3654,7 +3662,7 @@ $(function() {
     function KKC_Check(filename) {
         let p = filename.lastIndexOf('.');
         if (p === -1) return false;
-        let chk = ['xls','xlsx','xlsm','doc','docx','ppt','pptx','zip','jpg','jpeg','gif','png','pdf','csv','txt']
+        let chk = ['xls','xlsx','xlsm','doc','docx','ppt','pptx','zip','jpg','jpeg','gif','png','pdf','csv','txt','html']
         let kkc = filename.substring(p+1).toLowerCase();
 		if (chk.indexOf(kkc) === -1) {
 			return false;
@@ -3726,6 +3734,22 @@ $(function() {
             return false;
         }
     });
+    // GETパラメータ処理
+    if (ipara.disp_app && ipara.disp_app !== '') {
+        $('#'+ipara.disp_app+'_proc').click();
+        if (ipara.system_no && ipara.system_no !== '') {
+            $('#'+ipara.disp_app+'_new').click();
+            let system_item = {'release':'#fr_','sagyo':'#fw_'};
+            if (ipara.syain && decodeURI(ipara.syain) !== '全て') {
+                $(system_item[ipara.disp_app]+'tanto').val(decodeURI(ipara.syain));
+            }
+            $(system_item[ipara.disp_app]+ipara.disp_app+'_date').val((new Date()).formatDate('YYYY/MM/DD'));
+            $(system_item[ipara.disp_app]+'system_no').val(ipara.system_no).focus();
+        }
+    } else {
+        // システム画面表示
+        $('input[name="disp_type"]:eq(0)').change();
+    }
 });
 // メッセージ表示関数
 var msgid = '#msg';
